@@ -32,7 +32,7 @@ google = oauth.remote_app(
 
 @utils.route('/')
 def home():
-    return render_template('home.html')
+    return render_template('utils/home.html')
 
 @utils.route('/google/auth')
 def auth():
