@@ -1,4 +1,4 @@
-from flask import render_template, url_for, flash, redirect, request, Blueprint, session, current_app
+from flask import render_template, url_for, flash, redirect, request, Blueprint, session
 from flask_login import login_user, current_user, logout_user, login_required
 from chowkidar import oauth, get_admin
 from chowkidar.models import User, db
@@ -8,6 +8,7 @@ from chowkidar.audits.routes import audit_list
 from chowkidar import limiter, task_queue, mail
 from chowkidar.utils.forms import ContactForm, WPSapiForm
 from flask_mail import Message
+
 
 
 utils = Blueprint('utils', __name__)

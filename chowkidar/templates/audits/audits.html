@@ -129,7 +129,7 @@
                                         </div>
                                     </div>
                                 {% elif audit.status == 'finished' %}
-                                    <a href="{{ url_for('vulnerabilities', audit_name=audit.name) }}">
+                                    <a href="{{ url_for('audits.vulnerabilities', audit_name=audit.name) }}">
                                         <div class="flex items-center justify-center p-2 rounded-md hover:bg-cyan-200 group">
                                             <svg class="w-6 h-6 flex-none" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>

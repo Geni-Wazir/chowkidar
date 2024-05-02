@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    <p>Hi {{ audit.Auditor.name }},</p>
+    <div class="px-8 py-3">
+        <p>This is to notify you that the vulnerability scan for <strong>{{audit.name}}</strong> has been completed
+            successfully. You can
+            access the <a href="http://localhost//audits/{{audit.name}}/vulnerability">dashboard</a> to view all
+            detected vulnerabilities, along with detailed information on each one.
+        </p>
+    </div>
+    <div class="">
+        <p style="font-weight: bold;">Next Steps</p>
+        <div class="">
+            <ol class="">
+                <li><strong>Review Results:</strong> Carefully examine the scan report to understand the vulnerabilities
+                    identified.</li>
+                <li><strong>Prioritize:</strong> Determine the severity of each vulnerability and prioritize them based
+                    on the potential risk they pose.</li>
+                <li><strong>Mitigation Plan:</strong> Develop a plan to address and mitigate the identified
+                    vulnerabilities, including assigning responsibilities to team members.</li>
+                <li><strong>Implement Fixes:</strong> Work with developers and IT teams to implement fixes and patches
+                    for the vulnerabilities.</li>
+                <li><strong>Re-Scan:</strong> Conduct follow-up scans to ensure that the vulnerabilities have been
+                    properly addressed and resolved.</li>
+            </ol>
+        </div>
+    </div>
+    <p><strong>Note:</strong> <span style="color: red;">The automated scan conducted does not include areas behind the
+            login. For comprehensive coverage of the entire web application, it is advisable to get a manual VAPT conducted 
+            by an ethical hacker. Manual VAPT encompass all scenarios and uncover potential issues and logic flaws comprehensively.</span>
+    </p>
+
+    <div style="padding-top: 1rem;">
+        <p>Thank you for choosing CHOWKIDAR platform for testing. We appreciate your support!</p>
+    </div>
+
+    <div style="padding-top: 1rem;">
+        <p class="">Regards Chowkidar</p>
+        <a href="http://localhost" target="_blank">
+            <img src="{{ url_for('static', filename='logo.png') }}" style="width: 10rem;" alt="Chowkidar Logo">
+        </a>
+    </div>
+
+</body>
+</html>
