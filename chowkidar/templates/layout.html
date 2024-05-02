@@ -25,10 +25,34 @@
 					<img src="{{ url_for('static', filename='logo.png') }}" class="h-6 sm:h-12" alt="Chowkidar Logo">
 				</a>
 				<div class="relative flex h-12 sm:h-16 items-center justify-between text-black" id="navbar-sticky">
-
+					<ul class="flex text-[0.7rem] sm:text-base">
+						{% if current_user.is_authenticated %}
+						<li class="hover:bg-gray-300 px-2 sm:px-3 py-2 flex flex-col items-center rounded-xl">
+							<a href="{{ url_for('audits.audit_list') }}" {% if 'Audits' in title %}
+								class="text-black border-b-2 border-sky-500">
+								{% else %}
+								class="text-black">
+								{% endif %}
+								Audits
+							</a>
+						</li>
+						<li
+							class="hover:bg-gray-300 px-2 sm:px-3 py-2 flex flex-col items-center rounded-xl whitespace-nowrap">
+							<a href="{{ url_for('audits.add_audit') }}" {% if 'Add Audit' in title %}
+								class="text-black border-b-2 border-sky-500">
+								{% else %}
+								class="text-black">
+								{% endif %}
+								New Audit
+							</a>
+						</li>
+						{% endif %}
+						
+					</ul>
 				</div>
 			</div>
 			<div class="flex items-center pl-2 sm:pl-0 md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse right-0">
+				{% if not current_user.is_authenticated %}
 				<a class="h-8 w-8 sm:h-10 sm:w-10 auth-btn group" type="btn" href="{{ url_for('utils.auth') }}">
 					<span class="svgContainer">
 						<svg class="h-4 w-4 sm:h-6 sm:w-6" viewBox="0 0 48 48" id="b" xmlns="http://www.w3.org/2000/svg"
@@ -57,6 +81,52 @@
 						<span class='text-white text-xs normal-case font-normal whitespace-nowrap'>Login</span>
 					</div>
 				</a>
+				{% else %}
+				<a class="h-8 w-8 sm:h-10 sm:w-10 mx-0 sm:mx-2 auth-btn group" type="btn"
+					href="{{ url_for('utils.profile') }}">
+					<span class="svgContainer">
+						<svg class="h-5 w-5 sm:h-7 sm:w-7" viewBox="0 0 24 24" fill="none"
+							xmlns="http://www.w3.org/2000/svg">
+							<g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+							<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+							<g id="SVGRepo_iconCarrier">
+								<circle cx="9" cy="9" r="2" stroke="#ffffff" stroke-width="1.5"></circle>
+								<path
+									d="M13 15C13 16.1046 13 17 9 17C5 17 5 16.1046 5 15C5 13.8954 6.79086 13 9 13C11.2091 13 13 13.8954 13 15Z"
+									stroke="#ffffff" stroke-width="1.5"></path>
+								<path
+									d="M22 12C22 15.7712 22 17.6569 20.8284 18.8284C19.6569 20 17.7712 20 14 20H10C6.22876 20 4.34315 20 3.17157 18.8284C2 17.6569 2 15.7712 2 12C2 8.22876 2 6.34315 3.17157 5.17157C4.34315 4 6.22876 4 10 4H14C17.7712 4 19.6569 4 20.8284 5.17157C21.298 5.64118 21.5794 6.2255 21.748 7"
+									stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path>
+								<path d="M19 12H15" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path>
+								<path d="M19 9H14" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path>
+								<path d="M19 15H16" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path>
+							</g>
+						</svg>
+						<span class="BGProfile"></span>
+					</span>
+					<div class='absolute hidden group-hover:block mt-20 bg-black rounded-md p-1 px-2 auth-triangle-top'>
+						<span class='text-white text-xs normal-case font-normal whitespace-nowrap'>Profile</span>
+					</div>
+				</a>
+				<a class="h-8 w-8 sm:h-10 sm:w-10 auth-btn group" type="btn" href="{{ url_for('utils.logout') }}">
+					<span class="svgContainer">
+						<svg class="h-5 w-5 sm:h-7 sm:w-7" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+							fill="none">
+							<g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+							<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+							<g id="SVGRepo_iconCarrier">
+								<path stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+									d="M20 12h-9.5m7.5 3l3-3-3-3m-5-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2h5a2 2 0 002-2v-1">
+								</path>
+							</g>
+						</svg>
+					</span>
+					<span class="BG"></span>
+					<div class='absolute hidden group-hover:block mt-20 bg-black rounded-md p-1 px-2 auth-triangle-top'>
+						<span class='text-white text-xs normal-case font-normal whitespace-nowrap'>Logout</span>
+					</div>
+				</a>
+				{% endif %}
 			</div>
 		</div>
 	</nav>
@@ -114,7 +184,7 @@
 				{% endblock %}
 			</div>
 			<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+			<script src="{{ url_for('static', filename='main.js') }}"></script>
 </body>
 
 </html>
