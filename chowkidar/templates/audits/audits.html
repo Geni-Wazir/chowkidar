@@ -64,7 +64,7 @@
                     {% for audit in audits %}
                     <tr>
                         <td class="sm:w-2/4 py-4 px-4 border-b border-gray-200 truncate">
-                            <a href="{{ url_for('audit', audit_name=audit.name) }}">
+                            <a href="{{ url_for('audits.audit_list', audit_name=audit.name) }}">
                                 {% if audit.name|length > 33 %}
                                 <span class="group">
                                         {{ audit.name }}
@@ -96,7 +96,7 @@
                         </td>
                         <td class="w-1/3 sm:w-1/4 py-4 px-4 border-b border-gray-200">
                             <div class='flex gap-1'>
-                                <div class='flex items-center justify-center p-2 rounded-md hover:bg-red-200 group' data-toggle="deleteModal" data-target="#deleteModal" data-audit-name="{{ audit.name }}" data-delete-url="{{ url_for('delete_audit', audit_name=audit.name) }}">
+                                <div class='flex items-center justify-center p-2 rounded-md hover:bg-red-200 group' data-toggle="deleteModal" data-target="#deleteModal" data-audit-name="{{ audit.name }}" data-delete-url="{{ url_for('audits.delete_audit', audit_name=audit.name) }}">
                                     <svg class="w-6 h-6 flex-none" fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 482.428 482.429" xmlSpace="preserve">
                                         <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                                         <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
@@ -116,7 +116,7 @@
                                     </div>
                                 </div>
                                 {% if audit.status == 'unscanned' %}
-                                    <div class='flex items-center justify-center p-2 rounded-md hover:bg-green-200 group' data-toggle="initiateAuditModal" data-target="#initiateAuditModal" data-audit-name="{{ audit.name }}" data-initiate-audit-url="{{ url_for('scan_audit', audit_name=audit.name) }}">
+                                    <div class='flex items-center justify-center p-2 rounded-md hover:bg-green-200 group' data-toggle="initiateAuditModal" data-target="#initiateAuditModal" data-audit-name="{{ audit.name }}" data-initiate-audit-url="{{ url_for('audits.scan_audit', audit_name=audit.name) }}">
                                         <svg class="w-6 h-6 flex-none" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <g id="SVGRepo_bgCarrier" strokeWidth="1.5"></g>
                                             <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
@@ -148,7 +148,7 @@
                                         </div>
                                     </a>
                                 {% elif audit.status == 'scanning' %}
-                                <a href="{{ url_for('stop_scan', audit_name=audit.name) }}">
+                                <a href="{{ url_for('audits.stop_scan', audit_name=audit.name) }}">
                                     <div class="flex items-center justify-center p-2 rounded-md hover:bg-yellow-200 group">
                                         <svg class="w-6 h-6 flex-none" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>

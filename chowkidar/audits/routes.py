@@ -1,7 +1,7 @@
-from flask import render_template,Blueprint, flash, redirect, url_for
+from flask import render_template,Blueprint, flash, redirect, url_for, request
 from flask_login import current_user, login_required
 from chowkidar.models import Audit, db
-from chowkidar.audits.forms import AuditForm
+from chowkidar.audits.forms import AuditForm, UpdateAuditForm
 
 
 
@@ -13,8 +13,8 @@ audits = Blueprint('audits', __name__)
 @audits.route('/audits')
 @login_required
 def audit_list():
-    audits = Audit.query.filter_by(Auditor=current_user).order_by(Audit.id.desc())
-    return render_template('audits/audits.html', title="Audits", audits=audits)
+    all_audit = Audit.query.filter_by(Auditor=current_user).order_by(Audit.id.desc())
+    return render_template('audits/audits.html', title="Audits", audits=all_audit)
 
 
 
@@ -50,4 +50,136 @@ def add_audit():
     elif list(form.errors.values()) != []:
         flash(", ".join(list(form.errors.values())[0]), 'info')
     return render_template('audits/add_audit.html', title="Add Audit", form=form, legend="New Audit")
+
+
+
+
+@audits.route('/audits/<string:audit_name>', methods=['GET', 'POST'])
+@login_required
+def audit(audit_name):
+    form = UpdateAuditForm()
+    audit = Audit.query.filter_by(name=audit_name, Auditor=current_user).first()
+    if audit:
+        if request.method == 'POST':
+            @limiter.limit("5/minute")
+            def update_audit():
+                if form.validate_on_submit():
+                    if audit.status == 'unscanned':
+                        if any(list(form.data.values())[:-1]):
+                            audit.nmap=form.nmap.data
+                            audit.dirsearch=form.dirsearch.data
+                            audit.headers=form.headers.data
+                            audit.testssl=form.testssl.data
+                            audit.nuclei=form.nuclei.data
+                            audit.sublister=form.sublister.data
+                            audit.wpscan=form.wpscan.data
+                            db.session.commit()
+                            flash('The audit has been upgraded', 'success')
+                            return redirect(url_for('audit', audit_name=audit.name))
+                        else:
+                            flash('Boost Your Scan with at Least One Empowering Tool', 'info')
+                    else:
+                        flash('Audit can not be updated', 'info')
+            update_audit()
+        elif request.method == 'GET':
+            form.nmap.data = audit.nmap
+            form.dirsearch.data = audit.dirsearch
+            form.headers.data = audit.headers
+            form.testssl.data = audit.testssl
+            form.nuclei.data = audit.nuclei
+            form.sublister.data = audit.sublister
+            form.wpscan.data =  audit.wpscan
+    else:
+        flash('Unfortunately, you do not have the privilege to access this audit', 'danger')
+        return redirect(url_for('audits'))
+    return render_template('user/add_audit.html', title="Audit Info", audit=audit, form=form, legend="Audit Insights")
+
+
+
+
+@audits.route('/audits/<string:audit_name>/delete', methods=['GET', 'POST'])
+@login_required
+def delete_audit(audit_name):
+    audit = Audit.query.filter_by(name=audit_name, Auditor=current_user).first()
+    if audit:
+        if audit.status == 'scanning':
+            if audit.container_id:
+                stop_scan = delete_container(audit.container_id)
+                if not stop_scan:
+                    flash(f'Apologies, the deletion of audit {audit.name} has failed', 'danger')
+                    return redirect(url_for('audits'))
+            else:
+                delete_task = remove_task(audit.task_id)
+                if not delete_task:
+                    flash(f'Apologies, the deletion of audit {audit.name} has failed', 'danger')
+                    return redirect(url_for('audits'))
+        db.session.delete(audit)
+        db.session.commit()
+        flash(f'The audit {audit.name} has been successfully removed', 'success')
+    else:
+        flash('Unfortunately, you do not have the privilege to access this audit', 'danger')
+        return redirect(url_for('audits'))
+    return redirect(url_for('audits'))
+
+
+
+
+@audits.route('/audits/<string:audit_name>/scan', methods=['GET', 'POST'])
+@login_required
+def scan_audit(audit_name):
+    if current_user.scan_available:
+        audit = Audit.query.filter_by(name=audit_name, Auditor=current_user).first()
+        if audit:
+            if audit.status == 'unscanned':
+                add_vulnerability_api = 'http://localhost'+url_for('add_vulnerability')
+                scan_result_api = 'http://localhost'+url_for('add_scan_result')
+                scan_status_api = 'http://localhost'+url_for('scan_status')
+                secret_key = os.environ['SCANNER_SECRET_KEY']
+                scan_task = task_queue.enqueue(run_scan, args=(secret_key, scan_result_api, add_vulnerability_api, scan_status_api, audit), job_timeout='10h')
+                audit.task_id = scan_task.id
+                audit.status = 'scanning'
+                if not current_user.admin:
+                    current_user.scan_available = current_user.scan_available - 1
+                db.session.commit()
+                flash(f'Congratulations! Your {audit.name} scan has been successfully started.', 'success')
+                return redirect(url_for('audits'))
+            else:
+                flash(f'Initiating the scan for {audit.name} is not possible', 'info')
+        else:
+            flash('Unfortunately, you do not have the privilege to access this audit', 'danger')
+            return redirect(url_for('audits'))
+    else:
+        flash('Your Scan Count is Low! Connect with Admin for Additional Scans', 'info')
+        return redirect(url_for('audits'))
+    return redirect(url_for('audits'))
+
+
+
+
+@audits.route('/audits/<string:audit_name>/stop', methods=['GET', 'POST'])
+@login_required
+def stop_scan(audit_name):
+    audit = Audit.query.filter_by(name=audit_name, Auditor=current_user).first()
+    if audit:
+        if audit.status == 'scanning':
+            if audit.container_id:
+                stop_scan = delete_container(audit.container_id)
+                if not stop_scan:
+                    flash(f'Apologies, the deletion of audit {audit.name} has failed', 'danger')
+                    return redirect(url_for('audits'))
+            else:
+                delete_task = remove_task(audit.task_id)
+                if not delete_task:
+                    flash(f'Apologies, the deletion of audit {audit.name} has failed', 'danger')
+                    return redirect(url_for('audits'))
+            audit.status = 'stopped'
+            db.session.commit()
+            flash('Your Scan for' + audit.name + ' has been stopped', 'success')
+            return redirect(url_for('audits'))
+        else:
+            flash(f'This action cannot be performed for {audit.name}', 'info')
+    else:
+        flash('Unfortunately, you do not have the privilege to access this audit', 'danger')
+        return redirect(url_for('audits'))
+    return redirect(url_for('audits'))
 
