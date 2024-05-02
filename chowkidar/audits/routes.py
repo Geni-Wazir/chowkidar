@@ -1,6 +1,7 @@
-from flask import render_template,Blueprint, flash, redirect, url_for, request
+from flask import render_template,Blueprint, flash, redirect, url_for, request, current_app
 from flask_login import current_user, login_required
 from chowkidar.models import Audit, db
+from chowkidar import limiter
 from chowkidar.audits.forms import AuditForm, UpdateAuditForm
 
 
@@ -75,7 +76,7 @@ def audit(audit_name):
                             audit.wpscan=form.wpscan.data
                             db.session.commit()
                             flash('The audit has been upgraded', 'success')
-                            return redirect(url_for('audit', audit_name=audit.name))
+                            return redirect(url_for('audits.audit', audit_name=audit.name))
                         else:
                             flash('Boost Your Scan with at Least One Empowering Tool', 'info')
                     else:
@@ -92,7 +93,7 @@ def audit(audit_name):
     else:
         flash('Unfortunately, you do not have the privilege to access this audit', 'danger')
         return redirect(url_for('audits'))
-    return render_template('user/add_audit.html', title="Audit Info", audit=audit, form=form, legend="Audit Insights")
+    return render_template('audits/add_audit.html', title="Audit Info", audit=audit, form=form, legend="Audit Insights")
 
 
 

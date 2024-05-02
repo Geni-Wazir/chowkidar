@@ -31,7 +31,11 @@ parser.read('config.ini')
 def get_admin():
     return parser.get('APP', 'ADMINS')
 
-
+limiter = Limiter(
+get_remote_address,
+storage_uri="redis://scheduler:6379",
+storage_options={}
+)
 
 
 def create_app(config_class=Config):
@@ -46,6 +50,8 @@ def create_app(config_class=Config):
         session.init_app(app)
         mail.init_app(app)
 
+        limiter.init_app(app)
+        
         from chowkidar.utils.routes import utils
         from chowkidar.audits.routes import audits
         app.register_blueprint(utils)
