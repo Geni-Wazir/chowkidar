@@ -1,0 +1,228 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="h-full w-full flex pt-3 relative gap-x-10 flex-col md:flex-row items-center">
+    <div class="flex items-center lg:w-1/3 flex-1 mr-10 px-2 md:mr-0 lg:px-0">
+        <div class="px-10 bg-[#FFC000] rounded-3xl flex relative">
+            <div class="absolute flex flex-col h-full">
+                <div class="flex-1 flex items-center">
+                    <div class="name-shape">
+                        <div class="name-logo select-none">
+                            chowkidar
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <img class="h-[42rem] hoverImage ml-10" src="{{ url_for('static', filename='chowkidar.png') }} " alt="chowkidar">
+            <div class="absolute right-0 flex flex-col h-full py-10">
+                <div class="flex-1 flex items-center">
+                    <div class="tool-shape border-e-2 border-sky-500">
+                        <div class="tool">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                <path fill="#015594" d="M450.392 268.216c2.128 1.475 4.178 2.3 6.484 3.554c1.87 1.017 3.773 1.97 5.649 2.973c1.462.781 4.171 2.425 2.529 4.345c-1.067 1.251-3.65 1.055-5.163 1.267c-2.399.333-5.349.206-7.74 0c-2.93-.254-5.992.44-8.974.44c-2.152 0-4.32.093-6.449.087c-.767-.002-1.734.176-2.258-.5c-.545-.702-.163-1.482.263-2.066c.511-.696.992-1.625 1.607-2.169c.55-.484 1.273-.82 1.825-1.246c1.344-1.036 1.811-2.132.62-3.47c-1.184-1.333-2.054-2.276-2.115-4.162c-.077-2.409 1.453-2.904 3.503-3.43c3.07-.787 2.81-.26 5.381 1.21c1.231.705 4.256 2.763 4.838 3.167m-391.838.965c-2.166 1.418-4.237 2.19-6.576 3.382c-1.895.968-3.823 1.87-5.724 2.825c-1.483.742-4.234 2.313-2.641 4.277c1.033 1.279 3.62 1.15 5.128 1.401c2.388.396 5.34.346 7.737.204c2.935-.179 5.978.597 8.958.673c2.152.059 4.316.208 6.445.257c.766.018 1.728.222 2.27-.441c.564-.686.202-1.476-.209-2.07c-.492-.71-.949-1.651-1.549-2.211c-.538-.5-1.25-.853-1.791-1.293c-1.317-1.072-1.756-2.18-.53-3.486c1.22-1.302 2.114-2.221 2.224-4.105c.14-2.406-1.303-3.343-3.413-3.522c-2.714-.23-2.609.327-5.304 1.333c-1.33.496-4.432 2.387-5.025 2.776m451.022 17.014c-16.683 19.24-48.328 9.606-100.566 34.597c-69.325 33.167-73.89 52.895-153.634 53.459c-82.488.584-84.365-22.069-157.445-54.632c-57.686-25.703-89.631-14.17-96.46-34.303c-9.305-26.434 27.8-50.805 48.083-65.09c92.024-64.802 132.11-82.259 203.869-82.191c77.032-4.397 151.521 40.851 207.19 82.192c19.829 14.725 61.893 42.91 48.963 65.968M258.599 269.69l-.008 16.347c17.096-1.496 30.743-15.325 32.38-32.767l-16.36.032c-1.384 8.431-7.852 15.066-16.012 16.388m9.442-16.374l-9.435.018l-.004 9.8c4.622-1.169 8.253-4.966 9.439-9.818m.1-6.415c-1.09-5.014-4.8-8.955-9.527-10.155l-.004 10.174zm-48.105.095l16.537-.033c1.223-8.462 7.553-15.2 15.63-16.708l.008-16.795c-17.234 1.628-30.88 15.813-32.175 33.536m32.151 15.989l.005-9.638l-8.976.018c1.157 4.666 4.584 8.326 8.971 9.62m-15.545-9.607l-16.56.033c1.687 17.282 15.173 30.996 32.094 32.611l.008-16.405c-7.92-1.487-14.159-8.001-15.542-16.24m15.553-6.446l.005-10.046c-4.534 1.333-8.07 5.182-9.114 10.064zm38.809-.077c-1.362-17.728-15.091-31.877-32.378-33.406l-.008 16.74c8.252 1.345 14.768 8.126 16.04 16.699zm-71.367 86.084c-34.085-13.75-58.083-46.557-58.083-84.859c0-20.928 7.177-40.21 19.234-55.648c-25.098 10.645-58.524 30.852-113.737 69.212c-8.738 6.07-35.162 13.14-28.931 18.98c4.69 4.399 29.905 1.173 48.67 7.037c66.902 20.907 96.914 38.248 132.847 45.278M445.66 261.86c-51.504-36.986-86.776-57.9-115.565-69.267c11.981 15.412 19.104 34.632 19.104 55.487c0 37.031-22.436 68.917-54.727 83.42c43.165-9.94 86.137-32.789 127.146-44.132c28.016-7.751 38.995-1.466 51.31-7.623c4.965-2.483-20.128-12.76-27.268-17.885"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-1 flex items-center">
+                    <div class="tool-shape border-e-2 border-sky-500">
+                        <div class="tool">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1400" preserveAspectRatio="xMidYMid meet">
+                                <g transform="translate(0.000000,1400.000000) scale(0.10000,-0.10000)" stroke="none">
+                                    <path fill="#2188ff" d="M6905 7715 c-296 -54 -520 -264 -602 -566 -24 -87 -23 -270 1 -358 96 -354 409 -585 766 -568 198 10 352 79 496 222 77 76 98 105 137 185 57 115 76 186 84 305 24 381 -258 724 -645 784 -88 14 -147 13 -237 -4z" />
+                                    <path fill="#015594" d="M6770 13354 c-239 -51 -430 -159 -636 -357 -273 -262 -496 -606 -703 -1083 -364 -842 -635 -2040 -746 -3304 -8 -96 -18 -198 -21 -227 l-5 -51 -182 -128 c-484 -338 -932 -692 -1372 -1083 -177 -157 -655 -636 -795 -796 -552 -634 -865 -1166 -972 -1656 -19 -89 -22 -133 -22 -299 0 -180 2 -203 27 -295 126 -468 517 -759 1157 -860 139 -22 586 -31 775 -16 299 24 614 73 941 147 200 44 535 132 679 178 l75 24 6 -27 c216 -911 484 -1601 817 -2101 468 -703 1058 -950 1623 -681 116 56 197 108 305 197 408 338 784 1024 1060 1932 70 234 65 318 -27 421 -59 65 -127 95 -219 94 -76 0 -116 -14 -182 -62 -56 -41 -85 -94 -127 -237 -183 -616 -420 -1136 -667 -1461 -84 -110 -244 -265 -325 -313 -137 -82 -285 -102 -415 -56 -403 142 -829 850 -1125 1866 -46 158 -154 582 -154 605 0 8 21 21 48 31 298 108 802 319 1160 485 118 55 217 99 220 99 3 0 69 -30 146 -66 1192 -564 2381 -937 3356 -1055 249 -31 758 -34 945 -6 610 89 988 345 1145 774 80 221 82 498 5 790 -74 280 -256 644 -487 973 -249 353 -610 766 -983 1122 l-140 133 128 120 c243 229 577 590 775 837 752 943 955 1731 588 2281 -338 508 -1118 685 -2246 511 -1340 -207 -3122 -925 -4745 -1912 -142 -87 -150 -90 -153 -68 -2 13 11 136 28 272 183 1477 557 2688 1026 3321 77 104 255 280 326 322 118 69 173 85 283 85 85 0 109 -3 163 -26 227 -94 430 -313 642 -692 144 -258 267 -550 391 -931 98 -302 99 -304 149 -359 124 -134 340 -118 452 33 35 48 58 117 58 172 0 85 -183 623 -318 934 -209 485 -431 828 -706 1092 -208 200 -402 309 -638 357 -95 20 -298 20 -388 0z m4410 -3134 c243 -19 396 -53 545 -124 105 -50 206 -136 248 -214 87 -161 71 -402 -47 -692 -187 -457 -655 -1069 -1259 -1643 l-157 -150 -52 44 c-234 197 -667 527 -983 749 -332 234 -871 583 -951 616 -57 24 -175 16 -238 -16 -175 -89 -212 -338 -70 -471 22 -20 120 -87 219 -149 353 -221 808 -535 1135 -783 201 -153 480 -377 480 -385 -1 -10 -318 -261 -535 -424 -587 -439 -1243 -862 -1936 -1248 -481 -267 -1215 -623 -1684 -815 -224 -92 -468 -185 -473 -181 -13 14 -93 598 -127 928 -56 551 -75 904 -82 1531 -5 464 8 1146 23 1199 7 26 502 335 906 566 1481 849 3028 1444 4199 1616 327 48 606 63 839 46z m-6564 -2957 c-20 -902 57 -2027 200 -2906 20 -121 33 -221 31 -224 -9 -9 -301 -94 -492 -143 -352 -91 -664 -150 -980 -187 -211 -24 -638 -24 -790 0 -536 84 -741 303 -670 713 119 677 979 1725 2215 2695 114 90 483 368 489 369 2 0 1 -143 -3 -317z m6173 -926 c715 -710 1143 -1347 1227 -1827 68 -392 -130 -615 -626 -705 -127 -23 -513 -32 -703 -16 -780 66 -1741 336 -2801 788 -172 74 -245 109 -235 115 8 5 107 60 220 123 918 507 1807 1111 2608 1771 l26 22 30 -25 c16 -13 131 -124 254 -246z"/>
+                                    <path fill="#015594" d="M2667 10810 c-740 -67 -1187 -369 -1329 -898 -26 -97 -35 -330 -19 -456 62 -463 357 -1020 861 -1623 88 -107 110 -127 165 -154 152 -74 325 -15 396 135 51 107 36 224 -39 318 -20 25 -84 105 -142 176 -360 443 -588 864 -645 1188 -36 209 -2 356 112 475 137 144 360 221 718 249 322 26 807 -22 1280 -126 88 -19 191 -42 229 -50 84 -18 146 -8 224 36 119 69 172 220 122 352 -24 66 -69 121 -123 153 -92 53 -665 166 -1067 210 -171 19 -603 27 -743 15z"/>
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-1 flex items-center">
+                    <div class="tool-shape border-e-2 border-sky-500">
+                        <div class="tool ">
+                            <svg fill="#015594" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier"> 
+                                    <path d="m1243.561 1811.41-238.305-636.197-272.866 638.118c-103.229-2.598-163.087-64.828-163.087-64.828L162.6 471.59s-16.037-63.36-106.842-63.36H-.034l37.045-96.226h519.755v96.226s-51.614 41.562-39.53 99.162c12.198 57.6 220.236 887.266 220.236 887.266l200.584-443.972-93.064-293.647c-35.69-90.24-65.054-177.205-88.433-200.245-32.979-35.802-93.063-48.564-93.063-48.564v-96.226h640.376v96.226h-105.939s-55.793 11.18-60.65 93.176c-1.016 16.49 8.584 73.864 8.584 73.864l248.47 816.903s255.248-468.706 258.862-570.805c3.727-101.872-35.802-268.687-147.275-335.322-178.334-107.407-133.27-321.092 4.179-396.65 58.729-32.188 111.02-33.43 170.54-33.43 209.845 0 233.45 237.854 233.45 237.854 13.892 81.996 4.066 221.478-35.463 344.47-103.229 319.85-358.702 895.286-457.638 1114.391-79.51 78.946-177.43 58.73-177.43 58.73" fill-rule="evenodd"></path> 
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-1 flex items-center">
+                    <div class="tool-shape border-e-2 border-sky-500">
+                        <div class="tool">
+                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" xml:space="preserve" fill="#000000">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier"> 
+                                    <style type="text/css"> .st0{fill:none;stroke:#015594;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st1{fill:none;stroke:#000000;stroke-width:2;stroke-linejoin:round;stroke-miterlimit:10;} </style> 
+                                    <polyline class="st0" points="22,12 22,20 26,20 "></polyline> 
+                                    <path class="st0" d="M29,24H3c-1.1,0-2-0.9-2-2V10c0-1.1,0.9-2,2-2h26c1.1,0,2,0.9,2,2v12C31,23.1,30.1,24,29,24z"></path> 
+                                    <path class="st0" d="M10,14L10,14c0-1.1-0.9-2-2-2h0c-1.1,0-2,0.9-2,2v0c0,1.1,0.9,2,2,2h0c1.1,0,2,0.9,2,2v0c0,1.1-0.9,2-2,2h0 c-1.1,0-2-0.9-2-2v0"></path> 
+                                    <path class="st0" d="M18,14L18,14c0-1.1-0.9-2-2-2h0c-1.1,0-2,0.9-2,2v0c0,1.1,0.9,2,2,2h0c1.1,0,2,0.9,2,2v0c0,1.1-0.9,2-2,2h0 c-1.1,0-2-0.9-2-2v0"></path> 
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-1 flex items-center">
+                    <div class="tool-shape border-e-2 border-sky-500">
+                        <div class="tool">
+                            <svg fill="#015594" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 264 264" xml:space="preserve">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier"> 
+                                    <g> 
+                                        <path d="M246.997,33H17.926C8.225,33,0,40.892,0,50.593v163.071C0,223.385,8.061,231,17.926,231h229.071 c9.721,0,17.003-7.615,17.003-17.336V50.593C264,40.728,256.718,33,246.997,33z M60.226,43.025c3.554,0,6.444,2.891,6.444,6.444 s-2.891,6.444-6.444,6.444s-6.444-2.891-6.444-6.444S56.672,43.025,60.226,43.025z M41.726,43.025c3.554,0,6.444,2.891,6.444,6.444 s-2.891,6.444-6.444,6.444s-6.444-2.891-6.444-6.444S38.172,43.025,41.726,43.025z M23.226,43.025c3.554,0,6.444,2.891,6.444,6.444 s-2.891,6.444-6.444,6.444s-6.444-2.891-6.444-6.444S19.672,43.025,23.226,43.025z M248,214.5c0,0.276,0.109,0.5-0.167,0.5h-0.5 h-230.5H16v-0.5V67v-0.5c0-0.276,0.557-0.5,0.833-0.5h231c0.276,0,0.167,0.224,0.167,0.5V214.5z M241.889,56h-70 c-3.554,0-6.444-2.91-6.444-6.487c0-3.577,2.891-6.487,6.444-6.487l70,0.022c3.554,0,6.444,2.9,6.444,6.466 C248.333,53.09,245.442,56,241.889,56z"></path> 
+                                        <g> 
+                                            <path d="M39.889,106h70c3.554,0,6.444-2.913,6.444-6.494c0-3.566-2.891-6.469-6.444-6.469l-70-0.024 c-3.554,0-6.444,2.913-6.444,6.493C33.444,103.087,36.335,106,39.889,106z"></path> 
+                                            <path d="M109.889,115.037l-70-0.024c-3.554,0-6.444,2.913-6.444,6.493c0,3.581,2.891,6.494,6.444,6.494h70 c3.554,0,6.444-2.913,6.444-6.494C116.333,117.939,113.442,115.037,109.889,115.037z"></path> 
+                                            <path d="M109.889,137.037l-70-0.024c-3.554,0-6.444,2.913-6.444,6.493c0,3.581,2.891,6.494,6.444,6.494h70 c3.554,0,6.444-2.913,6.444-6.494C116.333,139.939,113.442,137.037,109.889,137.037z"></path> 
+                                            <path d="M109.889,159.037l-70-0.024c-3.554,0-6.444,2.913-6.444,6.493c0,3.581,2.891,6.494,6.444,6.494h70 c3.554,0,6.444-2.913,6.444-6.494C116.333,161.939,113.442,159.037,109.889,159.037z"></path> 
+                                        </g> 
+                                        <path d="M218.833,91h-74C137.94,91,132,96.607,132,103.5v0.5v73.5v0.5c0,6.627,5.706,12,12.333,12h0.5h73.5h0.5 c6.893,0,12.167-5.607,12.167-12.5v-74C231,96.607,225.726,91,218.833,91z"></path> 
+                                    </g> 
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="flex-1 h-full w-full">
+        <div class="flex justify-center items-center flex-col my-20">
+            <div class="name-logo-2 text-5xl lg:text-8xl">
+                <p id="target">Chowkidar</p>
+            </div>
+            <div class="gap-10 flex-col flex mt-20 px-2">
+                <div class="flex pl-2 pr-4 py-2 rounded-xl items-center w-fit max-w-sm shadow-xl backdrop-blur-sm bg-opacity-25 bg-indigo-200">
+                    <div class="relative h-16 w-24 mr-2">
+                        <img class="absolute -mt-3 image-animate select-none" src="{{ url_for('static', filename='ui.webp') }}" alt="Rounded avatar">
+                    </div>
+                    <div class="">
+                        <p class="text-md font-semibold">Easy Navigation</p>
+                        <p class="text-sm">A minimalist UI focuses on essential elements</p>
+                    </div>
+                </div>
+                <div class="flex pl-2 pr-4 py-2 rounded-xl items-center w-fit max-w-sm shadow-xl backdrop-blur-sm bg-opacity-25 bg-indigo-200 lg:ml-[-5rem] items-center">
+                    <div class="relative h-16 w-24 mr-2">
+                        <img class="absolute -mt-5 image-animate select-none" src="{{ url_for('static', filename='report.webp') }}" alt="Rounded avatar">
+                    </div>
+                    <div class="">
+                        <p class="text-md font-semibold">Detailed Report</p>
+                        <p class="text-sm">Get Comprehensive Vulnerability Report</p>
+                    </div>
+                </div>
+                <div class="flex pl-2 pr-4 py-2 rounded-xl items-center w-fit max-w-sm shadow-xl backdrop-blur-sm bg-opacity-25 bg-indigo-200">
+                    <div class="relative h-16 w-24 mr-2">
+                        <img class="absolute -mt-5 image-animate select-none" src="{{ url_for('static', filename='automate.webp') }}" alt="Rounded avatar">
+                    </div>
+                    <div class="">
+                        <p class="text-md font-semibold">Automation</p>
+                        <p class="text-sm">Effortlessly Automate Tasks Anywhere, Anytime</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    // Get the target element
+    const target = document.getElementById('target');
+    const targetX = target.offsetLeft+50;
+    const targetY = target.offsetTop+50;
+    const targetWidth = target.offsetWidth;
+    const targetHeight = target.offsetHeight;
+
+
+    // Function to create a circle element
+    function createCircle() {
+        const circle = document.createElement('div');
+        if (window.innerWidth <= 600) {
+            circle.style.width = '40px';
+            circle.style.height = '40px';
+        }else {
+            circle.style.width = '60px';
+            circle.style.height = '60px';
+            };
+        circle.style.borderRadius = '50%';
+        circle.style.position = 'absolute';
+        circle.style.left = `${Math.random() * (window.innerWidth - 100)}px`; // Adjust positioning based on circle size
+        circle.style.top = `${Math.random() * (window.innerHeight - 100)}px`;
+
+    // Create an SVG element
+    const svgElement = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svgElement.setAttribute('viewBox', '0 0 24 24');
+    svgElement.innerHTML = `<g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">
+    <path d="M14 21.7101C13.3663 21.8987 12.695 22 12 22C8.13401 22 5 18.866 5 15V11.9375C5 9.76288 6.76288 8 8.9375 8H15.0625C17.2371 8 19 9.76288 19 11.9375V15C19 16.9073 18.2372 18.6364 17 19.899" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path>
+    <path d="M8.25 7.5C8.25 7.08579 7.91421 6.75 7.5 6.75C7.08579 6.75 6.75 7.08579 6.75 7.5H8.25ZM7.63452 4.58281C7.40411 4.92702 7.49636 5.39285 7.84058 5.62326C8.18479 5.85367 8.65062 5.76141 8.88103 5.41719L7.63452 4.58281ZM17.25 8.5V7.5H15.75V8.5H17.25ZM6.75 7.5V8.5H8.25V7.5H6.75ZM17.25 7.5C17.25 4.60051 14.8995 2.25 12 2.25V3.75C14.0711 3.75 15.75 5.42893 15.75 7.5H17.25ZM12 2.25C10.179 2.25 8.57506 3.17771 7.63452 4.58281L8.88103 5.41719C9.55501 4.41032 10.7005 3.75 12 3.75V2.25Z" fill="#1C274C"></path>
+    <path d="M19 14H22" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path>
+    <path d="M5 14H2" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path>
+    <path d="M14.5 3.5L17 2" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path>
+    <path d="M9.5 3.5L7 2" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path>
+    <path d="M20.5 20.0002L18.5 19.2002" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path>
+    <path d="M20.5 7.9998L18.5 8.7998" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path>
+    <path d="M3.5 20.0002L5.5 19.2002" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path>
+    <path d="M3.5 7.9998L5.5 8.7998" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path>
+    <path d="M12 21.5V15" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path>
+    </g>`;
+
+// Center the SVG inside the circle
+svgElement.style.position = 'absolute';
+svgElement.style.left = '50%';
+svgElement.style.top = '50%';
+svgElement.style.transform = 'translate(-50%, -50%)'; // Centering trick
+
+// Append the SVG element to the div
+circle.appendChild(svgElement);
+
+// Append the div to the document body
+document.body.appendChild(circle);
+
+      let circleX = circle.offsetLeft + circle.offsetWidth / 2;
+      let circleY = circle.offsetTop + circle.offsetHeight / 2;
+      const angle = Math.atan2(targetY + targetHeight / 2 - circleY, targetX + targetWidth / 2 - circleX);
+      const speed = Math.random() * 2 + 1; // Random speed between 1 and 3
+
+      const animateCircle = () => {
+        const dx = Math.cos(angle) * speed;
+        const dy = Math.sin(angle) * speed;
+        circle.style.left = `${circleX + dx}px`;
+        circle.style.top = `${circleY + dy}px`;
+
+        // Update circle position
+        circleX += dx;
+        circleY += dy;
+
+        // Check if the circle has reached the target border
+        if (
+          circleX >= targetX &&
+          circleX <= targetX + targetWidth &&
+          circleY >= targetY &&
+          circleY <= targetY + targetHeight
+        ) {
+          circle.remove(); // Remove the circle element
+        } else {
+          requestAnimationFrame(animateCircle);
+        }
+      };
+
+      requestAnimationFrame(animateCircle);
+    }
+
+    // Create a new circle at a random second
+    const createCircleInterval = () => {
+      const randomDelay = Math.floor(Math.random() * 14000) + 1000; // Random delay between 1 and 6 seconds
+      setTimeout(() => {
+        createCircle();
+        createCircleInterval();
+      }, randomDelay);
+    };
+
+    createCircleInterval();
+  </script>
+
+{% endblock content %}

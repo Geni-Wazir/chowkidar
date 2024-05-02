@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- CSS only -->
+	<link href="https://fonts.googleapis.com/css2?family=Akaya+Telivigala&display=swap" rel="stylesheet">
+	<script src="https://cdn.tailwindcss.com"></script>
+	<link rel="stylesheet" href="{{ url_for('static', filename='custom.css') }}">
+
+	{% if title %}
+	<title>{{ title }}</title>
+	{% else %}
+	<title>chowkidar</title>
+	{% endif %}
+
+</head>
+<body>
+	<nav class="bg-transparent fixed w-full z-20 start-0 top-5 select-none">
+		<div
+			class="flex mx-auto max-w-7xl px-2 md:px-6 lg:px-4 bg-white rounded-xl shadow-xl shadow-black/10 saturate-100 backdrop-blur-sm">
+			<div class="flex-grow flex">
+				<a href="{{ url_for('users.home') }}" class="flex items-center space-x-3 rtl:space-x-reverse mr-0 sm:mr-4">
+					<img src="{{ url_for('static', filename='logo.png') }}" class="h-6 sm:h-12" alt="Chowkidar Logo">
+				</a>
+				<div class="relative flex h-12 sm:h-16 items-center justify-between text-black" id="navbar-sticky">
+
+				</div>
+			</div>
+			<div class="flex items-center pl-2 sm:pl-0 md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse right-0">
+				<a class="h-8 w-8 sm:h-10 sm:w-10 auth-btn group" type="btn" href="{{ url_for('users.auth') }}">
+					<span class="svgContainer">
+						<svg class="h-4 w-4 sm:h-6 sm:w-6" viewBox="0 0 48 48" id="b" xmlns="http://www.w3.org/2000/svg"
+							fill="#00000" stroke="#000000" stroke-width="1.9200000000000004">
+							<g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+							<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+							<g id="SVGRepo_iconCarrier">
+								<defs>
+									<style>
+										.c {
+											fill: #fafafa;
+											stroke: #d0d8f300;
+											stroke-linecap: round;
+											stroke-linejoin: round;
+										}
+									</style>
+								</defs>
+								<path class="c"
+									d="m31.6814,34.8868c-1.9155,1.29-4.3586,2.0718-7.2514,2.0718-5.59,0-10.3395-3.7723-12.04-8.8541v-.0195c-.43-1.29-.6841-2.6582-.6841-4.085s.2541-2.795.6841-4.085c1.7005-5.0818,6.45-8.8541,12.04-8.8541,3.1664,0,5.9809,1.0945,8.2286,3.2055l6.1568-6.1568c-3.7332-3.4791-8.5805-5.6095-14.3855-5.6095-8.4045,0-15.6559,4.8277-19.1936,11.8641-1.4659,2.8927-2.3064,6.1568-2.3064,9.6359s.8405,6.7432,2.3064,9.6359v.0195c3.5377,7.0168,10.7891,11.8445,19.1936,11.8445,5.805,0,10.6718-1.9155,14.2291-5.1991,4.0655-3.7527,6.4109-9.2645,6.4109-15.8123,0-1.5245-.1368-2.9905-.3909-4.3977h-20.2491v8.3264h11.5709c-.5082,2.6777-2.0327,4.945-4.3195,6.4695h0Z">
+								</path>
+							</g>
+						</svg>
+					</span>
+					<span class="BG"></span>
+					<div class='absolute hidden group-hover:block mt-20 bg-black rounded-md p-1 px-2 auth-triangle-top'>
+						<span class='text-white text-xs normal-case font-normal whitespace-nowrap'>Login</span>
+					</div>
+				</a>
+			</div>
+		</div>
+	</nav>
+	{% with massages = get_flashed_messages(with_categories=true) %}
+	{% if massages %}
+	{% for category, massage in massages %}
+	<div class="absolute z-50 right-3 toast">
+		<div id="toast" class="flex items-center w-full max-w-sm p-4 mb-4 text-gray-500 bg-white rounded-lg shadow"
+			role="alert">
+			{% if category=='info' %}
+			<div
+				class="inline-flex items-center justify-center flex-shrink-0 w-9 h-9 text-orange-500 bg-orange-100 rounded-lg">
+				<svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+					viewBox="0 0 20 20">
+					<path
+						d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM10 15a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm1-4a1 1 0 0 1-2 0V6a1 1 0 0 1 2 0v5Z" />
+				</svg>
+				{% elif category=='success' %}
+				<div
+					class="inline-flex items-center justify-center flex-shrink-0 w-9 h-9 text-green-500 bg-green-100 rounded-lg">
+					<svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+						viewBox="0 0 20 20">
+						<path
+							d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+					</svg>
+					{% elif category=='danger' %}
+					<div
+						class="inline-flex items-center justify-center flex-shrink-0 w-9 h-9 text-red-500 bg-red-100 rounded-lg">
+						<svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+							viewBox="0 0 20 20">
+							<path
+								d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 11.793a1 1 0 1 1-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 0 1-1.414-1.414L8.586 10 6.293 7.707a1 1 0 0 1 1.414-1.414L10 8.586l2.293-2.293a1 1 0 0 1 1.414 1.414L11.414 10l2.293 2.293Z" />
+						</svg>
+						{% endif %}
+						<span class="sr-only">Toast icon</span>
+					</div>
+					<div class="ml-3 text-sm font-normal px-3">{{ massage }}</div>
+					<button id="closeToast" type="button"
+						class="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8"
+						data-dismiss-target="#toast" aria-label="Close">
+						<span class="sr-only">Close</span>
+						<svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+							viewBox="0 0 14 14">
+							<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+								d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+						</svg>
+					</button>
+				</div>
+			</div>
+			{% endfor %}
+			{% endif %}
+			{% endwith %}
+			<div class="mt-24 mx-auto w-full max-w-7xl h-full">
+				{% block content %}
+				{% endblock %}
+			</div>
+			<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</body>
+
+</html>
