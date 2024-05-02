@@ -1,9 +1,12 @@
-from flask import render_template, url_for, flash, redirect, request, Blueprint, current_app, session
+from flask import render_template, url_for, flash, redirect, request, Blueprint, session
 from flask_login import login_user, current_user, logout_user, login_required
 from chowkidar import oauth, get_admin
 from chowkidar.models import User, db
 from dotenv import load_dotenv
 import os
+from chowkidar.audits.routes import audit_list
+from chowkidar import limiter
+from chowkidar.utils.forms import ContactForm, WPSapiForm
 
 
 utils = Blueprint('utils', __name__)
@@ -57,7 +60,7 @@ def google_auth():
             db.session.commit()
         
         login_user(user)
-        return redirect(url_for('utils.profile'))
+        return redirect(url_for('audits.audit_list'))
     else:
         flash('Login failed', 'danger')
         return redirect(url_for('utils.home'))
@@ -85,3 +88,25 @@ def logout():
     logout_user()
     session.clear()
     return redirect(url_for('utils.home'))
+
+
+
+
+@utils.route('/contact', methods=['GET', 'POST'])
+def contact():
+    form = ContactForm()
+    if request.method == 'POST':
+        # Rate limit the POST requests
+        @limiter.limit("1/minute")
+        def send_message():
+            if form.validate_on_submit():
+                reciever = [os.environ['MAIL_USERNAME']]
+                subject = f'{form.name.data} Wants to Connect'
+                message = f'Name: {form.name.data} <p>Email: {form.email.data}</p> <p style="margin-top:2rem;">Message:</p><p style="margin-left:2rem;">{form.message.data}</p>'
+                # task_queue.enqueue(send_email, reciever, subject, message)
+                flash('Your message has been successfully delivered.', 'success')
+                return redirect(url_for('home'))
+            else:
+                flash('The message could not be sent. Please verify your email address', 'danger')
+        send_message()
+    return render_template('utils/contact.html', title="Contact", form=form)

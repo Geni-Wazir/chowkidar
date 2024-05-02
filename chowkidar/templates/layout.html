@@ -47,7 +47,15 @@
 							</a>
 						</li>
 						{% endif %}
-						
+						<li class="hover:bg-gray-300 px-2 sm:px-3 py-2 flex flex-col items-center rounded-xl">
+							<a href="{{ url_for('utils.contact') }}" {% if 'Contact' in title %}
+								class="text-black border-b-2 border-sky-500">
+								{% else %}
+								class="text-black">
+								{% endif %}
+								Contact
+							</a>
+						</li>
 					</ul>
 				</div>
 			</div>
