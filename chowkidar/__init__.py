@@ -37,5 +37,7 @@ def create_app(config_class=Config):
         session.init_app(app)
 
         from chowkidar.utils.routes import utils
+        from chowkidar.audits.routes import audits
         app.register_blueprint(utils)
+        app.register_blueprint(audits)
         return app
