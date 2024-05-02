@@ -1,12 +1,13 @@
-from flask import render_template, url_for, flash, redirect, request, Blueprint, session
+from flask import render_template, url_for, flash, redirect, request, Blueprint, session, current_app
 from flask_login import login_user, current_user, logout_user, login_required
 from chowkidar import oauth, get_admin
 from chowkidar.models import User, db
 from dotenv import load_dotenv
 import os
 from chowkidar.audits.routes import audit_list
-from chowkidar import limiter
+from chowkidar import limiter, task_queue, mail
 from chowkidar.utils.forms import ContactForm, WPSapiForm
+from flask_mail import Message
 
 
 utils = Blueprint('utils', __name__)
@@ -91,7 +92,6 @@ def logout():
 
 
 
-
 @utils.route('/contact', methods=['GET', 'POST'])
 def contact():
     form = ContactForm()
@@ -103,9 +103,14 @@ def contact():
                 reciever = [os.environ['MAIL_USERNAME']]
                 subject = f'{form.name.data} Wants to Connect'
                 message = f'Name: {form.name.data} <p>Email: {form.email.data}</p> <p style="margin-top:2rem;">Message:</p><p style="margin-left:2rem;">{form.message.data}</p>'
-                # task_queue.enqueue(send_email, reciever, subject, message)
-                flash('Your message has been successfully delivered.', 'success')
-                return redirect(url_for('home'))
+                msg = Message(subject, sender=os.environ['MAIL_USERNAME'], recipients=reciever)
+                msg.html = message
+                try:
+                    mail.send(msg)
+                    flash('Your message has been successfully delivered.', 'success')
+                except:
+                    flash('Unable to deliver your message, please use an alternative method to communicate.', 'danger')
+                return redirect(url_for('utils.home'))
             else:
                 flash('The message could not be sent. Please verify your email address', 'danger')
         send_message()

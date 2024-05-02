@@ -25,11 +25,18 @@ session = Session()
 mail = Mail()
 
 
+
+redis_connection = redis.Redis(host='scheduler', port=6379, db=0)
+task_queue = Queue('task_queue', connection=redis_connection)
+
 parser = ConfigParser()
 parser.read('config.ini')
 
 def get_admin():
     return parser.get('APP', 'ADMINS')
+
+def get_workers():
+    return parser.get('WORKER', 'CONTAINERS')
 
 limiter = Limiter(
 get_remote_address,
@@ -49,8 +56,8 @@ def create_app(config_class=Config):
         oauth.init_app(app)
         session.init_app(app)
         mail.init_app(app)
-
         limiter.init_app(app)
+        
         
         from chowkidar.utils.routes import utils
         from chowkidar.audits.routes import audits
