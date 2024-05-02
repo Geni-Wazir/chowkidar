@@ -21,7 +21,7 @@
 		<div
 			class="flex mx-auto max-w-7xl px-2 md:px-6 lg:px-4 bg-white rounded-xl shadow-xl shadow-black/10 saturate-100 backdrop-blur-sm">
 			<div class="flex-grow flex">
-				<a href="{{ url_for('users.home') }}" class="flex items-center space-x-3 rtl:space-x-reverse mr-0 sm:mr-4">
+				<a href="{{ url_for('utils.home') }}" class="flex items-center space-x-3 rtl:space-x-reverse mr-0 sm:mr-4">
 					<img src="{{ url_for('static', filename='logo.png') }}" class="h-6 sm:h-12" alt="Chowkidar Logo">
 				</a>
 				<div class="relative flex h-12 sm:h-16 items-center justify-between text-black" id="navbar-sticky">
@@ -29,7 +29,7 @@
 				</div>
 			</div>
 			<div class="flex items-center pl-2 sm:pl-0 md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse right-0">
-				<a class="h-8 w-8 sm:h-10 sm:w-10 auth-btn group" type="btn" href="{{ url_for('users.auth') }}">
+				<a class="h-8 w-8 sm:h-10 sm:w-10 auth-btn group" type="btn" href="{{ url_for('utils.auth') }}">
 					<span class="svgContainer">
 						<svg class="h-4 w-4 sm:h-6 sm:w-6" viewBox="0 0 48 48" id="b" xmlns="http://www.w3.org/2000/svg"
 							fill="#00000" stroke="#000000" stroke-width="1.9200000000000004">

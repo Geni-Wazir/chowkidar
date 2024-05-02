@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 import os
 
 
-users = Blueprint('users', __name__)
+utils = Blueprint('utils', __name__)
 load_dotenv()
 admins_list = get_admin()
 
@@ -30,18 +30,18 @@ google = oauth.remote_app(
 
 
 
-@users.route('/')
+@utils.route('/')
 def home():
     return render_template('home.html')
 
-@users.route('/google/auth')
+@utils.route('/google/auth')
 def auth():
-    return google.authorize(callback=url_for('users.google_auth', _external=True))
+    return google.authorize(callback=url_for('utils.google_auth', _external=True))
 
 
 
 
-@users.route('/google/auth/callback')
+@utils.route('/google/auth/callback')
 def google_auth():
     token = google.authorized_response()
     if token:
@@ -57,10 +57,10 @@ def google_auth():
             db.session.commit()
         
         login_user(user)
-        return redirect(url_for('users.profile'))
+        return redirect(url_for('utils.profile'))
     else:
         flash('Login failed', 'danger')
-        return redirect(url_for('users.home'))
+        return redirect(url_for('utils.home'))
 
 
 
@@ -70,9 +70,18 @@ def get_google_oauth_token():
     return session.get('google_token')
 
 
-@users.route('/profile', methods=['GET', 'POST'])
+
+
+@utils.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
     return current_user.email
 
 
+
+
+@utils.route('/logout')
+def logout():
+    logout_user()
+    session.clear()
+    return redirect(url_for('utils.home'))

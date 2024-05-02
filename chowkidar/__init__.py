@@ -36,6 +36,6 @@ def create_app(config_class=Config):
         oauth.init_app(app)
         session.init_app(app)
 
-        from chowkidar.main.routes import users
-        app.register_blueprint(users)
+        from chowkidar.utils.routes import utils
+        app.register_blueprint(utils)
         return app
