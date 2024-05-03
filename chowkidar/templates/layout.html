@@ -46,6 +46,18 @@
 								New Audit
 							</a>
 						</li>
+						{% if current_user.admin %}
+						<li
+							class="hover:bg-gray-300 px-2 sm:px-3 py-2 flex flex-col items-center rounded-xl whitespace-nowrap">
+							<a href="{{ url_for('admin_view.all_audits') }}" {% if 'Admin' in title %}
+								class="text-black border-b-2 border-sky-500">
+								{% else %}
+								class="text-black">
+								{% endif %}
+								Admin
+							</a>
+						</li>
+						{% endif %}
 						{% endif %}
 						<li class="hover:bg-gray-300 px-2 sm:px-3 py-2 flex flex-col items-center rounded-xl">
 							<a href="{{ url_for('utils.contact') }}" {% if 'Contact' in title %}

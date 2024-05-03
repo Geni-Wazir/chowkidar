@@ -1,0 +1,315 @@
+{% extends "utils/report_layout.html" %}
+{% block content %}
+
+<!-- Report Summary Page 3 -->
+<div class="h-full break-before">
+    <div class="w-52 p-3">
+        <img src="https://raw.githubusercontent.com/Geni-Wazir/temp-files/main/logo.png" alt="background image">
+    </div>
+    <div class="px-20 py-14">
+        <p class="text-3xl font-calibri-bold">Report Summary:</p>
+        <div class="px-8 font-serif">
+            <p class="py-3">The Report Summary provides a concise overview of key findings, insights, and conclusions from a larger report or analysis. 
+                It typically includes a brief introduction, the main objectives or scope of the report, key data points or results, important trends or 
+                patterns identified, and any significant recommendations or actions to be taken based on the findings. The purpose of a Report Summary 
+                is to quickly inform readers about the essential aspects of the report without having to go through the entire document.
+            </p>
+            <div class="relative shadow-md mt-12">
+                <table class="w-full text-md text-left">
+                    <tbody>
+                        <tr class="border-b border-gray-200">
+                            <th scope="row"
+                                class="w-1/4 px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 uppercase font-calibri-bold">
+                                Scope URL
+                            </th>
+                            <td class="px-6 py-4">
+                                {{ audit.url }}
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-200">
+                            <th scope="row"
+                                class="w-1/4 px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 uppercase font-calibri-bold">
+                                Audit Date
+                            </th>
+                            <td class="px-6 py-4">
+                                {{ audit.date.strftime('%d %b %Y') }}
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-200">
+                            <th scope="row"
+                                class="w-1/4 px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 uppercase font-calibri-bold">
+                                Vulnerabilities Discovered
+                            </th>
+                            <td class="px-6 py-4">
+                                {{ critical_count + high_count + medium_count + low_count + info_count }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="w-full p-5 justify-center items-center mt-24">
+                <div class="items-center justify-center w-full flex gap-2">
+                    <div
+                        class="h-30 w-40 p-5 mx-2 rounded-lg text-center font-calibri-bold text-xl bg-red-300 text-red-900 border-red-400 border-2" style="font-size: 1.5rem;">
+                        <p>CRITICAL</p>
+                        <p>{{ critical_count }}</p>
+                    </div>
+                    <div
+                        class="h-30 w-40 p-5 mx-2 rounded-lg text-center font-calibri-bold text-xl bg-red-200 text-red-600 border-red-300 border-2" style="font-size: 1.5rem;">
+                        <p>HIGH</p>
+                        <p>{{ high_count }}</p>
+                    </div>
+                    <div class="h-30 w-40 p-5 mx-2 rounded-lg text-center font-calibri-bold text-xl border-2" style="color: #b45309; background-color: #fed7aa; border-color: #fdba74; font-size: 1.5rem;">
+                        <p>MEDIUM</p>
+                        <p>{{ medium_count }}</p>
+                    </div>
+                    <div
+                        class="h-30 w-40 p-5 mx-2 rounded-lg text-center font-calibri-bold text-xl bg-yellow-200 text-yellow-700 border-yellow-300 border-2" style="font-size: 1.5rem;">
+                        <p>LOW</p>
+                        <p>{{ low_count }}</p>
+                    </div>
+                    <div
+                        class="h-30 w-40 p-5 mx-2 rounded-lg text-center font-calibri-bold text-xl bg-blue-200 text-blue-700 border-blue-300 border-2" style="font-size: 1.5rem;">
+                        <p>INFO</p>
+                        <p>{{ info_count }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Overview Table Page 4 -->
+<div class="h-full break-before">
+    <div class="w-52 p-3">
+        <img src="https://raw.githubusercontent.com/Geni-Wazir/temp-files/main/logo.png" alt="background image">
+    </div>
+    <div class="px-20 py-14">
+        <p class="text-3xl font-calibri-bold">Overview Table:</p>
+        <div class="flex-col pt-10">
+            <div class="-m-1.5 flex justify-center items-center">
+                <div class="p-1.5">
+                    <div class="border border-gray-300 rounded-lg text-left inline-block">
+                        <table class="min-w-full">
+                            <thead class="bg-blue-50 text-lg">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-xs font-medium text-gray-500 uppercase border-b font-bold text-lg">No</th>
+                                    <th scope="col" class="px-6 py-3 text-xs font-medium text-gray-500 uppercase border-b font-bold text-lg"> Vulnerability Name</th>
+                                    <th scope="col" class="px-6 py-3 text-xs font-medium text-gray-500 uppercase border-b font-bold text-lg">Severity
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for vulnerability in vulnerabilities %}
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 border-b text-lg">{{ loop.index }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 border-b content text-lg">{{ vulnerability.name }}</td>
+                                    {% if vulnerability.Template.severity == 'CRITICAL' %}
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 border-b text-red-900 font-bold">{{ vulnerability.Template.severity }}</td>
+                                    {% elif vulnerability.Template.severity == 'HIGH' %}
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 border-b text-red-600 font-bold">{{ vulnerability.Template.severity }}</td>
+                                    {% elif vulnerability.Template.severity == 'MEDIUM' %}
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 border-b  font-bold" style="color: #d56e1e;">{{ vulnerability.Template.severity }}</td>
+                                    {% elif vulnerability.Template.severity == 'LOW' %}
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 border-b text-yellow-500 font-bold">{{ vulnerability.Template.severity }}</td>
+                                    {% elif vulnerability.Template.severity == 'INFO' %}
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 border-b text-blue-500 font-bold">{{ vulnerability.Template.severity }}</td>
+                                    {% endif %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Detailed Vulnerabilities Page 45 -->
+<div class="h-full break-before">
+    <div class="w-52 p-3">
+        <img src="https://raw.githubusercontent.com/Geni-Wazir/temp-files/main/logo.png" alt="background image">
+    </div>
+    <div class="px-20 py-14 flex justify-center items-center">
+        <div class="justify-center items-center">
+            <div class="items-center justify-center" style="padding-top: 35rem;">
+                <div class="text-center font-calibri-bold text-xl" style="font-size: 4rem; line-height: 1; color: #1F3864;">
+                    <p class="" >Detailed Vulnerability</p>
+                    <p class="">Report</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Vulnerabilities Data Page 6 -->
+{% for vulnerability in vulnerabilities %}
+<div class="h-full break-before">
+    <div class="w-52 p-3">
+        <img src="https://raw.githubusercontent.com/Geni-Wazir/temp-files/main/logo.png" alt="background image">
+    </div>
+    <div class="">
+        <div class="p-2">
+            <div class="text-center">
+                {% if vulnerability.Template.severity == 'CRITICAL' %}
+                <span class="bg-red-400 p-2 rounded-lg text-2xl font-semibold mx-2" style="color: #450a0a;">
+                    {{ vulnerability.Template.severity }}
+                    <p class="text-sm inline-block pl-1">{{ vulnerability.Template.cvss }}</p>
+                  </span>
+                {% elif vulnerability.Template.severity == 'HIGH' %}
+                    <span class="bg-red-200 text-red-700 p-2 rounded-lg text-2xl font-semibold mx-2">
+                        {{ vulnerability.Template.severity }}
+                        <p class="text-sm inline-block pl-1">{{ vulnerability.Template.cvss }}</p>
+                    </span>
+                {% elif vulnerability.Template.severity == 'MEDIUM' %}
+                    <span class="p-2 rounded-lg text-2xl font-semibold mx-2" style="background-color: #fed7aa; color: #9a3412;">
+                        {{ vulnerability.Template.severity }}
+                        <p class="text-sm inline-block pl-1">{{ vulnerability.Template.cvss }}</p>
+                    </span>
+                {% elif vulnerability.Template.severity == 'LOW' %}
+                    <span class="bg-yellow-200 text-yellow-800 p-2 rounded-lg text-2xl font-semibold mx-2">
+                        {{ vulnerability.Template.severity }}
+                        <p class="text-sm inline-block pl-1">{{ vulnerability.Template.cvss }}</p>
+                    </span>
+                {% elif vulnerability.Template.severity == 'INFO' %}
+                    <span class="bg-blue-200 text-blue-800 p-2 rounded-lg text-2xl font-semibold mx-2">
+                        {{ vulnerability.Template.severity }}
+                        <p class="text-sm inline-block pl-1">{{ vulnerability.Template.cvss }}</p>
+                    </span>
+                {% endif %}
+                    <span class="bg-indigo-100 py-2 px-3 rounded-lg text-2xl font-semibold">{{ vulnerability.name }}</span>
+            </div>
+            <div class="m-8 px-10">
+                <div class="text-left py-5">
+                    <p class="font-calibri-bold text-2xl">Vulnerability Description:</p>
+                    <div class="px-10 py-1 text-md">
+                        <p class="text-md">
+                            {{ vulnerability.Template.description | safe }}
+                        </p>
+                    </div>
+                </div>
+                <div class="text-left py-5">
+                    <p class="font-calibri-bold text-2xl">Potential Risk Associated:</p>
+                    <div class="px-10 py-1 text-md">
+                        <p class="text-md">
+                            {{ vulnerability.Template.impact | safe }}
+                        </p>
+                    </div>
+                </div>
+                <div class="text-left pt-5">
+                    <p class="font-calibri-bold text-2xl">Evidence (POC):</p>
+                    <div class="px-10 py-1 text-md">
+                        <p class="text-md">
+                            {{ vulnerability.Template.steps | safe }}
+                        </p>
+                    </div>
+                    <div class="text-sm px-20 pt-5 break-words">
+                        {% if vulnerability.Template.type == 'list' %}
+                        <ul class="list-disc">
+                            {% for elem in vulnerability_data[vulnerability.name] %}
+                                <li style="font-weight: bold;">{{ elem }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% elif vulnerability.Template.type == 'lucky13' %}
+                        {% for elem in vulnerability_data[vulnerability.name] %}
+                            <p class="font-semibold pb-1">{{ elem }}</p>
+                            <ul class="list-disc px-8 pb-5 inline-block">
+                                {% for ciph in vulnerability_data[vulnerability.name][elem] %}
+                                    <li style="color: #d97706;">{{ ciph }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endfor %}
+                        {% elif vulnerability.Template.type == 'wordpress_vuln' %}
+                        <div class="relative mx-auto bg-gray-300 rounded-lg z-10 -mx-10 my-1 px-1">
+                            <div class="h-full">
+                                <div class="h-full font-mono leading-relaxed px-2 pb-4 italic text-xs break-words" style="margin-right: -5rem;">
+                                    {% for vuln in vulnerability_data[vulnerability.name] %}
+                                    <p class="py-8 pl-8">
+                                        <span class="font-semibold block text-md">{{ vuln.title }}</span>
+                                        <span class="block text-xs pl-5"><strong>Fixed in</strong>: {{ vuln.fixed_in }}</span>
+                                        <span class="block text-xs pl-5"><strong>CVE</strong>: {{ vuln.references.cve }}</span>
+                                        <span class="block text-xs pl-5"><strong>URL</strong>: {{ vuln.references.url }}</span>
+                                        <span class="block text-xs pl-5"><strong>wpvulndb</strong>: {{ vuln.references.wpvulndb }}</span>
+                                    </p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        {% elif vulnerability.Template.type == 'xml_rpc' %}
+                        <div class="relative mx-auto bg-gray-300 rounded-lg z-10 -mx-10 my-1 px-1">
+                            <div class="h-full">
+                                <div class="h-full font-mono leading-relaxed px-2 pb-4 italic text-xs">
+                                    <p class="p-8">
+                                        <span class="font-semibold block pb-2"> URL: {{ vulnerability_data[vulnerability.name][0] }}</span>
+                                        <span class="block font-bold">References:</span>
+                                        <span class="block text-xs pl-8 pb-2">{{ vulnerability_data[vulnerability.name][1].url[0] }}</span>
+                                        <span class="block font-semibold">Metasploit:</span>
+                                        {% for elem in vulnerability_data[vulnerability.name][1].metasploit  %}
+                                            <span class="block text-xs pl-8">{{ elem }}</span>
+                                        {% endfor %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        {% elif vulnerability.Template.type == 'nmap_vuln' %}
+                        <div class="relative mx-auto bg-gray-300 rounded-lg z-10 -mx-10 my-1 px-1 break-words" style="margin-right: -5rem;">
+                            <div class="h-full">
+                                <div class="h-full font-mono leading-relaxed px-2 pb-4 italic text-xs">
+                                    {% for vuln in vulnerability_data[vulnerability.name] %}
+                                    <p class="p-8">
+                                        <span class="font-semibold block">{{ vuln }}</span>
+                                        <span class="block text-xs"><pre class="block text-xs pb-10" style="margin-top: -2rem;">{{ vulnerability_data[vulnerability.name][vuln] }}</pre></span>
+                                        {% endfor %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        {% elif vulnerability.Template.type == 'nmap_table' %}
+                        <div class="relative justify-center mt-0">
+                            <table class="text-sm text-left text-gray-500">
+                                <thead class="text-xs text-gray-700 uppercase bg-blue-100">
+                                    <tr>
+                                        {% for title in vulnerability_data[vulnerability.name][0] %}
+                                            <th scope="col" class="px-6 py-3">
+                                                {{ title }}
+                                            </th>
+                                        {% endfor %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for column in vulnerability_data[vulnerability.name][1:] %}
+                                    <tr class="bg-white border-b text-xs">
+                                        {% for cell in column %}
+                                        <th class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap">
+                                            {{ cell }}
+                                        </th>
+                                        {% endfor %}
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="text-left py-5">
+                        <p class="font-calibri-bold text-2xl">Suggesting Fixes:</p>
+                        <div class="px-10 py-1 text-md">
+                            <p class="text-md">
+                                {{ vulnerability.Template.fix | safe }}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="text-left pt-5">
+                        <p class="font-calibri-bold text-2xl">Common Weakness Enumeration (CWE):</p>
+                        <div class="px-10 pt-1 text-md">
+                            <p class="text-md">
+                                {{ vulnerability.Template.cwe | safe }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+{% endblock content %}

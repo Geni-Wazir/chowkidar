@@ -1,0 +1,156 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="flex flex-col sm:flex-row gap-x-8 mx-1 md:mx-10 sm:pt-8 gap-y-1">
+    <div class="w-full sm:w-64 bg-white shadow rounded-lg flex justify-center sm:fixed flex-col">
+        <div class="justify-center pt-8 pb-3 flex flex-col items-center flex-1">
+            <div class="relative flex flex-col items-center w-full">
+                <div class="relative">
+                    <img class="w-32 h-32 rounded-full mb-4 ring-4 ring-blue-300 ring-offset-0" src="{{ url_for('static', filename=current_user.profile) }}" alt="Rounded avatar">
+                    <div class="absolute bottom-3 right-0 w-8 h-8 ring-4 ring-blue-500 rounded-full bg-blue-100 ring-offset-12 items-center justify-center flex">
+                    <svg class="w-6 h-6 pt-[0.2rem]" fill="black" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 206 206" xml:space="preserve">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier"> 
+                            <g> 
+                                <path d="M200.663,23.767c-1.125-1.125-2.651-1.758-4.243-1.758c-0.02-0.001-0.04,0-0.06,0c-4.237,0-8.227-1.651-11.234-4.652 c-3.037-3.03-4.708-7.062-4.707-11.354c0.001-1.592-0.632-3.118-1.757-4.244C177.537,0.632,176.011,0,174.419,0H31.581 c-1.592,0-3.118,0.632-4.243,1.758c-1.125,1.126-1.758,2.652-1.757,4.244c0.001,4.292-1.67,8.325-4.707,11.354 c-3.009,3.001-6.996,4.652-11.234,4.652c-0.02,0-0.04-0.001-0.06,0c-1.592,0-3.118,0.632-4.243,1.758 c-1.129,1.13-1.762,2.663-1.757,4.26c0.06,20.19,2.938,51.081,16.305,83.586c16.012,38.936,42.908,70.387,79.94,93.479 c0.972,0.606,2.073,0.909,3.175,0.909s2.203-0.303,3.175-0.909c37.032-23.092,63.929-54.542,79.94-93.479 c13.367-32.505,16.245-63.396,16.305-83.586C202.425,26.429,201.792,24.896,200.663,23.767z M103,192.891 C30.521,145.934,16.802,75.074,15.661,33.36c5.143-1.127,9.867-3.697,13.688-7.509c3.865-3.856,6.465-8.64,7.594-13.852h132.113 c1.129,5.212,3.729,9.996,7.594,13.852c3.821,3.813,8.546,6.382,13.688,7.509C189.198,75.074,175.479,145.934,103,192.891z"></path> 
+                                <path d="M155.924,99.253c-2.903-1.597-6.553-0.537-8.148,2.366l-5.217,9.483h-16.362l-5.866-9.697 c-1.087-1.797-3.034-2.895-5.134-2.895H90.804c-2.1,0-4.047,1.098-5.134,2.895l-5.866,9.697H63.441l-5.217-9.483 c-1.596-2.903-5.244-3.963-8.148-2.366c-2.903,1.597-3.963,5.246-2.365,8.149l6.926,12.591c1.054,1.917,3.068,3.108,5.257,3.108 h23.293c2.1,0,4.047-1.098,5.134-2.895l5.866-9.697h17.627l5.866,9.697c1.087,1.797,3.034,2.895,5.134,2.895h23.293 c2.188,0,4.203-1.191,5.257-3.108l6.926-12.591C159.887,104.499,158.827,100.851,155.924,99.253z"></path> 
+                                <polygon points="103,173.097 114.647,132.805 91.353,132.805 "></polygon> 
+                                <path d="M64.834,46.007c8.584,0,16.593,4.622,20.9,12.061c1.66,2.867,5.333,3.845,8.199,2.186c2.867-1.661,3.846-5.332,2.186-8.199 c-6.447-11.132-18.435-18.047-31.285-18.047c-12.855,0-24.846,6.918-31.29,18.055c-1.659,2.868-0.68,6.539,2.188,8.199 c0.946,0.547,1.979,0.808,2.999,0.808c2.071,0,4.087-1.074,5.199-2.996C48.237,50.63,56.247,46.007,64.834,46.007z"></path> 
+                                <path d="M57.395,55.071c-2.209,0-4,1.791-4,4s1.791,4,4,4h15.859c2.209,0,4-1.791,4-4s-1.791-4-4-4H57.395z"></path> 
+                                <path d="M141.17,34.007c-12.854,0-24.844,6.918-31.29,18.055c-1.659,2.868-0.68,6.539,2.188,8.198c0.946,0.548,1.98,0.808,3,0.808 c2.071,0,4.087-1.074,5.199-2.996c4.308-7.442,12.317-12.066,20.903-12.066c8.584,0,16.593,4.621,20.9,12.06 c1.659,2.867,5.33,3.847,8.199,2.186c2.867-1.661,3.846-5.331,2.186-8.199C166.01,40.922,154.021,34.007,141.17,34.007z"></path> 
+                                <path d="M149.591,63.071c2.209,0,4-1.791,4-4s-1.791-4-4-4h-15.86c-2.209,0-4,1.791-4,4s1.791,4,4,4H149.591z"></path> 
+                                <path d="M109.157,125.667c2.209,0,4-1.791,4-4s-1.791-4-4-4H96.843c-2.209,0-4,1.791-4,4s1.791,4,4,4H109.157z"></path> 
+                            </g> 
+                        </g>
+                    </svg>
+                </div>
+                </div>
+                <div class="flex flex-col items-center px-3">
+                    <span class="text-center font-bold text-lg">{{ current_user.name }}</span>
+                    <span class="mb-3 py-1 text-center text-xs max-w-60 overflow-y-auto">{{ current_user.email }}</span>
+                    <div class="flex w-fit px-3 items-center justify-center bg-blue-100 rounded-full text-sm">
+                        <span class="text-center">scans Available:</span>
+                        <span class="font-semibold px-1">{{ current_user.scan_available }}</span>
+                    </div>
+                    {% if not current_user.scan_available %}
+                    <span class="text-xs pt-2 text-red-700 font-semibold">connect with admin for more scans</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="text-xs w-full flex-1 px-3 pb-4">
+            <label class="text-slate-600 text-[0.6rem]">WPScan API Key</label>
+            <form method="POST" action="">
+                <div class="relative flex">
+                    {{ form.hidden_tag() }}
+                    {{ form.api_key(class="peer ps-1 block w-full bg-transparent border-t-transparent border-b-2
+                    border-x-transparent border-b-gray-500 text-md focus:outline-none focus:border-t-transparent
+                    focus:border-r-transparent focus:border-l-transparent focus:border-b-indigo-500 disabled:opacity-50
+                    disabled:pointer-events-none", autocomplete="off", placeholder="Add to enable Wordpress Scan") }}
+                    <button
+                        class="tracking-wide font-semibold  text-gray-100 rounded-full bg-blue-300 p-1 flex items-center justify-center ml-2">
+                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                            <g id="SVGRepo_iconCarrier">
+                                <path
+                                    d="M4 13V18C4 19.1046 4.89543 20 6 20H18C19.1046 20 20 19.1046 20 18V16M4 8V6C4 4.89543 4.89543 4 6 4H14.1716C14.702 4 15.2107 4.21071 15.5858 4.58579L19.4142 8.41421C19.7893 8.78929 20 9.29799 20 9.82843V12M15 20V15H9V20"
+                                    stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </g>
+                        </svg>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="w-full sm:w-3/4 sm:ml-72 m-0 bg-white shadow rounded-lg h-full p-8">
+        <p class="font-bold text-3xl text-center">User Activity</p>
+        <span class="font-bold text-lg">Audits Overview Report</span>
+        <div class="md:mx-10 py-1">
+            <p class="flex w-fit p-2 rounded-lg items-center bg-blue-100 m-1">
+                <span>Overall Audit Count:</span>
+                <span class="font-bold px-1">{{ audit_count }}</span>
+            </p>
+            <p class="flex w-fit p-2 rounded-lg items-center bg-blue-100 m-1">
+                <span>Completed Audit Count:</span>
+                <span class="font-bold px-1">{{ audit_completed_count }}</span>
+            </p>
+            <p class="flex w-fit p-2 rounded-lg items-center bg-blue-100 m-1">
+                <span>Total Vulnerabilities Discovered:</span>
+                <span class="font-bold px-1">{{ critical_count + high_count + medium_count + low_count + info_count }}</span>
+            </p>
+        </div>
+        <div class="w-full p-5 justify-center items-center">
+            <p class="font-bold text-xl text-center sm:mb-8">Performance Summary Chart</p>
+            <div class="items-center justify-center w-full flex">
+                <canvas class=" px-0 max-h-[17rem] max-w-[30rem]" id="chartPie"></canvas>
+            </div>
+
+            <!-- Required chart.js -->
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            
+            <!-- Chart pie -->
+            <script>
+                const dataPie = {
+                    
+                labels: ["CRITICAL", "HIGH", "MEDIUM", "LOW", "INFO"],
+                datasets: [
+                    {
+                    label: " Vulnerability Count",
+                    data: [{{critical_count}}, {{ high_count }}, {{ medium_count }}, {{ low_count }}, {{ info_count }}],
+                    backgroundColor: [
+                        "rgb(153 27 27)",
+                        "rgb(220 38 38)",
+                        "rgb(249 115 22)",
+                        "rgb(234 179 8)",
+                        "rgb(14 165 233)",
+                    ],
+                    hoverOffset: 4,
+                    },
+                ],
+                };
+            
+                const configPie = {
+                type: "pie",
+                data: dataPie,
+                options: {
+                    responsive: true,
+               plugins: {
+                  legend: {
+                     display: true,
+                     position: 'right',
+                     padding: 20,
+                     labels: {
+                        color: 'black',
+                        boxHeight:20,
+                        boxWidth: 20,
+                        font: {
+                            size: 15
+                        }
+                     },
+                     title: {
+                        display: true,
+                        text: "Severity",
+                        color: "#000000",
+                        font: {
+                            size: 16,
+                            weight: 'bold'
+                        }
+                     }
+
+                  }
+               }
+                },
+                };
+            
+                var chartBar = new Chart(document.getElementById("chartPie"), configPie);
+            </script>
+
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock content %}

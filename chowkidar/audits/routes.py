@@ -1,4 +1,4 @@
-from flask import render_template,Blueprint, flash, redirect, url_for, request
+from flask import render_template,Blueprint, flash, redirect, url_for, request, abort
 from flask_login import current_user, login_required
 from chowkidar.models import Audit, ScanResults, VulnerabilityDiscovered, VulnerabilityTemplates, db
 from chowkidar import limiter, task_queue, mail
@@ -160,6 +160,22 @@ def scan_audit(audit_name):
 
 
 
+
+@audits.route('/audits/containerid', methods=['POST'])
+def get_container():
+    data = request.json
+    if data['secret_key'] == os.environ['SCANNER_SECRET_KEY']:
+        audit = Audit.query.filter_by(id=data['audit_id']).first()
+        if audit:
+            audit.container_id = data['container_id']
+            db.session.commit()
+            return 'ok'
+        abort(404)
+    abort(403)
+
+
+
+
 @audits.route('/audits/<string:audit_name>/stop', methods=['GET', 'POST'])
 @login_required
 def stop_scan(audit_name):
@@ -275,3 +291,21 @@ def vulnerabilities(audit_name):
         return redirect(url_for('audits.audit_list'))
     return render_template('audits/vulnerabilities.html', title="Vulnerabilities", audit=audit, vulnerabilities=vulnerabilities)
 
+
+
+@audits.route('/audits/<string:audit_name>/scan-output')
+@login_required
+def scan_result(audit_name):
+    audit = Audit.query.filter_by(name=audit_name, Auditor=current_user).first()
+    if audit:
+        if audit.status == 'unscanned':
+             flash(f'The audit {audit_name} has not been scanned yet.', 'info')
+             return redirect(url_for('audits.vulnerabilities'))
+        output = ScanResults.query.filter_by(Audit=audit).first()
+        if not output:
+            flash(f'Currently, there are no scan results available for {audit_name}', 'info')
+            return redirect(url_for('audits.vulnerabilities', audit_name=audit_name))
+    else:
+        flash('Unfortunately, you do not have the privilege to access this audit', 'danger')
+        return redirect(url_for('audits.audit_list'))
+    return render_template('audits/scan_result.html', title="Vulnerabilities", audit=audit, output=output)

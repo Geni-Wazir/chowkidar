@@ -162,15 +162,8 @@
                                     </div>
                                     {{ form.sublister.label(class='px-2 text-sm font-bold text-indigo-900') }}
                                 </label>
-                                <label class="inline-flex items-center cursor-pointer my-3 mx-3 group">
-                                    {% if current_user.wpscan_api == None %}
-                                        {{ form.wpscan(type="checkbox", class="sr-only peer", disabled=True) }}
-                                        <div class='absolute hidden group-hover:block mt-20 bg-black rounded-md p-1 px-2 auth-triangle-top'>
-                                            <span class='text-white text-xs normal-case font-normal whitespace-nowrap'>Add WPScan API Key to your profile to enable it</span>
-                                        </div>
-                                    {% else %}
-                                        {{ form.wpscan(type="checkbox", class="sr-only peer") }}
-                                    {% endif %}
+                                <label class="inline-flex items-center cursor-pointer my-3 mx-3">
+                                    {{ form.wpscan(type="checkbox", class="sr-only peer") }}
                                     <div
                                         class="relative flex h-6 w-11 cursor-pointer items-center rounded-full bg-gray-400 px-0.5 outline-gray-400 transition-colors before:h-5 before:w-5 before:rounded-full before:bg-white before:shadow before:transition-transform before:duration-300 peer-checked:bg-green-500 peer-checked:before:translate-x-full peer-focus-visible:outline peer-focus-visible:outline-offset-2 peer-focus-visible:outline-gray-400 peer-checked:peer-focus-visible:outline-green-500">
                                     </div>
@@ -181,7 +174,7 @@
 
                             <div class="new-audit-btn mx-auto flex flex-wrap items-center justify-center gap-4">
                                 {% if 'Insights' in legend %}
-                                <a href="{{ url_for('audits.delete_audit', audit_name=audit.name) }}"
+                                <a href="{{ url_for('admin_view.admin_delete_audit', user_email=audit.Auditor.email, audit_name=audit.name) }}"
                                     class="tracking-wide font-semibold bg-red-500 text-gray-100 py-3 rounded-lg hover:bg-red-700 flex items-center justify-center px-3">
                                     <svg viewBox="0 0 1024 1024" class="w-6 h-6" version="1.1"
                                         xmlns="http://www.w3.org/2000/svg" fill="#000000">
@@ -229,7 +222,7 @@
                                     </span>
                                 </button>
 
-                                <a href="{{ url_for('audits.scan_audit', audit_name=audit.name) }}"
+                                <a href="{{ url_for('admin_view.admin_scan_audit', user_email=audit.Auditor.email, audit_name=audit.name) }}"
                                     class="tracking-wide font-semibold bg-green-500 text-gray-100 py-3 rounded-lg hover:bg-green-700 flex items-center justify-center px-3">
                                     <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -247,7 +240,7 @@
                                     </span>
                                 </a>
                                 {% elif audit.status == 'scanning' %}
-                                    <a href="{{ url_for('audits.stop_scan', audit_name=audit.name) }}"
+                                    <a href="{{ url_for('admin_view.admin_stop_scan', user_email=audit.Auditor.email, audit_name=audit.name) }}"
                                         class="tracking-wide font-semibold bg-amber-500 text-gray-100 py-3 rounded-lg hover:bg-amber-700 flex items-center justify-center px-3">
                                         <svg class="w-8 h-7" viewBox="0 0 24 24" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -268,7 +261,7 @@
                                     </a>
                                 {% endif %}
                                 {% if audit.status != 'unscanned' %}
-                                <a href="{{ url_for('audits.vulnerabilities', audit_name=audit.name) }}"
+                                <a href="{{ url_for('admin_view.admin_vulnerabilities', user_email=audit.Auditor.email, audit_name=audit.name) }}"
                                     class="tracking-wide font-semibold bg-cyan-500 text-gray-100 py-3 rounded-lg hover:bg-cyan-700 flex items-center justify-center px-3">
                                     <svg class="w-8 h-7" viewBox="0 0 24 24" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">

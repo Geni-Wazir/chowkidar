@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Chowkidar Vulnerability Scan Report</title>
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.css" rel="stylesheet">
+        <style>
+            /* Targets all the pages */
+@page {
+  size: 8.5in 9in;
+  margin-top: 4in;
+}
+            body {
+                background-image: url("https://raw.githubusercontent.com/Geni-Wazir/temp-files/main/Picture%201.png");
+                background-repeat: no-repeat;
+                background-position: right top; /* Set the image to the top right corner */
+            }
+
+            @font-face {
+                font-family: 'Calibri';
+                src: url("https://raw.githubusercontent.com/Geni-Wazir/temp-files/main/calibri.ttf") format('truetype');
+            }
+            @font-face {
+                font-family: 'Calibri-bold';
+                src: url("https://raw.githubusercontent.com/Geni-Wazir/temp-files/main/calibri-bold.ttf") format('truetype');
+            }
+
+            .font-calibri {
+                font-family: 'Calibri', sans-serif;
+            }
+
+            .font-calibri-bold {
+                font-family: 'Calibri-bold', sans-serif;
+            }
+
+            .break-before {
+                page-break-before: always;
+            }
+            .heading {
+                color: #1F3864;
+                font-size: 6rem;
+                font-weight: 100;
+                line-height: 1;
+            }
+            .sub-heading {
+                color: #00B0F0;
+                font-size: 5rem;
+                line-height: 1;
+            }
+                
+        </style>
+    </head>
+
+    <body>  
+        <div class="content">
+            <!-- Cover Page 1 -->
+            <div class="h-full">
+                <div class="w-72 p-3">
+                    <img src="https://raw.githubusercontent.com/Geni-Wazir/temp-files/main/logo.png" alt="background image">
+                </div>
+                <div class="flex items-center justify-center font-calibri-bold" style="padding-top: 35rem;">
+                    <div class="heading">
+                        <p class="text-center heading">
+                            <p class="text-center">Automated</p>
+                            <p>Vulnerability Scan</p>
+                        </p>
+                        <p class="pl-4 sub-heading">Report</p>
+                    </div>
+                </div>  
+            </div>
+            <!-- Disclaimer Page 2 -->
+            <div class="h-full break-before">
+                <div class="w-52 p-3">
+                    <img src="https://raw.githubusercontent.com/Geni-Wazir/temp-files/main/logo.png" alt="background image">
+                </div>
+                <div class="px-20 py-14">
+                    <p class="text-3xl font-calibri-bold">Disclaimer:</p>
+                    <div class="px-8 font-serif">
+                        <p class="py-3">This vulnerability report has been generated automatically based on data collected and analyzed by 
+                            automated vulnerability assessment tools. While every effort has been made to accurately identify and categorize 
+                            vulnerabilities, there may be limitations and false positives inherent in automated scanning.
+                        </p>
+                        <p class="py-3">This report is intended to provide an overview of potential vulnerabilities detected in the 
+                            scanned systems or applications. It is not a substitute for manual security assessments or comprehensive penetration testing. 
+                            Users of this report are advised to conduct thorough security reviews and validation tests to confirm the existence and severity 
+                            of identified vulnerabilities.
+                        </p>
+                        <p class="py-3">The findings presented in this report are based on the automated tools' assessments at the time of 
+                            scanning and may not reflect real-time security posture. It is recommended to regularly update and re-scan systems to identify 
+                            new vulnerabilities and address any remediation efforts promptly.
+                        </p>
+                        <p class="py-3">The findings presented in this report are based on the automated tools' assessments at the time of 
+                            scanning and may not reflect real-time security posture. It is recommended to regularly update and re-scan systems to identify 
+                            new vulnerabilities and address any remediation efforts promptly.
+                        </p>
+                    </div>
+                </div>
+                <div class="px-20">
+                    <p class="text-3xl font-calibri-bold pt-10">Measurement Scales:<p>
+                    <div class="px-8 font-serif">
+                        <p class="py-3"><strong class="text-red-900 font-calibri-bold text-xl">CRITICAL</strong>: Vulnerability is an otherwise high-severity 
+                            issue with additional security implications that could lead to exceptional business impact. Findings are marked as critical severity 
+                            to communicate an exigent need for immediate remediation. Examples include threats to human safety, permanent loss or compromise of 
+                            business-critical data, and evidence of prior compromise.
+                        </p>
+                        <p class="py-3"><strong class="text-red-600 font-calibri-bold text-xl">HIGH</strong>: Vulnerability introduces significant technical risk 
+                            to the system that is not contingent on other issues being present to exploit. Examples include creating a breach in the confidentiality 
+                            or integrity of sensitive business data, customer information, or administrative and user accounts.
+                        </p>
+                        <p class="py-3"><strong class="font-calibri-bold text-xl" style="color: #f97316;">MEDIUM</strong>: Vulnerability does not in isolation lead directly to 
+                            the exposure of sensitive business data. However, it can be leveraged in conjunction with another issue to expose business risk. Examples 
+                            include insecurely storing user credentials, transmitting sensitive data unencrypted, and improper network segmentation.
+                        </p>
+                        <p class="py-3"><strong class="text-yellow-500 font-calibri-bold text-xl">LOW</strong>: Vulnerability may result in limited risk or require 
+                            the presence of multiple additional vulnerabilities to become exploitable. Examples include overly verbose error messages, insecure 
+                            TLS configurations, and detailed banner information disclosure.
+                        </p>
+                        <p class="py-3"><strong class="text-blue-500 font-calibri-bold text-xl">INFO</strong>: Finding does not have a direct security impact but 
+                            represents an opportunity to add an additional layer of security, is a deviation from best practices, or is a security-relevant 
+                            observation that may lead to exploitable vulnerabilities in the future. Examples include vulnerable yet unused source code and 
+                            missing HTTP security headers.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        <!-- Report Summary Page 3 -->
+            {% block content %}
+            {% endblock %}
+        </div>
+    </body>
+</html>
