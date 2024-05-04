@@ -34,6 +34,7 @@ services:
       - MYSQL_USER=scanner
       - MYSQL_PASSWORD=scanner
       - MYSQL_DATABASE=scanner
+      - MARIADB_AUTO_UPGRADE=1
     volumes:
       - .data/mysql:/var/lib/mysql
 

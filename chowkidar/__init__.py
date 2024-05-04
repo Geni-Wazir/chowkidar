@@ -26,7 +26,7 @@ oauth = OAuth()
 session = Session()
 mail = Mail()
 admin = Admin()
-
+migrations = Migrate()
 
 
 redis_connection = redis.Redis(host='scheduler', port=6379, db=0)
@@ -77,6 +77,7 @@ def create_app(config_class=Config):
         app.config.from_object(Config)
         from chowkidar.models import db
         db.init_app(app)
+        migrations.init_app(app, db)
         db.create_all()
         login_manager.init_app(app)
         oauth.init_app(app)

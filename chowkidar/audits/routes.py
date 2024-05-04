@@ -23,6 +23,26 @@ def audit_list():
 
 
 
+
+@limiter.limit("5/minute")
+def add_audit_post(form):
+    audit = Audit(
+        name=form.name.data.lower(),
+        url=form.url.data,
+        nmap=form.nmap.data,
+        dirsearch=form.dirsearch.data,
+        headers=form.headers.data,
+        testssl=form.testssl.data,
+        nuclei=form.nuclei.data,
+        sublister=form.sublister.data,
+        wpscan=form.wpscan.data,
+        Auditor=current_user
+    )
+    db.session.add(audit)
+    db.session.commit()
+
+
+
 @audits.route('/audits/new', methods=['GET', 'POST'])
 @login_required
 def add_audit():
@@ -30,131 +50,134 @@ def add_audit():
     if form.validate_on_submit():
         if current_user.scan_available:
             if any(list(form.data.values())[2:-1]):
-                audit = Audit(
-                            name=form.name.data.lower(),
-                            url=form.url.data,
-                            nmap=form.nmap.data,
-                            dirsearch=form.dirsearch.data,
-                            headers=form.headers.data,
-                            testssl=form.testssl.data,
-                            nuclei=form.nuclei.data,
-                            sublister=form.sublister.data,
-                            wpscan=form.wpscan.data,
-                            Auditor=current_user
-                            )
-                db.session.add(audit)
-                db.session.commit()
+                add_audit_post(form)
                 flash('Audit has been Added to Your Universe', 'success')
                 return redirect(url_for('audits.audit_list'))
-            else:
-                flash('Boost Your Scan with at Least One Empowering Tool', 'info')
+            flash('Boost Your Scan with at Least One Empowering Tool', 'info')
         else:
             flash('Your Scan Count is Low! Connect with Admin for Additional Scans', 'info')
-            return redirect(url_for('audits.audit_list'))
-    elif list(form.errors.values()) != []:
-        flash(", ".join(list(form.errors.values())[0]), 'info')
+    else:
+        errors = list(form.errors.values())
+        if errors:
+            flash(", ".join(errors[0]), 'info')
     return render_template('audits/add_audit.html', title="Add Audit", form=form, legend="New Audit")
 
 
 
 
-@audits.route('/audits/<string:audit_name>', methods=['GET', 'POST'])
+@audits.get('/audits/<string:audit_name>')
 @login_required
 def audit(audit_name):
-    form = UpdateAuditForm()
     audit = Audit.query.filter_by(name=audit_name, Auditor=current_user).first()
     if audit:
-        if request.method == 'POST':
-            @limiter.limit("5/minute")
-            def update_audit():
-                if form.validate_on_submit():
-                    if audit.status == 'unscanned':
-                        if any(list(form.data.values())[:-1]):
-                            audit.nmap=form.nmap.data
-                            audit.dirsearch=form.dirsearch.data
-                            audit.headers=form.headers.data
-                            audit.testssl=form.testssl.data
-                            audit.nuclei=form.nuclei.data
-                            audit.sublister=form.sublister.data
-                            audit.wpscan=form.wpscan.data
-                            db.session.commit()
-                            flash('The audit has been upgraded', 'success')
-                            return redirect(url_for('audits.audit', audit_name=audit.name))
-                        else:
-                            flash('Boost Your Scan with at Least One Empowering Tool', 'info')
-                    else:
-                        flash('Audit can not be updated', 'info')
-            update_audit()
-        elif request.method == 'GET':
-            form.nmap.data = audit.nmap
-            form.dirsearch.data = audit.dirsearch
-            form.headers.data = audit.headers
-            form.testssl.data = audit.testssl
-            form.nuclei.data = audit.nuclei
-            form.sublister.data = audit.sublister
-            form.wpscan.data =  audit.wpscan
+        form = UpdateAuditForm()
+        form.nmap.data = audit.nmap
+        form.dirsearch.data = audit.dirsearch
+        form.headers.data = audit.headers
+        form.testssl.data = audit.testssl
+        form.nuclei.data = audit.nuclei
+        form.sublister.data = audit.sublister
+        form.wpscan.data = audit.wpscan
+        return render_template('audits/add_audit.html', title="Audit Info", audit=audit, form=form, legend="Audit Insights")
     else:
         flash('Unfortunately, you do not have the privilege to access this audit', 'danger')
         return redirect(url_for('audits.audit_list'))
-    return render_template('audits/add_audit.html', title="Audit Info", audit=audit, form=form, legend="Audit Insights")
 
 
 
 
+@audits.post('/audits/<string:audit_name>')
+@login_required
+@limiter.limit("5/minute")
+def audit_post(audit_name):
+    audit = Audit.query.filter_by(name=audit_name, Auditor=current_user).first()
+    if audit:
+        form = UpdateAuditForm()
+        if form.validate_on_submit():
+            if audit.status == 'unscanned':
+                if any(list(form.data.values())[:-1]):
+                    audit.nmap = form.nmap.data
+                    audit.dirsearch = form.dirsearch.data
+                    audit.headers = form.headers.data
+                    audit.testssl = form.testssl.data
+                    audit.nuclei = form.nuclei.data
+                    audit.sublister = form.sublister.data
+                    audit.wpscan = form.wpscan.data
+                    db.session.commit()
+                    flash('The audit has been upgraded', 'success')
+                    return redirect(url_for('audits.audit', audit_name=audit.name))
+                else:
+                    flash('Boost Your Scan with at Least One Empowering Tool', 'info')
+            else:
+                flash('Audit can not be updated', 'info')
+        return redirect(url_for('audits.audit', audit_name=audit.name))
+    else:
+        flash('Unfortunately, you do not have the privilege to access this audit', 'danger')
+        return redirect(url_for('audits.audit_list'))
+
+
+
+
+@limiter.limit("5/minute")
 @audits.route('/audits/<string:audit_name>/delete', methods=['GET', 'POST'])
 @login_required
 def delete_audit(audit_name):
     audit = Audit.query.filter_by(name=audit_name, Auditor=current_user).first()
-    if audit:
-        if audit.status == 'scanning':
-            if audit.container_id:
-                stop_scan = delete_container(audit.container_id)
-                if not stop_scan:
-                    flash(f'Apologies, the deletion of audit {audit.name} has failed', 'danger')
-                    return redirect(url_for('audits.audit_list'))
-            else:
-                delete_task = remove_task(audit.task_id)
-                if not delete_task:
-                    flash(f'Apologies, the deletion of audit {audit.name} has failed', 'danger')
-                    return redirect(url_for('audits.audit_list'))
-        db.session.delete(audit)
-        db.session.commit()
-        flash(f'The audit {audit.name} has been successfully removed', 'success')
-    else:
+
+    if not audit:
         flash('Unfortunately, you do not have the privilege to access this audit', 'danger')
         return redirect(url_for('audits.audit_list'))
+
+    if audit.status == 'scanning':
+        if audit.container_id:
+            stop_scan = delete_container(audit.container_id)
+        else:
+            stop_scan = remove_task(audit.task_id)
+        
+        if not stop_scan:
+            flash(f'Apologies, the deletion of audit {audit.name} has failed', 'danger')
+            return redirect(url_for('audits.audit_list'))
+
+    db.session.delete(audit)
+    db.session.commit()
+    flash(f'The audit {audit.name} has been successfully removed', 'success')
+    
     return redirect(url_for('audits.audit_list'))
 
 
 
 
+@limiter.limit("5/minute")
 @audits.route('/audits/<string:audit_name>/scan', methods=['GET', 'POST'])
 @login_required
 def scan_audit(audit_name):
-    if current_user.scan_available:
-        audit = Audit.query.filter_by(name=audit_name, Auditor=current_user).first()
-        if audit:
-            if audit.status == 'unscanned':
-                add_vulnerability_api = 'http://localhost'+url_for('audits.add_vulnerability')
-                scan_result_api = 'http://localhost'+url_for('audits.add_scan_result')
-                scan_status_api = 'http://localhost'+url_for('audits.scan_status')
-                secret_key = os.environ['SCANNER_SECRET_KEY']
-                scan_task = task_queue.enqueue(run_scan, args=(secret_key, scan_result_api, add_vulnerability_api, scan_status_api, audit), job_timeout='10h')
-                audit.task_id = scan_task.id
-                audit.status = 'scanning'
-                if not current_user.admin:
-                    current_user.scan_available = current_user.scan_available - 1
-                db.session.commit()
-                flash(f'Congratulations! Your {audit.name} scan has been successfully started.', 'success')
-                return redirect(url_for('audits.audit_list'))
-            else:
-                flash(f'Initiating the scan for {audit.name} is not possible', 'info')
-        else:
-            flash('Unfortunately, you do not have the privilege to access this audit', 'danger')
-            return redirect(url_for('audits.audit_list'))
-    else:
+    if not current_user.scan_available:
         flash('Your Scan Count is Low! Connect with Admin for Additional Scans', 'info')
         return redirect(url_for('audits.audit_list'))
+
+    audit = Audit.query.filter_by(name=audit_name, Auditor=current_user).first()
+    if not audit:
+        flash('Unfortunately, you do not have the privilege to access this audit', 'danger')
+        return redirect(url_for('audits.audit_list'))
+
+    if audit.status != 'unscanned':
+        flash(f'Initiating the scan for {audit.name} is not possible', 'info')
+        return redirect(url_for('audits.audit_list'))
+
+    add_vulnerability_api = 'http://localhost' + url_for('audits.add_vulnerability')
+    scan_result_api = 'http://localhost' + url_for('audits.add_scan_result')
+    scan_status_api = 'http://localhost' + url_for('audits.scan_status')
+    secret_key = os.environ.get('SCANNER_SECRET_KEY')
+
+    scan_task = task_queue.enqueue(run_scan, args=(secret_key, scan_result_api, add_vulnerability_api, scan_status_api, audit), job_timeout='10h')
+    audit.task_id = scan_task.id
+    audit.status = 'scanning'
+    
+    if not current_user.admin:
+        current_user.scan_available -= 1
+    
+    db.session.commit()
+    flash(f'Congratulations! Your {audit.name} scan has been successfully started.', 'success')
     return redirect(url_for('audits.audit_list'))
 
 
@@ -164,14 +187,18 @@ def scan_audit(audit_name):
 @audits.route('/audits/containerid', methods=['POST'])
 def get_container():
     data = request.json
-    if data['secret_key'] == os.environ['SCANNER_SECRET_KEY']:
-        audit = Audit.query.filter_by(id=data['audit_id']).first()
-        if audit:
-            audit.container_id = data['container_id']
-            db.session.commit()
-            return 'ok'
-        abort(404)
-    abort(403)
+    secret_key = data.get('secret_key')
+    if secret_key == os.environ.get('SCANNER_SECRET_KEY'):
+        audit_id = data.get('audit_id')
+        container_id = data.get('container_id')
+        if audit_id and container_id:
+            audit = Audit.query.filter_by(id=audit_id).first()
+            if audit:
+                audit.container_id = container_id
+                db.session.commit()
+                return 'ok', 200
+        abort(404)  # Missing audit_id or container_id
+    abort(403)  # Incorrect secret_key
 
 
 
@@ -180,27 +207,28 @@ def get_container():
 @login_required
 def stop_scan(audit_name):
     audit = Audit.query.filter_by(name=audit_name, Auditor=current_user).first()
-    if audit:
-        if audit.status == 'scanning':
-            if audit.container_id:
-                stop_scan = delete_container(audit.container_id)
-                if not stop_scan:
-                    flash(f'Apologies, the deletion of audit {audit.name} has failed', 'danger')
-                    return redirect(url_for('audits.audit_list'))
-            else:
-                delete_task = remove_task(audit.task_id)
-                if not delete_task:
-                    flash(f'Apologies, the deletion of audit {audit.name} has failed', 'danger')
-                    return redirect(url_for('audits.audit_list'))
-            audit.status = 'stopped'
-            db.session.commit()
-            flash('Your Scan for' + audit.name + ' has been stopped', 'success')
-            return redirect(url_for('audits.audit_list'))
-        else:
-            flash(f'This action cannot be performed for {audit.name}', 'info')
-    else:
+
+    if not audit:
         flash('Unfortunately, you do not have the privilege to access this audit', 'danger')
         return redirect(url_for('audits.audit_list'))
+
+    if audit.status != 'scanning':
+        flash(f'This action cannot be performed for {audit.name}', 'info')
+        return redirect(url_for('audits.audit_list'))
+
+    if audit.container_id:
+        stop_scan = delete_container(audit.container_id)
+    else:
+        stop_scan = remove_task(audit.task_id)
+
+    if not stop_scan:
+        flash(f'Apologies, the stopping of scan for {audit.name} has failed', 'danger')
+        return redirect(url_for('audits.audit_list'))
+
+    audit.status = 'stopped'
+    db.session.commit()
+    flash(f'Your Scan for {audit.name} has been stopped', 'success')
+
     return redirect(url_for('audits.audit_list'))
 
 
@@ -211,15 +239,17 @@ def add_vulnerability():
     if data['secret_key'] == os.environ['SCANNER_SECRET_KEY']:
         audit = Audit.query.filter_by(id=data['audit_id']).first()
         if audit:
+            existing_vulnerabilities = [v.name for v in VulnerabilityDiscovered.query.filter_by(Audit=audit).all()]
+            print(existing_vulnerabilities)
             for vul in data['vulnerabilities']:
-                template = VulnerabilityTemplates.query.filter_by(name=vul).first()
-                new_vuln = VulnerabilityDiscovered(name=vul, data=str(data['vulnerabilities'][vul]) ,Audit=audit, Template=template)
-                db.session.add(new_vuln)
+                if vul not in existing_vulnerabilities:
+                    template = VulnerabilityTemplates.query.filter_by(name=vul).first()
+                    new_vuln = VulnerabilityDiscovered(name=vul, data=str(data['vulnerabilities'][vul]) ,Audit=audit, Template=template)
+                    db.session.add(new_vuln)
             db.session.commit()
-        return 'ok', 200
-    else:
-        return 'Your request was refused due to insufficient privileges', 403
-
+            return 'ok', 200
+        abort(404)  # audit not found
+    abort(403)  # Incorrect secret_key
 
 
 
@@ -235,10 +265,9 @@ def add_scan_result():
                 db.session.add(scan_result)
             setattr(scan_result, data['tool'], data['output'])
             db.session.commit()
-        return 'ok', 200
-    else:
-        return 'Your request was refused due to insufficient privileges', 403
-
+            return 'ok', 200
+        abort(404)  # audit not found
+    abort(403)  # Incorrect secret_key
 
 
 
@@ -256,20 +285,43 @@ def scan_status():
                 for tool in data['tools']:
                     setattr(scan_result, tool, "URL not reachable")
             audit.status = data['status']
+            db.session.commit()
             reciever = [audit.Auditor.email]
             subject = f'Completion of Vulnerability Scan for {audit.name}'
             message = render_template('audits/scan_complete_mail.html', audit=audit)
             msg = Message(subject, sender=os.environ['MAIL_USERNAME'], recipients=reciever)
             msg.html = message
-            db.session.commit()
             try:
                 mail.send(msg)
             except:
                 pass
             delete_container(audit.container_id)
-        return "ok", 200
-    else:
-        return "Your request was refused due to insufficient privileges.", 403
+            return "ok", 200
+        abort(404)  # audit not found
+    abort(403)  # Incorrect secret_key
+
+
+@audits.route('/audits/<string:audit_name>/vulnerability/<string:vulnerability_name>')
+@login_required
+def vulnerability(audit_name, vulnerability_name):
+    audit = Audit.query.filter_by(name=audit_name, Auditor=current_user).first()
+
+    if not audit:
+        flash('Unfortunately, you do not have the privilege to access this audit', 'danger')
+        return redirect(url_for('audits.audit_list'))
+
+    if audit.status == 'unscanned':
+        flash(f'The audit {audit_name} has not been scanned yet.', 'info')
+        return redirect(url_for('audits.audit_list'))
+
+    vulnerability = VulnerabilityDiscovered.query.filter_by(Audit=audit, name=vulnerability_name).first()
+    template = VulnerabilityTemplates.query.filter_by(name=vulnerability_name).first()
+
+    if not vulnerability or not template:
+        flash('Vulnerability or template not found.', 'danger')
+        return redirect(url_for('audits.audit_list'))
+
+    return render_template('audits/vulnerability.html', title="Admin", vulnerability=eval(vulnerability.data), template=template)
 
 
 
@@ -278,34 +330,40 @@ def scan_status():
 @login_required
 def vulnerabilities(audit_name):
     audit = Audit.query.filter_by(name=audit_name, Auditor=current_user).first()
-    if audit:
-        if audit.status == 'unscanned':
-             flash(f'The audit {audit_name} has not been scanned yet.', 'info')
-             return redirect(url_for('audits.audit_list'))
-        vulnerabilities = VulnerabilityDiscovered.query \
-        .join(VulnerabilityTemplates, VulnerabilityDiscovered.template_id == VulnerabilityTemplates.id)\
-        .filter(VulnerabilityDiscovered.audit_id == audit.id) \
-        .order_by(VulnerabilityTemplates.cvss.desc()).all()
-    else:
+
+    if not audit:
         flash('Unfortunately, you do not have the privilege to access this audit', 'danger')
         return redirect(url_for('audits.audit_list'))
-    return render_template('audits/vulnerabilities.html', title="Vulnerabilities", audit=audit, vulnerabilities=vulnerabilities)
 
+    if audit.status == 'unscanned':
+        flash(f'The audit {audit_name} has not been scanned yet.', 'info')
+        return redirect(url_for('audits.audit_list'))
+
+    vulnerabilities = VulnerabilityDiscovered.query \
+        .join(VulnerabilityTemplates, VulnerabilityDiscovered.template_id == VulnerabilityTemplates.id) \
+        .filter(VulnerabilityDiscovered.audit_id == audit.id) \
+        .order_by(VulnerabilityTemplates.cvss.desc()).all()
+
+    return render_template('audits/vulnerabilities.html', title="Vulnerabilities", audit=audit, vulnerabilities=vulnerabilities)
 
 
 @audits.route('/audits/<string:audit_name>/scan-output')
 @login_required
 def scan_result(audit_name):
     audit = Audit.query.filter_by(name=audit_name, Auditor=current_user).first()
-    if audit:
-        if audit.status == 'unscanned':
-             flash(f'The audit {audit_name} has not been scanned yet.', 'info')
-             return redirect(url_for('audits.vulnerabilities'))
-        output = ScanResults.query.filter_by(Audit=audit).first()
-        if not output:
-            flash(f'Currently, there are no scan results available for {audit_name}', 'info')
-            return redirect(url_for('audits.vulnerabilities', audit_name=audit_name))
-    else:
+
+    if not audit:
         flash('Unfortunately, you do not have the privilege to access this audit', 'danger')
         return redirect(url_for('audits.audit_list'))
-    return render_template('audits/scan_result.html', title="Vulnerabilities", audit=audit, output=output)
+
+    if audit.status == 'unscanned':
+        flash(f'The audit {audit_name} has not been scanned yet.', 'info')
+        return redirect(url_for('audits.vulnerabilities', audit_name=audit_name))
+
+    output = ScanResults.query.filter_by(Audit=audit).first()
+
+    if not output:
+        flash(f'Currently, there are no scan results available for {audit_name}', 'info')
+        return redirect(url_for('audits.vulnerabilities', audit_name=audit_name))
+
+    return render_template('audits/scan_result.html', title="Scan Results", audit=audit, output=output)

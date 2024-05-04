@@ -15,15 +15,11 @@ workers = int(get_workers())
 client = docker.DockerClient(base_url="unix://var/run/docker.sock")
 
 def run_scan(secret_key, scan_result_api, add_vulnerability_api, scan_status_api, audit):
-    # Get a list of running containers
     running_containers = client.containers.list(filters={'status': 'running'})
     previous_tasks = [container for container in running_containers if  container.name not in ['chowkidar-nginx-1', 'chowkidar-chowkidar-1', 'chowkidar-db-1', 'chowkidar-scheduler-1']]
-    # If there are running containers with the same name pattern, wait for them to finish
     if len(previous_tasks) >= workers:
-        print(f"Waiting for previous tasks ({', '.join([task.name for task in previous_tasks])}) to finish...")
         for task in previous_tasks:
             task.wait()
-    # Start a new container
     command="python3 scanner.py {} {} {} {} {} {} {} {} {} {} {} {} {} {}".format(
                                                                         secret_key,
                                                                         scan_result_api, 
@@ -51,13 +47,12 @@ def run_scan(secret_key, scan_result_api, add_vulnerability_api, scan_status_api
 
 def remove_task(job_id):
     job = task_queue.fetch_job(job_id)
-    if job is not None:
-        if job.get_status() != 'finished':
-            try:
-                job.cancel()
-                return True
-            except:
-                return False
+    if job and job.get_status() != 'finished':
+        try:
+            job.cancel()
+            return True
+        except:
+            return False
     return False
 
 def delete_container(container_id):

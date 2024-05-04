@@ -129,7 +129,7 @@
             .then(jobId => {
             let attempts = 0;
             const checkDownloadInterval = setInterval(() => {
-                fetch(`/report//{{ audit.id }}/download/${jobId}`, { method: 'GET' })
+                fetch(`/report/{{ audit.id }}/download/${jobId}`, { method: 'GET' })
                 .then(response => {
                     if (response.status === 200) {
                     clearInterval(checkDownloadInterval);
