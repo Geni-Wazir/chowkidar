@@ -240,7 +240,6 @@ def add_vulnerability():
         audit = Audit.query.filter_by(id=data['audit_id']).first()
         if audit:
             existing_vulnerabilities = [v.name for v in VulnerabilityDiscovered.query.filter_by(Audit=audit).all()]
-            print(existing_vulnerabilities)
             for vul in data['vulnerabilities']:
                 if vul not in existing_vulnerabilities:
                     template = VulnerabilityTemplates.query.filter_by(name=vul).first()
