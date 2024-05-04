@@ -169,7 +169,7 @@ def scan_audit(audit_name):
     scan_status_api = 'http://localhost' + url_for('audits.scan_status')
     secret_key = os.environ.get('SCANNER_SECRET_KEY')
 
-    scan_task = task_queue.enqueue(run_scan, args=(secret_key, scan_result_api, add_vulnerability_api, scan_status_api, audit), job_timeout='10h')
+    scan_task = task_queue.enqueue(run_scan, args=(secret_key, scan_result_api, add_vulnerability_api, scan_status_api, audit), job_timeout=-1)
     audit.task_id = scan_task.id
     audit.status = 'scanning'
     
