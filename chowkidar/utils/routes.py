@@ -1,4 +1,4 @@
-from flask import render_template, url_for, flash, redirect, request, Blueprint, session, make_response
+from flask import render_template, url_for, flash, redirect, request, Blueprint, session, make_response, send_from_directory, current_app
 from flask_login import login_user, current_user, logout_user, login_required
 from chowkidar import oauth, get_admin
 from chowkidar.models import User, Audit, VulnerabilityDiscovered, VulnerabilityTemplates, db
@@ -20,6 +20,13 @@ admins_list = get_admin()
 def ratelimit_handler(e):
     flash("You have exceeded the rate limit. Please try again later.", "info")
     return redirect(url_for('utils.home'))
+
+
+
+@utils.route('/favicon.ico')
+def favicon():
+    return send_from_directory(current_app.root_path, 'static/favicon.ico', mimetype='image/vnd.microsoft.icon')
+
 
 
 
