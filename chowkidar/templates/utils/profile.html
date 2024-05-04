@@ -30,7 +30,7 @@
                     <span class="text-center font-bold text-lg">{{ current_user.name }}</span>
                     <span class="mb-3 py-1 text-center text-xs max-w-60 overflow-y-auto">{{ current_user.email }}</span>
                     <div class="flex w-fit px-3 items-center justify-center bg-blue-100 rounded-full text-sm">
-                        <span class="text-center">scans Available:</span>
+                        <span class="text-center">Scans Available:</span>
                         <span class="font-semibold px-1">{{ current_user.scan_available }}</span>
                     </div>
                     {% if not current_user.scan_available %}
