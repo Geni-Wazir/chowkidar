@@ -11,8 +11,8 @@ import os
 
 
 workers = int(get_workers())
-
 client = docker.DockerClient(base_url="unix://var/run/docker.sock")
+
 
 def run_scan(secret_key, scan_result_api, add_vulnerability_api, scan_status_api, audit):
     running_containers = client.containers.list(filters={'status': 'running'})
@@ -45,6 +45,7 @@ def run_scan(secret_key, scan_result_api, add_vulnerability_api, scan_status_api
 
 
 
+
 def remove_task(job_id):
     job = task_queue.fetch_job(job_id)
     if job and job.get_status() != 'finished':
@@ -54,6 +55,9 @@ def remove_task(job_id):
         except:
             return False
     return False
+
+
+
 
 def delete_container(container_id):
     try:

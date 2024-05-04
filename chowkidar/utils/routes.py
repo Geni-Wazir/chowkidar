@@ -11,15 +11,19 @@ from chowkidar.utils.scheduler import generate_report
 
 
 
+
 utils = Blueprint('utils', __name__)
 load_dotenv()
 admins_list = get_admin()
+
+
 
 
 @utils.errorhandler(429)
 def ratelimit_handler(e):
     flash("You have exceeded the rate limit. Please try again later.", "info")
     return redirect(url_for('utils.home'))
+
 
 
 
@@ -46,11 +50,13 @@ google = oauth.remote_app(
 
 
 
+
 @utils.route('/')
 def home():
     if current_user.is_authenticated:
         return redirect(url_for('audits.audit_list'))
     return render_template('utils/home.html')
+
 
 
 
@@ -93,6 +99,8 @@ def get_google_oauth_token():
     return session.get('google_token')
 
 
+
+
 def get_vulnerability_counts(user_id, audit_id=None):
     filters = [User.id == user_id]
     if audit_id:
@@ -109,6 +117,8 @@ def get_vulnerability_counts(user_id, audit_id=None):
             .count()
         vulnerability_counts[f'{severity.lower()}_count'] = count
     return vulnerability_counts
+
+
 
 
 @utils.route('/profile', methods=['GET', 'POST'])
@@ -141,7 +151,6 @@ def profile():
 
 
 
-
 @utils.route('/logout')
 def logout():
     logout_user()
@@ -157,6 +166,7 @@ def contact():
     if request.method == 'POST':
         contact_post_form(form)
     return render_template('utils/contact.html', title="Contact", form=form)
+
 
 
 

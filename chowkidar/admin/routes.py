@@ -9,7 +9,10 @@ from chowkidar.utils.routes import get_vulnerability_counts
 
 
 
+
 admin_view = Blueprint('admin_view', __name__)
+
+
 
 
 @admin_view.route('/admin/audits-all')
@@ -85,7 +88,6 @@ def admin_audit_post(user_email, audit_name):
             flash('Audit can not be updated', 'info')
 
     return redirect(url_for('admin_view.admin_audit', user_email=audit.Auditor.email, audit_name=audit.name))
-
 
 
 
@@ -190,6 +192,7 @@ def admin_stop_scan(user_email, audit_name):
     flash(f'Your Scan for {audit.name} has been stopped', 'success')
 
     return redirect(url_for('admin_view.all_audits'))
+
 
 
 

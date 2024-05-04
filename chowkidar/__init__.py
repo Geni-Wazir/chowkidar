@@ -18,6 +18,9 @@ from rq import Queue
 
 
 
+parser = ConfigParser()
+parser.read('config.ini')
+
 
 login_manager = LoginManager()
 login_manager.login_view = 'utils.home'
@@ -32,8 +35,6 @@ migrations = Migrate()
 redis_connection = redis.Redis(host='scheduler', port=6379, db=0)
 task_queue = Queue('task_queue', connection=redis_connection)
 
-parser = ConfigParser()
-parser.read('config.ini')
 
 def get_admin():
     return parser.get('APP', 'ADMINS')
@@ -42,10 +43,10 @@ def get_workers():
     return parser.get('WORKER', 'CONTAINERS')
 
 limiter = Limiter(
-get_remote_address,
-storage_uri="redis://scheduler:6379",
-storage_options={}
-)
+    get_remote_address,
+    storage_uri="redis://scheduler:6379",
+    storage_options={}
+    )
 
 
 
@@ -58,10 +59,14 @@ class AdminPanelView(ModelView):
         else:
             return False
 
+
+
+
 class AdminPanelAuditView(AdminPanelView):
     column_display_pk = True
     column_list = ['id', 'name', 'url', 'task_id', 'container_id', 'status', 'date', 'nmap', 'dirsearch', 'headers', 'testssl', 'nuclei', 'sublister', 'wpscan', 'Auditor']
     form_columns = ['name', 'url', 'task_id', 'container_id', 'status', 'date', 'nmap', 'dirsearch', 'headers', 'testssl', 'nuclei', 'sublister', 'wpscan', 'Auditor']
+
 
 
 
@@ -102,4 +107,5 @@ def create_app(config_class=Config):
         app.register_blueprint(utils)
         app.register_blueprint(audits)
         app.register_blueprint(admin_view)
+        
         return app

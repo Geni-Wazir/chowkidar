@@ -14,12 +14,12 @@ audits = Blueprint('audits', __name__)
 
 
 
+
 @audits.route('/audits')
 @login_required
 def audit_list():
     all_audit = Audit.query.filter_by(Auditor=current_user).order_by(Audit.id.desc())
     return render_template('audits/audits.html', title="Audits", audits=all_audit)
-
 
 
 
@@ -40,6 +40,7 @@ def add_audit_post(form):
     )
     db.session.add(audit)
     db.session.commit()
+
 
 
 
@@ -183,7 +184,6 @@ def scan_audit(audit_name):
 
 
 
-
 @audits.route('/audits/containerid', methods=['POST'])
 def get_container():
     data = request.json
@@ -233,6 +233,7 @@ def stop_scan(audit_name):
 
 
 
+
 @audits.route('/audits/vulnerability/add', methods=['POST'])
 def add_vulnerability():
     data = request.json
@@ -252,6 +253,7 @@ def add_vulnerability():
 
 
 
+
 @audits.route('/audits/result/add', methods=['POST'])
 def add_scan_result():
     data = request.json
@@ -267,6 +269,7 @@ def add_scan_result():
             return 'ok', 200
         abort(404)  # audit not found
     abort(403)  # Incorrect secret_key
+
 
 
 
@@ -298,6 +301,8 @@ def scan_status():
             return "ok", 200
         abort(404)  # audit not found
     abort(403)  # Incorrect secret_key
+
+
 
 
 @audits.route('/audits/<string:audit_name>/vulnerability/<string:vulnerability_name>')
@@ -344,6 +349,8 @@ def vulnerabilities(audit_name):
         .order_by(VulnerabilityTemplates.cvss.desc()).all()
 
     return render_template('audits/vulnerabilities.html', title="Vulnerabilities", audit=audit, vulnerabilities=vulnerabilities)
+
+
 
 
 @audits.route('/audits/<string:audit_name>/scan-output')

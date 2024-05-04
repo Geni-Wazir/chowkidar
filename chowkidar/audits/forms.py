@@ -18,7 +18,6 @@ class AuditForm(FlaskForm):
     wpscan = BooleanField('Wordpress Scan', default=False)
     submit = SubmitField('Add Audit')
 
-
     def validate_name(self, name):
         excluded_chars = " _*?!`'^+%&/()=}][{$#"
         for char in self.name.data:
@@ -29,6 +28,7 @@ class AuditForm(FlaskForm):
             raise ValidationError('Project with this name already exist.')
         if self.name.data == 'new':
             raise ValidationError('The project name cannot be set as new')
+
 
 
 
