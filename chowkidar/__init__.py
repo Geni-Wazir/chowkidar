@@ -104,8 +104,10 @@ def create_app(config_class=Config):
         from chowkidar.utils.routes import utils
         from chowkidar.audits.routes import audits
         from chowkidar.admin.routes import admin_view
+        from chowkidar.errors.handlers import errors
         app.register_blueprint(utils)
         app.register_blueprint(audits)
         app.register_blueprint(admin_view)
+        app.register_blueprint(errors)
         
         return app
