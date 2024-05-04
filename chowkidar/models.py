@@ -76,7 +76,7 @@ class VulnerabilityDiscovered(db.Model):
     audit_id = db.Column(db.Integer, db.ForeignKey('audit.id'))
     template_id = db.Column(db.Integer, db.ForeignKey('vulnerability_templates.id'))
     name = db.Column(db.String(100))
-    data = db.Column(db.Text)
+    data = db.Column(db.Text(4294000000))
 
     def __repr__(self):
         return "Vulnerability({})".format(self.name)
