@@ -12,6 +12,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - FLASK_DEBUG=1
+      - SERVER_URL=servername.com
     depends_on:
       - db
       - scheduler

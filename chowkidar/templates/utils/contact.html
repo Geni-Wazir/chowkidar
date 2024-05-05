@@ -14,7 +14,7 @@
             <div class="mx-8 lg:mx-20 border-b border-b-orange-500"></div>
             <div class="lg:px-10 pt-8">
                 <form method="POST" action="">
-                    {{ form.hidden_tag() }}
+                    {{ form.csrf_token }}
                     <p class="mb-5">
                         {{ form.name.label(class='block text-xs font-medium text-slate-600') }}
                         {{ form.name(class="bg-gray-50 border border-gray-300 text-slate-900 text-sm rounded-lg focus:border-orange-500 block w-full p-2.5 focus:outline-none", autocomplete="off", placeholder="Full Name") }}
