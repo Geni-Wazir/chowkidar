@@ -165,9 +165,9 @@ def scan_audit(audit_name):
         flash(f'Initiating the scan for {audit.name} is not possible', 'info')
         return redirect(url_for('audits.audit_list'))
 
-    add_vulnerability_api = 'http://localhost' + url_for('audits.add_vulnerability')
-    scan_result_api = 'http://localhost' + url_for('audits.add_scan_result')
-    scan_status_api = 'http://localhost' + url_for('audits.scan_status')
+    add_vulnerability_api = os.getenv('SERVER_URL') + url_for('audits.add_vulnerability')
+    scan_result_api = os.getenv('SERVER_URL') + url_for('audits.add_scan_result')
+    scan_status_api = os.getenv('SERVER_URL') + url_for('audits.scan_status')
     secret_key = os.environ.get('SCANNER_SECRET_KEY')
 
     scan_task = task_queue.enqueue(run_scan, args=(secret_key, scan_result_api, add_vulnerability_api, scan_status_api, audit), job_timeout=-1)
