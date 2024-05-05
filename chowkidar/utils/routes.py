@@ -188,7 +188,11 @@ def contact_post_form(form):
         except Exception:
             flash('Unable to deliver your message, please use an alternative method to communicate.', 'danger')
     else:
-        flash('The message could not be sent. Please verify your email address', 'danger')
+        errors = list(form.errors.values())
+        if errors:
+            flash(", ".join(errors[0]), 'info')
+        else:
+            flash('Unable to deliver your message, please use an alternative method to communicate.', 'danger')
     return redirect(url_for('utils.contact'))
 
 
