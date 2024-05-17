@@ -1,7 +1,7 @@
-from flask import render_template, url_for, flash, redirect, request, Blueprint, session, make_response, send_from_directory, current_app
+from flask import render_template, url_for, flash, redirect, request, Blueprint, session, make_response, send_from_directory, current_app, jsonify
 from flask_login import login_user, current_user, logout_user, login_required
 from chowkidar import oauth, get_admin
-from chowkidar.models import User, Audit, VulnerabilityDiscovered, VulnerabilityTemplates, db
+from chowkidar.models import User, Audit, VulnerabilityDiscovered, VulnerabilityTemplates, Messages, db
 from dotenv import load_dotenv
 import os
 from chowkidar import limiter, task_queue, mail
@@ -70,7 +70,6 @@ def auth():
 @utils.route('/auth/callback')
 def auth_callback():
     token = google.authorized_response()
-    print(admins_list)
 
     if token:
         session['google_token'] = (token['access_token'], '')
@@ -244,3 +243,18 @@ def download_report(audit_id, job_id):
         return response, 200
 
     return 'processing', 403
+
+
+
+@utils.route('/message')
+@login_required
+def message():
+    messages = Messages.query.all()
+    messages_json = [
+        {
+            'id': message.id,
+            'message': message.message
+        }
+        for message in messages
+    ]
+    return jsonify(messages_json), 200
