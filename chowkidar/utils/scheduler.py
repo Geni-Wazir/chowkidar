@@ -40,7 +40,7 @@ def run_scan(secret_key, scan_result_api, add_vulnerability_api, scan_status_api
     data = {'secret_key':os.environ['SCANNER_SECRET_KEY'],
             'audit_id':audit.id,
             'container_id':container.id}
-    response = requests.post('http://localhost:5000/audits/containerid', json=data)
+    response = requests.post(f'{os.getenv('SERVER_URL')}:5000/audits/containerid', json=data)
     return container.id
 
 
