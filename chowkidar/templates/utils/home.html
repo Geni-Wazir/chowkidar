@@ -188,6 +188,18 @@
         </div>
     </div>
 </div>
+<div class="my-0 lg:my-10 p-5 w-full flex flex-col justify-center">
+    <h1 class="flex-1 flex justify-center text-xl lg:text-4xl pb-5 font-semibold">Get Started in Just a Few Clicks ☝️</h1>
+    <video class="px-0 lg:px-32" controls playsinline>
+        <source src="{{ url_for('static', filename='demo.mp4') }}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+</div>
+<div class="my-0 lg:my-10 p-5 w-full flex flex-col justify-center">
+    <h1 class="flex-1 flex justify-center text-xl lg:text-4xl pb-5 font-semibold">Comprehensive Progress and Vulnerability Report</h1>
+    <img class="px-0 lg:px-32" src="{{ url_for('static', filename='home-report.png') }} " alt="Comprehensive Report">
+
+</div>
 <script>
     // Get the target element
     const target = document.getElementById('target');
