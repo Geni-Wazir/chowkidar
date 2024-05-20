@@ -105,7 +105,7 @@ docker compose up
 
 
 ## Contributing:
-Contributions to Sasori are welcome! If you encounter any bugs, have feature requests, or would like to contribute code improvements, please follow the following guidelines.
+Contributions to chowkidar are welcome! If you encounter any bugs, have feature requests, or would like to contribute code improvements, please follow the following guidelines.
 
 1. **Fork the Repository:** Begin by forking the chowkidar repository to your GitHub account.
 2. **Create a Branch:** Create a new branch for your work to keep your changes separate from the main codebase.
