@@ -51,7 +51,7 @@ body{
 @media only screen and (min-width: 601px) and (min-height: 481px) and (max-height: 767px) {
 
   .scrollable-table {
-    max-height: 20rem; /* Set the maximum height to 35rem */
+    max-height: 30rem; /* Set the maximum height to 35rem */
     overflow-y: auto; /* Enable vertical scrolling if the content exceeds the maximum height */
     overflow-x: hidden; /* Prevent horizontal scrolling */
 }
@@ -113,7 +113,7 @@ body{
 /* Medium Devices, Landscape Tablets */
 @media only screen and (min-width: 768px) and (min-height: 811px) and (max-height: 991px) {
   .scrollable-table {
-    max-height: 45.7rem; /* Set the maximum height to 35rem */
+    max-height: 38rem; /* Set the maximum height to 35rem */
     overflow-y: auto; /* Enable vertical scrolling if the content exceeds the maximum height */
     overflow-x: hidden; /* Prevent horizontal scrolling */
 }
