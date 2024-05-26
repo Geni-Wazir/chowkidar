@@ -33,7 +33,7 @@ class AuditForm(FlaskForm):
 
 
 class UpdateAuditForm(FlaskForm):
-    nmap = BooleanField('Nmap Scan', default=True)
+    nmap = BooleanField('Port Scan', default=True)
     headers = BooleanField('Security Header Scan', default=True)
     dirsearch = BooleanField('Directory Scan', default=True)
     testssl = BooleanField('TLS/SSL Scan', default=True)
