@@ -96,7 +96,7 @@
                                     <p class="text-[0.5rem] text-center font-bold text-orange-500">cloud</p> -->
                                 </div>
                                 <div class="ml-3">
-                                    <a href="{{ url_for('audits.audit', audit_name=audit.name) }}">
+                                    <a href="{{ url_for('admin_view.admin_audit', user_email=audit.Auditor.email, audit_name=audit.name) }}">
                                         {% if audit.name|length > 25 %}
                                         <span class="group">
                                             {{ audit.name }}
