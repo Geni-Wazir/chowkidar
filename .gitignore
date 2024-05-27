@@ -68,6 +68,7 @@ instance/
 .data/
 .env
 .config.ini
+migrations/
 
 # Scrapy stuff:
 .scrapy
