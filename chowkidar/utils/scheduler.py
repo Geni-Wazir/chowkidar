@@ -36,7 +36,12 @@ def run_scan(secret_key, scan_result_api, add_vulnerability_api, scan_status_api
                                                                         audit.wpscan,
                                                                         audit.Auditor.wpscan_api
                                                                         )
-    container = client.containers.run("scanner", name=f"{audit.name}-{datetime.now(timezone.utc).strftime('%d-%m-%Y-%H-%M-%S')}", command=command, network="host", detach=True)
+    container = client.containers.run("scanner", 
+                                      name=f"{audit.name}-{datetime.now(timezone.utc).strftime('%d-%m-%Y-%H-%M-%S')}", 
+                                      command=command, 
+                                      network="host", 
+                                      cap_add=['NET_RAW', 'NET_ADMIN', 'NET_BIND_SERVICE'],
+                                      detach=True)
     data = {'secret_key':os.environ['SCANNER_SECRET_KEY'],
             'audit_id':audit.id,
             'container_id':container.id}
