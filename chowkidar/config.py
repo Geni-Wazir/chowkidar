@@ -10,6 +10,7 @@ load_dotenv()
 
 class Config:
     SECRET_KEY = os.environ['SECRET_KEY']
+    SERVER_NAME = 'localhost'
     SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://scanner:scanner@db/scanner'
     redis_client = redis.Redis(host='scheduler', port=6379, db=0)
     SESSION_TYPE = 'redis'
