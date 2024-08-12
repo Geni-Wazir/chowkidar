@@ -15,6 +15,7 @@ from flask_login import current_user
 from flask_limiter.util import get_remote_address
 import redis
 from rq import Queue
+from chowkidar.vulnerability_templates import templates
 
 
 
@@ -90,18 +91,39 @@ def create_app(config_class=Config):
         mail.init_app(app)
         limiter.init_app(app)
         
-    admin = Admin(app, name='admin')
+        admin = Admin(app, name='admin')
 
-    from chowkidar.models import User, Audit, ScanResults, VulnerabilityDiscovered, VulnerabilityTemplates, Messages
-    
-    admin.add_view(AdminPanelView(User, db.session))
-    admin.add_view(AdminPanelAuditView(Audit, db.session))
-    admin.add_view(AdminPanelView(ScanResults, db.session))
-    admin.add_view(AdminPanelView(VulnerabilityDiscovered, db.session))
-    admin.add_view(AdminPanelTemplatesView(VulnerabilityTemplates, db.session))
-    admin.add_view(AdminPanelView(Messages, db.session))
-            
-    
+        from chowkidar.models import User, Audit, ScanResults, VulnerabilityDiscovered, VulnerabilityTemplates, Messages
+        
+        admin.add_view(AdminPanelView(User, db.session))
+        admin.add_view(AdminPanelAuditView(Audit, db.session))
+        admin.add_view(AdminPanelView(ScanResults, db.session))
+        admin.add_view(AdminPanelView(VulnerabilityDiscovered, db.session))
+        admin.add_view(AdminPanelTemplatesView(VulnerabilityTemplates, db.session))
+        admin.add_view(AdminPanelView(Messages, db.session))
+
+        try:
+            if not VulnerabilityTemplates.query.first():
+                all_templates = templates()
+                initial_templates = []
+                for template in all_templates:
+                    initial_templates.append(VulnerabilityTemplates(
+                        name=template[0],
+                        description=template[1],
+                        impact=template[2],
+                        severity=template[3],
+                        steps=template[4],
+                        fix=template[5],
+                        cvss=template[6],
+                        cwe=template[7],
+                        type=template[8])
+                    )
+                db.session.add_all(initial_templates)
+                db.session.commit()
+                print('Vulnerability Templates Added Successfuly')
+        except Exception as e:
+            print(f'Error Adding Vulnerability Templates: {e}')
+
     from chowkidar.utils.routes import utils
     from chowkidar.audits.routes import audits
     from chowkidar.admin.routes import admin_view
