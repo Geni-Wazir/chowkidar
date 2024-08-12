@@ -83,7 +83,7 @@
                                             <circle class="st0" cx="16" cy="25" r="3"></circle>
                                         </g>
                                     </svg>
-                                    <p class="text-[0.5rem] text-center font-bold text-sky-500">Web</p>
+                                    <p class="text-[0.5rem] text-center font-bold text-sky-500 select-none">Web</p>
 
                                     <!-- <svg class="w-9" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -93,15 +93,16 @@
                                             <path d="M12 14.75C12.641 14.75 13.2007 15.1019 13.5002 15.6249M12 14.75C11.3589 14.75 10.7992 15.1019 10.4997 15.6249M12 14.75V13M12 20V18.2209M15 14.75L13.5002 15.6249M9 18.25L10.4997 17.3751M15 18.25L13.5003 17.3752M9 14.75L10.4997 15.6249M10.4997 17.3751C10.3523 17.1177 10.2679 16.8188 10.2679 16.5C10.2679 16.1812 10.3523 15.8823 10.4997 15.6249M10.4997 17.3751C10.8408 17.9707 11.4229 18.2326 12 18.2209M12 18.2209C12.5958 18.2088 13.1862 17.9049 13.5003 17.3752M13.5003 17.3752C13.6458 17.1298 13.732 16.8358 13.732 16.5C13.732 16.1812 13.6477 15.8823 13.5002 15.6249" stroke="#f97316" stroke-width="2" stroke-linecap="round"></path> 
                                         </g>
                                     </svg>
-                                    <p class="text-[0.5rem] text-center font-bold text-orange-500">cloud</p> -->
+                                    <p class="text-[0.5rem] text-center font-bold text-orange-500 select-none">cloud</p> -->
+
                                 </div>
                                 <div class="ml-3">
                                     <a href="{{ url_for('admin_view.admin_audit', user_email=audit.Auditor.email, audit_name=audit.name) }}">
-                                        {% if audit.name|length > 25 %}
+                                        {% if audit.name|length > 50 %}
                                         <span class="group">
                                             {{ audit.name }}
                                             <div class='absolute hidden sm:group-hover:block mt-1 bg-black rounded-md p-1 px-2 triangle-top'>
-                                                <span class='text-white text-sm hover:font-bold'>{{ audit.name }}</span>
+                                                <span class='text-white text-xs hover:font-bold'>{{ audit.name }}</span>
                                             </div>
                                         </span>
                                         {% else %}
