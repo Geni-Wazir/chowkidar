@@ -89,25 +89,26 @@ def create_app(config_class=Config):
         session.init_app(app)
         mail.init_app(app)
         limiter.init_app(app)
-        admin = Admin(app, name='admin')
+        
+    admin = Admin(app, name='admin')
 
-        from chowkidar.models import User, Audit, ScanResults, VulnerabilityDiscovered, VulnerabilityTemplates, Messages
-        
-        admin.add_view(AdminPanelView(User, db.session))
-        admin.add_view(AdminPanelAuditView(Audit, db.session))
-        admin.add_view(AdminPanelView(ScanResults, db.session))
-        admin.add_view(AdminPanelView(VulnerabilityDiscovered, db.session))
-        admin.add_view(AdminPanelTemplatesView(VulnerabilityTemplates, db.session))
-        admin.add_view(AdminPanelView(Messages, db.session))
-                
-        
-        from chowkidar.utils.routes import utils
-        from chowkidar.audits.routes import audits
-        from chowkidar.admin.routes import admin_view
-        from chowkidar.errors.handlers import errors
-        app.register_blueprint(utils)
-        app.register_blueprint(audits)
-        app.register_blueprint(admin_view)
-        app.register_blueprint(errors)
-        
-        return app
+    from chowkidar.models import User, Audit, ScanResults, VulnerabilityDiscovered, VulnerabilityTemplates, Messages
+    
+    admin.add_view(AdminPanelView(User, db.session))
+    admin.add_view(AdminPanelAuditView(Audit, db.session))
+    admin.add_view(AdminPanelView(ScanResults, db.session))
+    admin.add_view(AdminPanelView(VulnerabilityDiscovered, db.session))
+    admin.add_view(AdminPanelTemplatesView(VulnerabilityTemplates, db.session))
+    admin.add_view(AdminPanelView(Messages, db.session))
+            
+    
+    from chowkidar.utils.routes import utils
+    from chowkidar.audits.routes import audits
+    from chowkidar.admin.routes import admin_view
+    from chowkidar.errors.handlers import errors
+    app.register_blueprint(utils)
+    app.register_blueprint(audits)
+    app.register_blueprint(admin_view)
+    app.register_blueprint(errors)
+    
+    return app
