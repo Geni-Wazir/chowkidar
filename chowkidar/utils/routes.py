@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, redirect, request, Blueprint, session, make_response, send_from_directory, current_app, jsonify
 from flask_login import login_user, current_user, logout_user, login_required
 from chowkidar import oauth, get_admin
-from chowkidar.models import User, Audit, VulnerabilityDiscovered, VulnerabilityTemplates, Messages, db
+from chowkidar.models import User, Audit, VulnerabilityDiscovered, VulnerabilityTemplates, db
 from dotenv import load_dotenv
 import os
 from chowkidar import limiter, task_queue, mail
@@ -199,7 +199,7 @@ def contact_post_form(form):
 
 @utils.route('/report/<int:audit_id>')
 @login_required
-@limiter.limit("5/minute")
+@limiter.limit("10/minute")
 def report(audit_id):
     audit = Audit.query.filter_by(id=audit_id, Auditor=current_user).first()
     if not audit:
@@ -231,7 +231,7 @@ def report(audit_id):
 
 @utils.route('/report/<string:audit_id>/download/<job_id>', methods=['GET'])
 @login_required
-@limiter.limit("5/minute")
+@limiter.limit("10/minute")
 def download_report(audit_id, job_id):
     report_job = task_queue.fetch_job(job_id)
 
@@ -243,18 +243,3 @@ def download_report(audit_id, job_id):
         return response, 200
 
     return 'processing', 403
-
-
-
-@utils.route('/message')
-@login_required
-def message():
-    messages = Messages.query.all()
-    messages_json = [
-        {
-            'id': message.id,
-            'message': message.message
-        }
-        for message in messages
-    ]
-    return jsonify(messages_json), 200

@@ -1,7 +1,5 @@
 import docker 
 from datetime import datetime, timezone
-from chowkidar.models import User, Audit, VulnerabilityDiscovered, VulnerabilityTemplates, db
-from flask import render_template, url_for
 import pdfkit
 from chowkidar import get_workers, task_queue
 import requests
@@ -20,7 +18,8 @@ def run_scan(secret_key, scan_result_api, add_vulnerability_api, scan_status_api
     if len(previous_tasks) >= workers:
         for task in previous_tasks:
             task.wait()
-    command=f"python3 scanner.py {secret_key} {scan_result_api} {add_vulnerability_api} {scan_status_api} {audit.id} {audit.url} {audit.nmap} {audit.headers} {audit.dirsearch} {audit.testssl} {audit.nuclei} {audit.sublister} {audit.wpscan} {audit.Auditor.wpscan_api}"
+    tools = eval(audit.tools)
+    command=f"python3 scanner.py {secret_key} {scan_result_api} {add_vulnerability_api} {scan_status_api} {audit.id} {audit.url} {tools['nmap']} {tools['headers']} {tools['dirsearch']} {tools['testssl']} {tools['nuclei']} {tools['sublister']} {tools['wpscan']} {audit.Auditor.wpscan_api}"
     container = client.containers.run("scanner", 
                                       name=f"{audit.name}-{datetime.now(timezone.utc).strftime('%d-%m-%Y-%H-%M-%S')}", 
                                       command=command, 
