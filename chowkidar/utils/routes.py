@@ -1,4 +1,4 @@
-from flask import render_template, url_for, flash, redirect, request, Blueprint, session, make_response, send_from_directory, current_app, jsonify
+from flask import render_template, url_for, flash, redirect, request, Blueprint, session, make_response, send_from_directory, current_app
 from flask_login import login_user, current_user, logout_user, login_required
 from chowkidar import oauth, get_admin
 from chowkidar.models import User, Audit, VulnerabilityDiscovered, VulnerabilityTemplates, db
