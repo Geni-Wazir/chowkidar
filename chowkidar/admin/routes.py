@@ -292,7 +292,7 @@ def report(audit_id):
         return redirect(url_for('audits.audit_list'))
     
     audit = Audit.query.filter_by(id=audit_id).first()
-
+    user = audit.Auditor
     if not audit:
         flash('Unfortunately, you do not have the privilege to access this audit', 'danger')
         return redirect(url_for('audits.audit_list'))
@@ -311,7 +311,7 @@ def report(audit_id):
         audit=audit,
         vulnerabilities=vulnerabilities,
         vulnerability_data=vulnerability_data,
-        **get_vulnerability_counts(current_user.id, audit_id=audit.id)
+        **get_vulnerability_counts(user.id, audit_id=audit.id)
     )
 
     report = task_queue.enqueue(generate_report, content)
