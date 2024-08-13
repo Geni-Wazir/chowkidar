@@ -54,7 +54,6 @@ limiter = Limiter(
 
 class AdminPanelView(ModelView):
     def is_accessible(self):
-        column_display_pk = True
         if current_user.is_authenticated and current_user.admin:
             return True
         else:
@@ -65,14 +64,14 @@ class AdminPanelView(ModelView):
 
 class AdminPanelAuditView(AdminPanelView):
     column_display_pk = True
-    column_list = ['id', 'name', 'url', 'task_id', 'container_id', 'status', 'date', 'nmap', 'dirsearch', 'headers', 'testssl', 'nuclei', 'sublister', 'wpscan', 'Auditor']
-    form_columns = ['name', 'url', 'task_id', 'container_id', 'status', 'date', 'nmap', 'dirsearch', 'headers', 'testssl', 'nuclei', 'sublister', 'wpscan', 'Auditor']
+    column_list = ['id', 'name', 'asset_type', 'task_id', 'container_id', 'status', 'date', 'scan_date', 'url', 'tools', 'access_key', 'secret_id', 'regions', 'sevices', 'Auditor']
+    form_columns = ['name', 'asset_type', 'task_id', 'container_id', 'status', 'date', 'scan_date', 'url', 'tools', 'access_key', 'secret_id', 'regions', 'sevices', 'Auditor']
 
 
 
 
 class AdminPanelTemplatesView(AdminPanelView):
-    form_columns = ['name', 'description', 'impact', 'severity', 'steps', 'fix', 'cvss', 'cwe', 'type']
+    form_columns = ['name', 'description', 'impact', 'severity', 'steps', 'fix', 'cvss', 'cvss_string', 'cwe', 'type']
 
 
 
@@ -93,14 +92,13 @@ def create_app(config_class=Config):
         
         admin = Admin(app, name='admin')
 
-        from chowkidar.models import User, Audit, ScanResults, VulnerabilityDiscovered, VulnerabilityTemplates, Messages
+        from chowkidar.models import User, Audit, ScanResults, VulnerabilityDiscovered, VulnerabilityTemplates
         
         admin.add_view(AdminPanelView(User, db.session))
         admin.add_view(AdminPanelAuditView(Audit, db.session))
         admin.add_view(AdminPanelView(ScanResults, db.session))
         admin.add_view(AdminPanelView(VulnerabilityDiscovered, db.session))
         admin.add_view(AdminPanelTemplatesView(VulnerabilityTemplates, db.session))
-        admin.add_view(AdminPanelView(Messages, db.session))
 
         try:
             if not VulnerabilityTemplates.query.first():
