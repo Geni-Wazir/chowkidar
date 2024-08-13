@@ -37,14 +37,15 @@ def admin_audit(user_email, audit_name):
     user = User.query.filter_by(email=user_email).first()
     audit = Audit.query.filter_by(name=audit_name, Auditor=user).first()
     if audit:
+        tools = eval(audit.tools)
         form = UpdateAuditForm()
-        form.nmap.data = audit.nmap
-        form.dirsearch.data = audit.dirsearch
-        form.headers.data = audit.headers
-        form.testssl.data = audit.testssl
-        form.nuclei.data = audit.nuclei
-        form.sublister.data = audit.sublister
-        form.wpscan.data = audit.wpscan
+        form.nmap.data = tools['nmap']
+        form.dirsearch.data = tools['dirsearch']
+        form.headers.data = tools['headers']
+        form.testssl.data = tools['testssl']
+        form.nuclei.data = tools['nuclei']
+        form.sublister.data = tools['sublister']
+        form.wpscan.data = tools['wpscan']
     else:
         flash('Unfortunately, you do not have the privilege to access this audit', 'danger')
         return redirect(url_for('admin_view.all_audits'))
@@ -73,13 +74,15 @@ def admin_audit_post(user_email, audit_name):
     if form.validate_on_submit():
         if audit.status == 'unscanned':
             if any(list(form.data.values())[2:-1]):
-                audit.nmap = form.nmap.data
-                audit.dirsearch = form.dirsearch.data
-                audit.headers = form.headers.data
-                audit.testssl = form.testssl.data
-                audit.nuclei = form.nuclei.data
-                audit.sublister = form.sublister.data
-                audit.wpscan = form.wpscan.data
+                audit.tools=str({
+                    'nmap': form.nmap.data,
+                    'dirsearch': form.dirsearch.data,
+                    'headers': form.headers.data,
+                    'testssl': form.testssl.data,
+                    'nuclei': form.nuclei.data,
+                    'sublister': form.sublister.data,
+                    'wpscan': form.wpscan.data,
+                }),
                 db.session.commit()
                 flash('The audit has been upgraded', 'success')
             else:
