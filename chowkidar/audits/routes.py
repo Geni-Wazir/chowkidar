@@ -100,7 +100,7 @@ def audit_post(audit_name):
         if form.validate_on_submit():
             if audit.status == 'unscanned':
                 if any(list(form.data.values())[:-1]):
-                    tools = str({
+                    audit.tools = str({
                         'nmap': form.nmap.data,
                         'dirsearch': form.dirsearch.data,
                         'headers': form.headers.data,
@@ -109,7 +109,6 @@ def audit_post(audit_name):
                         'sublister': form.sublister.data,
                         'wpscan': form.wpscan.data,
                     })
-                    audit.tools = tools
                     db.session.commit()
                     flash('The audit has been upgraded', 'success')
                     return redirect(url_for('audits.audit', audit_name=audit.name))
