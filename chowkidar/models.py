@@ -32,18 +32,22 @@ class Audit(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     name = db.Column(db.String(100), nullable=False)
-    url = db.Column(db.String(100), nullable=False)
+    asset_type = db.Column(db.String(100), nullable=False, default='web')
     container_id = db.Column(db.String(100))
     task_id = db.Column(db.String(100))
     status = db.Column(db.String(100), nullable=False, default='unscanned')
+    scan_verified = db.Column(db.Boolean, nullable=False, default=False)
     date = db.Column(db.DateTime, nullable=False, default=datetime.now(timezone.utc))
-    nmap = db.Column(db.Boolean, nullable=False, default=True)
-    headers = db.Column(db.Boolean, nullable=False, default=True)
-    dirsearch = db.Column(db.Boolean, nullable=False, default=True)
-    testssl = db.Column(db.Boolean, nullable=False, default=True)
-    nuclei = db.Column(db.Boolean, nullable=False, default=True)
-    sublister = db.Column(db.Boolean, nullable=False, default=False)
-    wpscan = db.Column(db.Boolean, nullable=False, default=False)
+    scan_date = db.Column(db.DateTime, nullable=False, default=datetime.now(timezone.utc))
+    # web scan config
+    url = db.Column(db.String(100), nullable=False, default='')
+    tools = db.Column(db.Text(), nullable=False, default='')
+    # cloud (AWS) scan config
+    access_key = db.Column(db.String(100), nullable=False, default='')
+    secret_id = db.Column(db.String(100), nullable=False, default='')
+    regions = db.Column(db.String(1000), nullable=False, default='')
+    sevices = db.Column(db.Text(), nullable=False, default='')
+
     Auditor = db.relationship('User', back_populates='audit', lazy=True)
     audit_vuln = db.relationship('VulnerabilityDiscovered', backref='Audit', lazy=True, cascade="all, delete")
     result = db.relationship('ScanResults', backref='Audit', lazy=True, cascade="all, delete")
@@ -67,6 +71,8 @@ class ScanResults(db.Model):
     sublister = db.Column(db.Text(4294000000), nullable=False, default='NA')
     nuclei = db.Column(db.Text(4294000000), nullable=False, default='NA')
     wpscan = db.Column(db.Text(4294000000), nullable=False, default='NA')
+    # cloud (AWS) output [ERRORS]
+    cloud = db.Column(db.Text(4294000000), nullable=False, default='NA')
 
 
 
@@ -92,19 +98,11 @@ class VulnerabilityTemplates(db.Model):
     severity = db.Column(db.String(100), nullable=False)
     steps = db.Column(db.Text)
     fix = db.Column(db.Text, nullable=False)
-    cvss = db.Column(db.String(100), nullable=False)
+    cvss = db.Column(db.String(10), nullable=False)
+    cvss_string = db.Column(db.String(100), nullable=False)
     cwe = db.Column(db.String(400))
     type = db.Column(db.String(100))
     vulnerability = db.relationship('VulnerabilityDiscovered', backref='Template', lazy=True, cascade="all, delete")
     def __repr__(self):
         return "Template({})".format(self.name)
-   
 
-
-
-class Messages(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    message = db.Column(db.Text)
-
-    def __repr__(self):
-        return "Message({})".format(self.message)
