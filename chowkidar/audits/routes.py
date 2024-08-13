@@ -3,7 +3,7 @@ from flask_login import current_user, login_required
 from chowkidar.models import Audit, ScanResults, VulnerabilityDiscovered, VulnerabilityTemplates, db
 from chowkidar import limiter, task_queue, mail
 from chowkidar.audits.forms import AuditForm, UpdateAuditForm
-from chowkidar.utils.scheduler import run_scan, delete_container, remove_task, generate_report
+from chowkidar.utils.scheduler import run_scan, delete_container, remove_task
 import os
 from flask_mail import Message
 
@@ -29,13 +29,15 @@ def add_audit_post(form):
     audit = Audit(
         name=form.name.data.lower(),
         url=form.url.data,
-        nmap=form.nmap.data,
-        dirsearch=form.dirsearch.data,
-        headers=form.headers.data,
-        testssl=form.testssl.data,
-        nuclei=form.nuclei.data,
-        sublister=form.sublister.data,
-        wpscan=form.wpscan.data,
+        tools=str({
+            'nmap': form.nmap.data,
+            'dirsearch': form.dirsearch.data,
+            'headers': form.headers.data,
+            'testssl': form.testssl.data,
+            'nuclei': form.nuclei.data,
+            'sublister': form.sublister.data,
+            'wpscan': form.wpscan.data,
+        }),
         Auditor=current_user
     )
     db.session.add(audit)
@@ -71,14 +73,15 @@ def add_audit():
 def audit(audit_name):
     audit = Audit.query.filter_by(name=audit_name, Auditor=current_user).first()
     if audit:
+        tools = eval(audit.tools)
         form = UpdateAuditForm()
-        form.nmap.data = audit.nmap
-        form.dirsearch.data = audit.dirsearch
-        form.headers.data = audit.headers
-        form.testssl.data = audit.testssl
-        form.nuclei.data = audit.nuclei
-        form.sublister.data = audit.sublister
-        form.wpscan.data = audit.wpscan
+        form.nmap.data = tools['nmap']
+        form.dirsearch.data = tools['dirsearch']
+        form.headers.data = tools['headers']
+        form.testssl.data = tools['testssl']
+        form.nuclei.data = tools['nuclei']
+        form.sublister.data = tools['sublister']
+        form.wpscan.data = tools['wpscan']
         return render_template('audits/add_audit.html', title="Audit Info", audit=audit, form=form, legend="Audit Insights")
     else:
         flash('Unfortunately, you do not have the privilege to access this audit', 'danger')
@@ -97,13 +100,16 @@ def audit_post(audit_name):
         if form.validate_on_submit():
             if audit.status == 'unscanned':
                 if any(list(form.data.values())[:-1]):
-                    audit.nmap = form.nmap.data
-                    audit.dirsearch = form.dirsearch.data
-                    audit.headers = form.headers.data
-                    audit.testssl = form.testssl.data
-                    audit.nuclei = form.nuclei.data
-                    audit.sublister = form.sublister.data
-                    audit.wpscan = form.wpscan.data
+                    tools = str({
+                        'nmap': form.nmap.data,
+                        'dirsearch': form.dirsearch.data,
+                        'headers': form.headers.data,
+                        'testssl': form.testssl.data,
+                        'nuclei': form.nuclei.data,
+                        'sublister': form.sublister.data,
+                        'wpscan': form.wpscan.data,
+                    })
+                    audit.tools = tools
                     db.session.commit()
                     flash('The audit has been upgraded', 'success')
                     return redirect(url_for('audits.audit', audit_name=audit.name))
