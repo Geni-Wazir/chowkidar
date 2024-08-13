@@ -183,43 +183,6 @@ if (scrollContainer) {
 }
 
 
-
-
-let messages = [];
-
-document.addEventListener('DOMContentLoaded', function () {
-    const messageBox = document.getElementById('message-box');
-    if (messageBox) {
-        fetchMessages();
-    }
-});
-
-function fetchMessages() {
-    fetch('/message')
-        .then(response => response.json())
-        .then(data => {
-            messages = data;
-            displayMessage();
-        })
-        .catch(error => console.error('Error:', error));
-}
-
-function displayMessage() {
-    const messageBox = document.getElementById('message-box');
-    messageBox.textContent = ''; // Clear the existing content
-
-    if (messages.length > 0) {
-        const messageIndex = Math.floor(Math.random() * messages.length);
-        const message = messages[messageIndex];
-        messageBox.textContent = message.message;
-    }
-
-    // Schedule the next message to be displayed after 3 seconds
-    setTimeout(displayMessage, 5000);
-}
-
-
-
 document.addEventListener('DOMContentLoaded', function () {
     // Get all the tab buttons
     const tabButtons = document.querySelectorAll('[role="tab"]');
