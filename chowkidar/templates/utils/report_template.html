@@ -34,7 +34,7 @@
                                 Audit Date
                             </th>
                             <td class="px-6 py-4">
-                                {{ audit.date.strftime('%d %b %Y') }}
+                                {{ audit.scan_date.strftime('%d %b %Y') }}
                             </td>
                         </tr>
                         <tr class="border-b border-gray-200">
@@ -212,15 +212,15 @@
                     <div class="text-sm px-20 pt-5 break-words">
                         {% if vulnerability.Template.type == 'list' %}
                         <ul class="list-disc">
-                            {% for elem in vulnerability_data[vulnerability.name] %}
+                            {% for elem in vulnerability_data[vulnerability.id] %}
                                 <li style="font-weight: bold;">{{ elem }}</li>
                             {% endfor %}
                         </ul>
                         {% elif vulnerability.Template.type == 'lucky13' %}
-                        {% for elem in vulnerability_data[vulnerability.name] %}
+                        {% for elem in vulnerability_data[vulnerability.id] %}
                             <p class="font-semibold pb-1">{{ elem }}</p>
                             <ul class="list-disc px-8 pb-5 inline-block">
-                                {% for ciph in vulnerability_data[vulnerability.name][elem] %}
+                                {% for ciph in vulnerability_data[vulnerability.id][elem] %}
                                     <li style="color: #d97706;">{{ ciph }}</li>
                                 {% endfor %}
                             </ul>
@@ -229,7 +229,7 @@
                         <div class="relative mx-auto bg-gray-300 rounded-lg z-10 -mx-10 my-1 px-1">
                             <div class="h-full">
                                 <div class="h-full font-mono leading-relaxed px-2 pb-4 italic text-xs break-words" style="margin-right: -5rem;">
-                                    {% for vuln in vulnerability_data[vulnerability.name] %}
+                                    {% for vuln in vulnerability_data[vulnerability.id] %}
                                     <p class="py-8 pl-8">
                                         <span class="font-semibold block text-md">{{ vuln.title }}</span>
                                         <span class="block text-xs pl-5"><strong>Fixed in</strong>: {{ vuln.fixed_in }}</span>
@@ -246,11 +246,11 @@
                             <div class="h-full">
                                 <div class="h-full font-mono leading-relaxed px-2 pb-4 italic text-xs">
                                     <p class="p-8">
-                                        <span class="font-semibold block pb-2"> URL: {{ vulnerability_data[vulnerability.name][0] }}</span>
+                                        <span class="font-semibold block pb-2"> URL: {{ vulnerability_data[vulnerability.id][0] }}</span>
                                         <span class="block font-bold">References:</span>
-                                        <span class="block text-xs pl-8 pb-2">{{ vulnerability_data[vulnerability.name][1].url[0] }}</span>
+                                        <span class="block text-xs pl-8 pb-2">{{ vulnerability_data[vulnerability.id][1].url[0] }}</span>
                                         <span class="block font-semibold">Metasploit:</span>
-                                        {% for elem in vulnerability_data[vulnerability.name][1].metasploit  %}
+                                        {% for elem in vulnerability_data[vulnerability.id][1].metasploit  %}
                                             <span class="block text-xs pl-8">{{ elem }}</span>
                                         {% endfor %}
                                     </p>
@@ -261,10 +261,10 @@
                         <div class="relative mx-auto bg-gray-300 rounded-lg z-10 -mx-10 my-1 px-1 break-words" style="margin-right: -5rem;">
                             <div class="h-full">
                                 <div class="h-full font-mono leading-relaxed px-2 pb-4 italic text-xs">
-                                    {% for vuln in vulnerability_data[vulnerability.name] %}
+                                    {% for vuln in vulnerability_data[vulnerability.id] %}
                                     <p class="p-8">
                                         <span class="font-semibold block">{{ vuln }}</span>
-                                        <span class="block text-xs"><pre class="block text-xs pb-10" style="margin-top: -2rem;">{{ vulnerability_data[vulnerability.name][vuln] }}</pre></span>
+                                        <span class="block text-xs"><pre class="block text-xs pb-10" style="margin-top: -2rem;">{{ vulnerability_data[vulnerability.id][vuln] }}</pre></span>
                                         {% endfor %}
                                     </p>
                                 </div>
@@ -275,7 +275,7 @@
                             <table class="text-sm text-left text-gray-500">
                                 <thead class="text-xs text-gray-700 uppercase bg-blue-100">
                                     <tr>
-                                        {% for title in vulnerability_data[vulnerability.name][0] %}
+                                        {% for title in vulnerability_data[vulnerability.id][0] %}
                                             <th scope="col" class="px-6 py-3">
                                                 {{ title }}
                                             </th>
@@ -283,7 +283,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for column in vulnerability_data[vulnerability.name][1:] %}
+                                    {% for column in vulnerability_data[vulnerability.id][1:] %}
                                     <tr class="bg-white border-b text-xs">
                                         {% for cell in column %}
                                         <th class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap">
