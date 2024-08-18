@@ -189,6 +189,47 @@ def scan_audit(audit_name):
 
 
 
+@limiter.limit("5/minute")
+@audits.route('/audits/<string:audit_name>/rescan', methods=['POST'])
+@login_required
+def rescan_audit(audit_name):
+    audit = Audit.query.filter_by(name=audit_name, Auditor=current_user).first()
+    if not audit:
+        flash('Unfortunately, you do not have the privilege to access this audit', 'danger')
+        return redirect(url_for('audits.audit_list'))
+    
+    if not audit.rescan:
+        flash('Your Rescan Count is Low! Connect with Admin for Additional Rescans', 'info')
+        return redirect(url_for('audits.vulnerabilities', audit_name=audit_name))
+
+    if audit.status != 'finished':
+        flash(f'Initiating the Rescan for {audit.name} is not possible', 'info')
+        return redirect(url_for('audits.vulnerabilities', audit_name=audit_name))
+
+    if not audit.scan_verified:
+        flash(f'{audit.name} scan is not verified', 'info')
+        return redirect(url_for('audits.vulnerabilities', audit_name=audit_name))
+
+    # add_vulnerability_api = os.getenv('SERVER_URL') + url_for('audits.add_vulnerability')
+    # scan_result_api = os.getenv('SERVER_URL') + url_for('audits.add_scan_result')
+    # scan_status_api = os.getenv('SERVER_URL') + url_for('audits.scan_status')
+    # secret_key = os.environ.get('SCANNER_SECRET_KEY')
+
+    # scan_task = task_queue.enqueue(run_scan, args=(secret_key, scan_result_api, add_vulnerability_api, scan_status_api, audit), job_timeout=-1)
+    # audit.task_id = scan_task.id
+    # audit.status = 'rescanning'
+
+    
+    if not current_user.admin:
+        audit.rescan -= 1
+    
+    db.session.commit()
+    flash(f'Congratulations! Your {audit.name} Rescan has been successfully started.', 'success')
+    return redirect(url_for('audits.vulnerabilities', audit_name=audit_name))
+
+
+
+
 @audits.route('/audits/containerid', methods=['POST'])
 def get_container():
     data = request.json
@@ -330,7 +371,7 @@ def vulnerability(audit_name, vulnerability_name):
         flash('Vulnerability or template not found.', 'danger')
         return redirect(url_for('audits.audit_list'))
 
-    return render_template('audits/vulnerability.html', title="Admin", vulnerability=eval(vulnerability.data), template=template)
+    return render_template('audits/vulnerability.html', title=f'Vulnerabilities | {vulnerability_name}', vulnerability=eval(vulnerability.data), template=template)
 
 
 
@@ -358,6 +399,24 @@ def vulnerabilities(audit_name):
 
 
 
+@audits.route('/audits/<string:audit_name>/progress')
+@login_required
+def audit_progress(audit_name):
+    audit = Audit.query.filter_by(name=audit_name, Auditor=current_user).first()
+
+    if not audit:
+        flash('Unfortunately, you do not have the privilege to access this audit', 'danger')
+        return redirect(url_for('audits.audit_list'))
+    response = {
+        'name': audit.name,
+        'status': audit.status,
+        'progress': audit.progress
+    }
+    return response
+
+
+
+
 @audits.route('/audits/<string:audit_name>/scan-output')
 @login_required
 def scan_result(audit_name):
@@ -376,5 +435,29 @@ def scan_result(audit_name):
     if not output:
         flash(f'Currently, there are no scan results available for {audit_name}', 'info')
         return redirect(url_for('audits.vulnerabilities', audit_name=audit_name))
+    
+    vulnerabilities = VulnerabilityDiscovered.query \
+        .join(VulnerabilityTemplates, VulnerabilityDiscovered.template_id == VulnerabilityTemplates.id) \
+        .filter(VulnerabilityDiscovered.audit_id == audit.id).count()
 
-    return render_template('audits/scan_result.html', title="Scan Results", audit=audit, output=output)
+    return render_template('audits/scan_result.html', title="Scan Results", audit=audit, output=output, vulnerabilities=vulnerabilities)
+
+
+
+@audits.route('/audits/<string:audit_name>/verify')
+@login_required
+def scan_verify(audit_name):
+    audit = Audit.query.filter_by(name=audit_name, Auditor=current_user).first()
+
+    if not audit:
+        flash('Unfortunately, you do not have the privilege to access this audit', 'danger')
+        return redirect(url_for('audits.audit_list'))
+
+    if audit.status == 'finished':
+        audit.scan_verified = True
+        db.session.commit()
+        flash(f'Scan {audit_name} verified successfuly', 'success')
+        return redirect(url_for('audits.vulnerabilities', audit_name=audit_name))
+    
+    flash(f'The audit {audit_name} has not been scanned yet.', 'info')
+    return redirect(url_for('audits.vulnerabilities', audit_name=audit_name))
