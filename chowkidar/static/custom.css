@@ -21,10 +21,6 @@ body{
   margin-bottom: 2vh; /* Adjust this value to change the spacing */
 }
 
-.message-box {
-  height: 25rem; /* Set the maximum height to 35rem */
-}
-
 .new-audit-btn {
   margin: 3rem 0 4rem 0;
 }
@@ -54,28 +50,30 @@ body{
     max-height: 30rem; /* Set the maximum height to 35rem */
     overflow-y: auto; /* Enable vertical scrolling if the content exceeds the maximum height */
     overflow-x: hidden; /* Prevent horizontal scrolling */
-}
+  }
 
-.terminal {
-  height: 31.7rem; /* Set the maximum height to 35rem */
-  overflow-y: auto; /* Enable vertical scrolling if the content exceeds the maximum height */
-}
+  .scrollable-table-vulnerability {
+    max-height: 25rem; /* Set the maximum height to 35rem */
+    overflow-y: auto; /* Enable vertical scrolling if the content exceeds the maximum height */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+  }
 
-.new-audit {
-  height: 38rem;
-}
+  .terminal {
+    height: 27rem; /* Set the maximum height to 35rem */
+    overflow-y: auto; /* Enable vertical scrolling if the content exceeds the maximum height */
+  }
 
-.new-audit-btn {
-  margin: 0.4rem 0 1rem 0;
-}
+  .new-audit {
+    height: 38rem;
+  }
 
-.message-box {
-  height: 20rem; /* Set the maximum height to 35rem */
-}
+  .new-audit-btn {
+    margin: 0.4rem 0 1rem 0;
+  }
 
-.tool-gap-y > *:not(:last-child) {
-  margin-bottom: 1.8rem; /* Adjust this value to change the spacing */
-}
+  .tool-gap-y > *:not(:last-child) {
+    margin-bottom: 1.8rem; /* Adjust this value to change the spacing */
+  }
 
 }
 
@@ -85,28 +83,30 @@ body{
     max-height: 35.7rem; /* Set the maximum height to 35rem */
     overflow-y: auto; /* Enable vertical scrolling if the content exceeds the maximum height */
     overflow-x: hidden; /* Prevent horizontal scrolling */
-}
+  }
+  .scrollable-table-vulnerability {
+    max-height: 30.7rem; /* Set the maximum height to 35rem */
+    overflow-y: auto; /* Enable vertical scrolling if the content exceeds the maximum height */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+  }
 
-.terminal {
-  height: 37.7rem; /* Set the maximum height to 35rem */
-  overflow-y: auto; /* Enable vertical scrolling if the content exceeds the maximum height */
-}
+  .terminal {
+    height: 32.7rem; /* Set the maximum height to 35rem */
+    overflow-y: auto; /* Enable vertical scrolling if the content exceeds the maximum height */
+  }
 
-.new-audit {
-  height: 43.7rem;
-}
+  .new-audit {
+    height: 43.7rem;
+  }
 
-.new-audit-btn {
-  margin: 3rem 0 4rem 0;
-}
+  .new-audit-btn {
+    margin: 3rem 0 4rem 0;
+  }
 
-.message-box {
-  height: 25rem; /* Set the maximum height to 35rem */
-}
 
-.tool-gap-y > *:not(:last-child) {
-  margin-bottom: 2.6rem; /* Adjust this value to change the spacing */
-}
+  .tool-gap-y > *:not(:last-child) {
+    margin-bottom: 2.6rem; /* Adjust this value to change the spacing */
+  }
 
 }
 
@@ -116,7 +116,16 @@ body{
     max-height: 38rem; /* Set the maximum height to 35rem */
     overflow-y: auto; /* Enable vertical scrolling if the content exceeds the maximum height */
     overflow-x: hidden; /* Prevent horizontal scrolling */
-}
+  }
+  .scrollable-table-vulnerability {
+    max-height: 33rem; /* Set the maximum height to 35rem */
+    overflow-y: auto; /* Enable vertical scrolling if the content exceeds the maximum height */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+  }
+  .terminal {
+    height: 35rem; /* Set the maximum height to 35rem */
+    overflow-y: auto; /* Enable vertical scrolling if the content exceeds the maximum height */
+  }
 }
 
 /* Large Devices, Laptops */
@@ -125,7 +134,16 @@ body{
     max-height: 40.7rem; /* Set the maximum height to 35rem */
     overflow-y: auto; /* Enable vertical scrolling if the content exceeds the maximum height */
     overflow-x: hidden; /* Prevent horizontal scrolling */
-}
+  }
+  .scrollable-table-vulnerability {
+    max-height: 35.7rem; /* Set the maximum height to 35rem */
+    overflow-y: auto; /* Enable vertical scrolling if the content exceeds the maximum height */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+  }
+  .terminal {
+    height: 37.7rem; /* Set the maximum height to 35rem */
+    overflow-y: auto; /* Enable vertical scrolling if the content exceeds the maximum height */
+  }
 
 }
 
@@ -135,7 +153,16 @@ body{
     max-height: 55.7rem; /* Set the maximum height to 35rem */
     overflow-y: auto; /* Enable vertical scrolling if the content exceeds the maximum height */
     overflow-x: hidden; /* Prevent horizontal scrolling */
-}
+  }
+  .scrollable-table-vulnerability {
+    max-height: 50.7rem; /* Set the maximum height to 35rem */
+    overflow-y: auto; /* Enable vertical scrolling if the content exceeds the maximum height */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+  }
+  .terminal {
+    height: 52.7rem; /* Set the maximum height to 35rem */
+    overflow-y: auto; /* Enable vertical scrolling if the content exceeds the maximum height */
+  }
 
 }
 
@@ -384,6 +411,23 @@ body{
 
   .image-animate {
       animation: moveUpDown 4s infinite; /* 4 seconds duration, infinite loop */
+  }
+
+  @keyframes blink-border {
+    0% {
+      border-color: transparent;
+    }
+    50% {
+      border-color: rgba(0, 128, 128, 0.7); /* Same color as the background */
+    }
+    100% {
+      border-color: transparent;
+    }
+  }
+  .verify-scan-button{
+    border-width: 0.15rem;
+    border-style: solid;
+    animation: blink-border 1s infinite;
   }
 
 

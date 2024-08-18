@@ -228,7 +228,105 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
+// generate report
+const generatePdfBtn = document.getElementById('generate-report');
+const downloadIconSvg = document.getElementById('download-icon-svg');
+const loadingIconSvg = document.getElementById('loading-icon-svg');
+const MAX_ATTEMPTS = 10; // Maximum number of attempts to fetch the download
+if (generatePdfBtn) {
+    document.getElementById('generate-report').addEventListener('click', function() {
+        var auditId = this.dataset.auditId;
+        var auditName = this.dataset.auditName;
+        downloadIconSvg.classList.add('hidden');
+        loadingIconSvg.classList.remove('hidden');
+        fetch(`/report/${auditId}`, { method: 'GET' })
+            .then(response => {
+                if (response.status == 200) {
+                    return response.text();
+            } else {
+                downloadIconSvg.classList.remove('hidden');
+                loadingIconSvg.classList.add('hidden');
+                throw new Error('Failed to generate PDF');
+            }
+            })
+            .then(jobId => {
+            let attempts = 0;
+            const checkDownloadInterval = setInterval(() => {
+                fetch(`/report/${auditId}/download/${jobId}`, { method: 'GET' })
+                .then(response => {
+                    if (response.status === 200) {
+                    clearInterval(checkDownloadInterval);
+                    return response.blob();
+                    } else {
+                    return response.text();
+                    }
+                })
+                .then(data => {
+                    if (typeof data === 'string') {
+                        attempts++;
+                        if (attempts >= MAX_ATTEMPTS) {
+                            clearInterval(checkDownloadInterval);
+                            console.log('Maximum attempts reached, terminating PDF download');
+                            downloadIconSvg.classList.remove('hidden');
+                            loadingIconSvg.classList.add('hidden');
+                        } else {
+                            console.log(data);
+                        }
+                    } else {
+                    downloadIconSvg.classList.remove('hidden');
+                    loadingIconSvg.classList.add('hidden');
+                    const downloadUrl = window.URL.createObjectURL(new Blob([data]));
+                    const link = document.createElement('a');
+                    link.href = downloadUrl;
+                    link.download = `${auditName}-report.pdf`;
+                    link.click();
+                    }
+                })
+                .catch(error => console.error(error));
+            }, 5000);
+            })
+            .catch(error => console.error(error));
+        });
+    }
 
+
+
+
+const scanProgress = document.getElementById('progress-circle');
+if (scanProgress){
+    function updateProgress() {
+        var auditId = scanProgress.dataset.auditId;  // Access the audit ID from the data attribute
+        fetch(`/audit/progress/${auditId}`)
+            .then(response => response.json())
+            .then(data => {
+                const progress = data.progress;
+                const progressBar = document.getElementById('progress-bar');
+                const progressText = document.getElementById('progress-text');
+                
+                // Update the stroke-dashoffset to reflect the new progress value
+                progressBar.style.strokeDashoffset = 100 - progress;
+                
+                // Update the progress text
+                progressText.textContent = progress + '%';
+
+                // Check if the status is 'finished', if so, stop the interval
+                if (data.status === 'finished') {
+                    clearInterval(progressInterval);
+                }
+            })
+            .catch(error => console.error('Error fetching progress:', error));
+        }
+
+        // Set an interval to refresh the progress periodically
+        const progressInterval = setInterval(updateProgress, 20000);  // Update every 20 seconds
+
+        // Call updateProgress initially
+        updateProgress();
+    }
+
+
+
+    
 function copyText() {
     const textToCopy = document.getElementById('vulnerability-data').innerText;
     navigator.clipboard.writeText(textToCopy)
