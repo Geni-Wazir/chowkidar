@@ -302,12 +302,16 @@ if (scanProgress){
                 const progress = data.progress;
                 const progressBar = document.getElementById('progress-bar');
                 const progressText = document.getElementById('progress-text');
+                const progressMsg = document.getElementById('progress-msg');
                 
                 // Update the stroke-dashoffset to reflect the new progress value
                 progressBar.style.strokeDashoffset = 100 - progress;
                 
                 // Update the progress text
                 progressText.textContent = progress + '%';
+
+                // Update the progress msg
+                progressMsg.textContent = data.msg;
 
                 // Check if the status is 'finished', if so, stop the interval
                 if (data.status === 'finished') {
