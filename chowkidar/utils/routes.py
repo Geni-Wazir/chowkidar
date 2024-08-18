@@ -1,4 +1,4 @@
-from flask import render_template, url_for, flash, redirect, request, Blueprint, session, make_response, send_from_directory, current_app
+from flask import render_template, url_for, flash, redirect, request, Blueprint, session, make_response, send_from_directory, current_app, abort
 from flask_login import login_user, current_user, logout_user, login_required
 from chowkidar import oauth, get_admin
 from chowkidar.models import User, Audit, VulnerabilityDiscovered, VulnerabilityTemplates, db
@@ -201,7 +201,10 @@ def contact_post_form(form):
 @login_required
 @limiter.limit("10/minute")
 def report(audit_id):
-    audit = Audit.query.filter_by(id=audit_id, Auditor=current_user).first()
+    if current_user.admin:
+        audit = Audit.query.filter_by(id=audit_id).first()
+    else:
+        audit = Audit.query.filter_by(id=audit_id, Auditor=current_user).first()
     if not audit:
         flash('Unfortunately, you do not have the privilege to access this audit', 'danger')
         return redirect(url_for('audits.audit_list'))
@@ -210,21 +213,23 @@ def report(audit_id):
         .join(VulnerabilityTemplates, VulnerabilityDiscovered.template_id == VulnerabilityTemplates.id) \
         .filter(VulnerabilityDiscovered.audit_id == audit.id) \
         .order_by(VulnerabilityTemplates.cvss.desc()).all()
+    try:
+        vulnerability_data = {
+            vuln.id: eval(vuln.data) for vuln in vulnerabilities
+        }
 
-    vulnerability_data = {
-        vuln.name: eval(vuln.data) for vuln in vulnerabilities
-    }
+        content = render_template(
+            'utils/report_template.html',
+            audit=audit,
+            vulnerabilities=vulnerabilities,
+            vulnerability_data=vulnerability_data,
+            **get_vulnerability_counts(audit.Auditor.id, audit_id=audit.id)
+        )
 
-    content = render_template(
-        'utils/report_template.html',
-        audit=audit,
-        vulnerabilities=vulnerabilities,
-        vulnerability_data=vulnerability_data,
-        **get_vulnerability_counts(current_user.id, audit_id=audit.id)
-    )
-
-    report = task_queue.enqueue(generate_report, content)
-    return report.get_id()
+        gen_report = task_queue.enqueue(generate_report, content)
+        return gen_report.get_id()
+    except:
+        abort(500)
 
 
 
@@ -243,3 +248,24 @@ def download_report(audit_id, job_id):
         return response, 200
 
     return 'processing', 403
+
+
+
+
+@utils.route('/audit/progress/<int:audit_id>')
+@login_required
+def audit_progress(audit_id):
+    if current_user.admin:
+        audit = Audit.query.filter_by(id=audit_id).first()
+    else:
+        audit = Audit.query.filter_by(id=audit_id, Auditor=current_user).first()
+
+    if not audit:
+        flash('Unfortunately, you do not have the privilege to access this audit', 'danger')
+        return redirect(url_for('admin_view.all_audits'))
+    response = {
+        'name': audit.name,
+        'status': audit.status,
+        'progress': audit.progress
+    }
+    return response
