@@ -1,4 +1,4 @@
-from flask import render_template,Blueprint, flash, redirect, url_for, request
+from flask import render_template,Blueprint, flash, redirect, url_for
 from flask_login import current_user, login_required
 from chowkidar.models import User, Audit, ScanResults, VulnerabilityDiscovered, VulnerabilityTemplates, db
 from chowkidar.admin.forms import UpdateAuditForm
@@ -90,7 +90,7 @@ def admin_audit_post(user_email, audit_name):
         else:
             flash('Audit can not be updated', 'info')
 
-    return redirect(url_for('admin_view.admin_audit', user_email=audit.Auditor.email, audit_name=audit.name))
+    return redirect(url_for('admin_view.admin_audit', user_email=user.email, audit_name=audit.name))
 
 
 
@@ -159,6 +159,45 @@ def admin_scan_audit(user_email, audit_name):
     db.session.commit()
     flash(f'Congratulations! Your {audit.name} scan has been successfully started.', 'success')
     return redirect(url_for('admin_view.all_audits'))
+
+
+
+
+@limiter.limit("5/minute")
+@admin_view.route('/admin/audits/<string:user_email>/<string:audit_name>/rescan', methods=['POST'])
+@login_required
+def admin_rescan_audit(user_email, audit_name):
+    if not current_user.admin:
+        flash('Unfortunately, you do not have the privilege to access this', 'danger')
+        return redirect(url_for('audits.audit_list'))
+
+    user = User.query.filter_by(email=user_email).first()
+    audit = Audit.query.filter_by(name=audit_name, Auditor=user).first()
+    if not audit:
+        flash('Unfortunately, you do not have the privilege to access this audit', 'danger')
+        return redirect(url_for('admin_view.all_audits'))
+
+    if audit.status != 'finished':
+        flash(f'Initiating the Rescan for {audit.name} is not possible', 'info')
+        return redirect(url_for('admin_view.admin_vulnerabilities', user_email=user.email, audit_name=audit_name))
+
+    if not audit.scan_verified:
+        flash(f'{audit.name} scan is not verified', 'info')
+        return redirect(url_for('admin_view.admin_vulnerabilities', user_email=user.email, audit_name=audit_name))
+
+    # add_vulnerability_api = os.getenv('SERVER_URL') + url_for('audits.add_vulnerability')
+    # scan_result_api = os.getenv('SERVER_URL') + url_for('audits.add_scan_result')
+    # scan_status_api = os.getenv('SERVER_URL') + url_for('audits.scan_status')
+    # secret_key = os.environ.get('SCANNER_SECRET_KEY')
+
+    # scan_task = task_queue.enqueue(run_scan, args=(secret_key, scan_result_api, add_vulnerability_api, scan_status_api, audit), job_timeout=-1)
+    # audit.task_id = scan_task.id
+    # audit.status = 'rescanning'
+
+    
+    db.session.commit()
+    flash(f'Congratulations! Your {audit.name} Rescan has been successfully started.', 'success')
+    return redirect(url_for('admin_view.admin_vulnerabilities', user_email=user.email, audit_name=audit_name))
 
 
 
@@ -279,43 +318,36 @@ def admin_scan_result(user_email, audit_name):
 
     if not output:
         flash(f'Currently, there are no scan results available for {audit_name}', 'info')
-        return redirect(url_for('admin_view.admin_vulnerabilities', user_email=audit.Auditor.email, audit_name=audit_name))
+        return redirect(url_for('admin_view.admin_vulnerabilities', user_email=user.email, audit_name=audit_name))
+    
+    vulnerabilities = VulnerabilityDiscovered.query \
+        .join(VulnerabilityTemplates, VulnerabilityDiscovered.template_id == VulnerabilityTemplates.id) \
+        .filter(VulnerabilityDiscovered.audit_id == audit.id).count()
 
-    return render_template('admin/scan_result.html', title="Admin", audit=audit, output=output)
+    return render_template('admin/scan_result.html', title="Admin", audit=audit, output=output, vulnerabilities=vulnerabilities)
 
 
 
 
-@admin_view.route('/admin/report/<int:audit_id>')
+@admin_view.route('/admin/audits/<string:user_email>/<string:audit_name>/verify')
 @login_required
-@limiter.limit("5/minute")
-def report(audit_id):
+def admin_scan_verify(user_email, audit_name):
     if not current_user.admin:
         flash('Unfortunately, you do not have the privilege to access this', 'danger')
         return redirect(url_for('audits.audit_list'))
     
-    audit = Audit.query.filter_by(id=audit_id).first()
-    user = audit.Auditor
+    user = User.query.filter_by(email=user_email).first()
+    audit = Audit.query.filter_by(name=audit_name, Auditor=user).first()
+
     if not audit:
         flash('Unfortunately, you do not have the privilege to access this audit', 'danger')
-        return redirect(url_for('audits.audit_list'))
+        return redirect(url_for('admin_view.all_audits'))
 
-    vulnerabilities = VulnerabilityDiscovered.query \
-        .join(VulnerabilityTemplates, VulnerabilityDiscovered.template_id == VulnerabilityTemplates.id) \
-        .filter(VulnerabilityDiscovered.audit_id == audit.id) \
-        .order_by(VulnerabilityTemplates.cvss.desc()).all()
-
-    vulnerability_data = {
-        vuln.name: eval(vuln.data) for vuln in vulnerabilities
-    }
-
-    content = render_template(
-        'utils/report_template.html',
-        audit=audit,
-        vulnerabilities=vulnerabilities,
-        vulnerability_data=vulnerability_data,
-        **get_vulnerability_counts(user.id, audit_id=audit.id)
-    )
-
-    report = task_queue.enqueue(generate_report, content)
-    return report.get_id()
+    if audit.status == 'finished':
+        audit.scan_verified = True
+        db.session.commit()
+        flash(f'Scan {audit_name} verified successfuly', 'success')
+        return redirect(url_for('admin_view.admin_vulnerabilities', user_email=user.email, audit_name=audit_name))
+    
+    flash(f'The audit {audit_name} has not been scanned yet.', 'info')
+    return redirect(url_for('admin_view.admin_vulnerabilities', user_email=user.email, audit_name=audit_name))
