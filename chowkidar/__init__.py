@@ -1,5 +1,4 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_session import Session
 from flask_admin import Admin
@@ -8,7 +7,6 @@ from chowkidar.config import Config
 from configparser import ConfigParser
 from flask_migrate import Migrate
 from flask_mail import Mail
-from flask_caching import Cache
 from flask_limiter import Limiter
 from flask_admin.contrib.sqla import ModelView
 from flask_login import current_user
@@ -64,8 +62,8 @@ class AdminPanelView(ModelView):
 
 class AdminPanelAuditView(AdminPanelView):
     column_display_pk = True
-    column_list = ['id', 'name', 'asset_type', 'task_id', 'container_id', 'status', 'date', 'scan_date', 'url', 'tools', 'access_key', 'secret_id', 'regions', 'sevices', 'Auditor']
-    form_columns = ['name', 'asset_type', 'task_id', 'container_id', 'status', 'date', 'scan_date', 'url', 'tools', 'access_key', 'secret_id', 'regions', 'sevices', 'Auditor']
+    column_list = ['id', 'name', 'asset_type', 'date', 'scan_date', 'task_id', 'container_id', 'status', 'scan_verified', 'progress', 'progress_msg', 'rescan', 'url', 'tools', 'access_key', 'secret_id', 'regions', 'sevices', 'Auditor']
+    form_columns = ['name', 'asset_type', 'date', 'scan_date', 'task_id', 'container_id', 'status', 'scan_verified', 'progress', 'progress_msg', 'rescan', 'url', 'tools', 'access_key', 'secret_id', 'regions', 'sevices', 'Auditor']
 
 
 
@@ -113,8 +111,9 @@ def create_app(config_class=Config):
                         steps=template[4],
                         fix=template[5],
                         cvss=template[6],
-                        cwe=template[7],
-                        type=template[8])
+                        cvss_string=template[7],
+                        cwe=template[8],
+                        type=template[9])
                     )
                 db.session.add_all(initial_templates)
                 db.session.commit()
