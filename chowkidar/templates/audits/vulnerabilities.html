@@ -2,11 +2,199 @@
 {% block content %}
 
 <div class="pt-1">
-    <div class="mt-0 md:mt-10 shadow-lg rounded-lg">
+    <div class="md:mt-3 bg-sky-300/30 rounded-lg p-3  flex flex-col md:flex-row gap-3 md:gap-0 items-center">
+        <div class="flex-1 flex gap-8">
+            <div class="w-auto">
+                <div class="flex">
+                    <span class="text-3xl font-semibold capitalize flex-1">{{ audit.name }}</span>
+                    <div class="flex ml-1 group">
+                        <a href="{{ url_for('audits.audit', audit_name=audit.name) }}">
+                            <svg class="w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#64748b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    <path d="M15.5699 18.5001V14.6001" stroke="#64748b" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    <path d="M15.5699 7.45V5.5" stroke="#64748b" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    <path d="M15.57 12.65C17.0059 12.65 18.17 11.4859 18.17 10.05C18.17 8.61401 17.0059 7.44995 15.57 7.44995C14.134 7.44995 12.97 8.61401 12.97 10.05C12.97 11.4859 14.134 12.65 15.57 12.65Z" stroke="#64748b" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    <path d="M8.43005 18.5V16.55" stroke="#64748b" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    <path d="M8.43005 9.4V5.5" stroke="#64748b" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    <path d="M8.42996 16.5501C9.8659 16.5501 11.03 15.386 11.03 13.9501C11.03 12.5142 9.8659 11.3501 8.42996 11.3501C6.99402 11.3501 5.82996 12.5142 5.82996 13.9501C5.82996 15.386 6.99402 16.5501 8.42996 16.5501Z" stroke="#64748b" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </g>
+                            </svg>
+                            <div class='absolute hidden group-hover:block mt-2 -ml-5 bg-black rounded-md p-1 px-2 action-triangle-top'>
+                                <span class='text-white text-xs normal-case font-normal whitespace-nowrap'>Settings</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <p class="text-xs text-slate-600 flex-1 lowercase">{{ audit.url }}</p>
+            </div>
+            <div class="w-auto text-sm font-medium text-slate-800">
+                <p class="flex pb-1">
+                    <svg class="w-5 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path d="M18 16L16 16M16 16L14 16M16 16L16 14M16 16L16 18" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path>
+                            <path d="M7 4V2.5" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path>
+                            <path d="M17 4V2.5" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path>
+                            <path d="M21.5 9H16.625H10.75M2 9H5.875" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path>
+                            <path d="M14 22H10C6.22876 22 4.34315 22 3.17157 20.8284C2 19.6569 2 17.7712 2 14V12C2 8.22876 2 6.34315 3.17157 5.17157C4.34315 4 6.22876 4 10 4H14C17.7712 4 19.6569 4 20.8284 5.17157C22 6.34315 22 8.22876 22 12V14C22 17.7712 22 19.6569 20.8284 20.8284C20.1752 21.4816 19.3001 21.7706 18 21.8985" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path>
+                        </g>
+                    </svg>
+                    <span>Audit Date: {{ audit.date.strftime('%d %b %Y') }}</span>
+                </p>
+                <p class="flex pt-1">
+                    <svg class="w-5 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path d="M22 14V12C22 8.22876 22 6.34315 20.8284 5.17157C19.6569 4 17.7712 4 14 4H10C6.22876 4 4.34315 4 3.17157 5.17157C2 6.34315 2 8.22876 2 12V14C2 17.7712 2 19.6569 3.17157 20.8284C4.34315 22 6.22876 22 10 22H14" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path>
+                            <path d="M7 4V2.5" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path>
+                            <path d="M17 4V2.5" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path>
+                            <circle cx="18" cy="18" r="3" stroke="#1C274C" stroke-width="1.5"></circle>
+                            <path d="M20.5 20.5L22 22" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path>
+                            <path d="M2.5 9H21.5" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path>
+                        </g>
+                    </svg>
+                    <span>Scan Date: {{ audit.scan_date.strftime('%d %b %Y') }}</span>
+                </p>
+            </div>
+        </div>
+        <div class="m-1 px-2 rounded-lg w-auto inline-flex items-center justify-center gap-3" id="progress-circle" data-audit-id="{{ audit.id }}" >
+            <!-- Circular Progress -->
+            <div class="relative w-14 h-14 flex items-center justify-center group">
+                <svg class="w-full h-full -rotate-90" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Progress Circle -->
+                    <circle id="progress-bar" cx="18" cy="18" r="16" fill="none" class="stroke-current text-gray-400/70" stroke-width="2.5" stroke-linecap="round"></circle>
+                    <circle id="progress-bar" cx="18" cy="18" r="16" fill="none" class="stroke-current text-blue-600" stroke-width="2.5" stroke-dasharray="100" stroke-dashoffset="{{100 - audit.progress}}" stroke-linecap="round"></circle>
+                </svg>
+            
+                <!-- Percentage Text -->
+                <div class="absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2">
+                    <span id="progress-text" class="text-center text-xs font-semibold text-blue-600">{{ audit.progress }}%</span>
+                </div>
+                <div class='absolute hidden group-hover:block mt-24 bg-black rounded-md p-1 px-2 action-triangle-top'>
+                    <span class='text-white text-xs font-normal whitespace-nowrap capitalize'>{{ audit.progress_msg }}</span>
+                </div>
+            </div>
+            <!-- End Circular Progress -->
+            <div class="flex p-2">
+                <div class='flex items-center justify-center p-2 rounded-md hover:bg-red-300 group' data-toggle="deleteModal" data-target="#deleteModal" data-audit-name="{{ audit.name }}" data-delete-url="{{ url_for('audits.delete_audit', audit_name=audit.name) }}">
+                    <svg class="w-6 h-6 flex-none" fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 482.428 482.429" xmlSpace="preserve">
+                        <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                        <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <g>
+                                <g>
+                                    <path d="M381.163,57.799h-75.094C302.323,25.316,274.686,0,241.214,0c-33.471,0-61.104,25.315-64.85,57.799h-75.098 c-30.39,0-55.111,24.728-55.111,55.117v2.828c0,23.223,14.46,43.1,34.83,51.199v260.369c0,30.39,24.724,55.117,55.112,55.117 h210.236c30.389,0,55.111-24.729,55.111-55.117V166.944c20.369-8.1,34.83-27.977,34.83-51.199v-2.828 C436.274,82.527,411.551,57.799,381.163,57.799z M241.214,26.139c19.037,0,34.927,13.645,38.443,31.66h-76.879 C206.293,39.783,222.184,26.139,241.214,26.139z M375.305,427.312c0,15.978-13,28.979-28.973,28.979H136.096 c-15.973,0-28.973-13.002-28.973-28.979V170.861h268.182V427.312z M410.135,115.744c0,15.978-13,28.979-28.973,28.979H101.266 c-15.973,0-28.973-13.001-28.973-28.979v-2.828c0-15.978,13-28.979,28.973-28.979h279.897c15.973,0,28.973,13.001,28.973,28.979 V115.744z"></path>
+                                    <path d="M171.144,422.863c7.218,0,13.069-5.853,13.069-13.068V262.641c0-7.216-5.852-13.07-13.069-13.07 c-7.217,0-13.069,5.854-13.069,13.07v147.154C158.074,417.012,163.926,422.863,171.144,422.863z"></path>
+                                    <path d="M241.214,422.863c7.218,0,13.07-5.853,13.07-13.068V262.641c0-7.216-5.854-13.07-13.07-13.07 c-7.217,0-13.069,5.854-13.069,13.07v147.154C228.145,417.012,233.996,422.863,241.214,422.863z"></path>
+                                    <path d="M311.284,422.863c7.217,0,13.068-5.853,13.068-13.068V262.641c0-7.216-5.852-13.07-13.068-13.07 c-7.219,0-13.07,5.854-13.07,13.07v147.154C298.213,417.012,304.067,422.863,311.284,422.863z"></path>
+                                </g>
+                            </g>
+                        </g>
+                    </svg>
+                    <div class='absolute hidden group-hover:block mt-20 bg-black rounded-md p-1 px-2 action-triangle-top'>
+                        <span class='text-white text-xs normal-case font-normal whitespace-nowrap'>Delete Audit</span>
+                    </div>
+                </div>
+                {% if audit.status == 'scanning' %}
+                <a href="{{ url_for('audits.stop_scan', audit_name=audit.name) }}">
+                    <div class="flex items-center justify-center p-2 rounded-md hover:bg-yellow-300 group">
+                        <svg class="w-6 h-6 flex-none" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                            <g id="SVGRepo_iconCarrier"> 
+                                <path d="M14.5 9.50002L9.5 14.5M9.49998 9.5L14.5 14.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> 
+                                <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7" stroke="currentColor" stroke-width="1" stroke-linecap="round"></path> 
+                            </g>
+                        </svg>
+                        <div class='absolute hidden group-hover:block mt-20 bg-black rounded-md p-1 px-2 action-triangle-top'>
+                            <span class='text-white text-xs normal-case font-normal whitespace-nowrap'>Stop Scan</span>
+                        </div>
+                    </div>
+                </a>
+                {% elif audit.status == 'finished' %}
+                <div class='flex items-center justify-center p-1 rounded-md hover:bg-green-300 group' data-toggle="initiateAuditModal" data-target="#initiateAuditModal" data-audit-name="{{ audit.name }}" data-initiate-audit-url="{{ url_for('audits.rescan_audit', audit_name=audit.name) }}">
+                    <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <g clip-path="url(#clip0_1276_7761)">
+                                <path d="M19.7285 10.9288C20.4413 13.5978 19.7507 16.5635 17.6569 18.6573C15.1798 21.1344 11.4826 21.6475 8.5 20.1966M18.364 8.05071L17.6569 7.3436C14.5327 4.21941 9.46736 4.21941 6.34316 7.3436C3.42964 10.2571 3.23318 14.8588 5.75376 18M18.364 8.05071H14.1213M18.364 8.05071V3.80807" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </g>
+                            <defs>
+                                <clipPath id="clip0_1276_7761">
+                                    <rect width="24" height="24" fill="white"></rect>
+                                </clipPath>
+                            </defs>
+                        </g>
+                    </svg>
+                    <div class='absolute hidden group-hover:block mt-20 bg-black rounded-md p-1 px-2 action-triangle-top'>
+                        <span class='text-white text-xs normal-case font-normal whitespace-nowrap'>Initiate Rescan [{{audit.rescan}}/3]</span>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="m-1 px-2 rounded-lg w-auto flex flex-col items-center">
+            <p class="text-xs">Vulnerability Count</p>
+            <p class="font-bold text-2xl">{{ vulnerabilities | length }}</p>
+        </div>
+        
+        <div class="m-1 px-2 rounded-lg inline-flex w-auto">
+            {% if audit.scan_verified %}
+            <div class="flex items-center justify-center mx-2 p-1 bg-blue-300 rounded-md group">
+                <a href="{{ url_for('audits.scan_result', audit_name=audit.name) }}" type="submit">
+                    <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M22 9H2M6 17.5L8.5 15L6 12.5M11 17.5L15 17.5M2 7.8L2 16.2C2 17.8802 2 18.7202 2.32698 19.362C2.6146 19.9265 3.07354 20.3854 3.63803 20.673C4.27976 21 5.11984 21 6.8 21H17.2C18.8802 21 19.7202 21 20.362 20.673C20.9265 20.3854 21.3854 19.9265 21.673 19.362C22 18.7202 22 17.8802 22 16.2V7.8C22 6.11984 22 5.27977 21.673 4.63803C21.3854 4.07354 20.9265 3.6146 20.362 3.32698C19.7202 3 18.8802 3 17.2 3L6.8 3C5.11984 3 4.27976 3 3.63803 3.32698C3.07354 3.6146 2.6146 4.07354 2.32698 4.63803C2 5.27976 2 6.11984 2 7.8Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                </a>
+                <div class='absolute hidden group-hover:block mt-20 bg-black rounded-md p-1 px-2 action-triangle-top'>
+                    <span class='text-white text-xs normal-case font-normal whitespace-nowrap'>Scan Result</span>
+                </div>
+            </div>
+                <div class="flex items-center justify-center p-1 bg-blue-300 rounded-md group" data-audit-id="{{audit.id}}" data-audit-name="{{audit.name}}" id="generate-report">
+                    <button class="download-icon">
+                        <svg class="w-7 h-7" id="download-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                            <g id="SVGRepo_iconCarrier">
+                                <path d="M17 17H17.01M17.4 14H18C18.9319 14 19.3978 14 19.7654 14.1522C20.2554 14.3552 20.6448 14.7446 20.8478 15.2346C21 15.6022 21 16.0681 21 17C21 17.9319 21 18.3978 20.8478 18.7654C20.6448 19.2554 20.2554 19.6448 19.7654 19.8478C19.3978 20 18.9319 20 18 20H6C5.06812 20 4.60218 20 4.23463 19.8478C3.74458 19.6448 3.35523 19.2554 3.15224 18.7654C3 18.3978 3 17.9319 3 17C3 16.0681 3 15.6022 3.15224 15.2346C3.35523 14.7446 3.74458 14.3552 4.23463 14.1522C4.60218 14 5.06812 14 6 14H6.6M12 15V4M12 15L9 12M12 15L15 12" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </g>
+                        </svg>
+                        <svg class="w-7 h-7 spinner hidden" id="loading-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                            <g id="SVGRepo_iconCarrier">
+                                <path d="M20.0001 12C20.0001 13.3811 19.6425 14.7386 18.9623 15.9405C18.282 17.1424 17.3022 18.1477 16.1182 18.8587C14.9341 19.5696 13.5862 19.9619 12.2056 19.9974C10.825 20.0328 9.45873 19.7103 8.23975 19.0612" stroke="#000000" stroke-width="3.55556" stroke-linecap="round"></path>
+                            </g>
+                        </svg>
+                    </button>
+                    <div class='absolute hidden group-hover:block mt-20 bg-black rounded-md p-1 px-2 action-triangle-top'>
+                        <span class='text-white text-xs normal-case font-normal whitespace-nowrap'>Generate Report</span>
+                    </div>
+                </div>
+            {% else %}
+            <div class="flex items-center justify-center p-2 bg-teal-300/70 rounded-md">
+                <a class="flex" href="{{ url_for('audits.scan_result', audit_name=audit.name) }}" type="button">
+                    <svg class="w-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path d="M9 11L12 14L22 4M16 3H7.8C6.11984 3 5.27976 3 4.63803 3.32698C4.07354 3.6146 3.6146 4.07354 3.32698 4.63803C3 5.27976 3 6.11984 3 7.8V16.2C3 17.8802 3 18.7202 3.32698 19.362C3.6146 19.9265 4.07354 20.3854 4.63803 20.673C5.27976 21 6.11984 21 7.8 21H16.2C17.8802 21 18.7202 21 19.362 20.673C19.9265 20.3854 20.3854 19.9265 20.673 19.362C21 18.7202 21 17.8802 21 16.2V12" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </g>
+                    </svg>
+                    <span class="px-1">Unverified scan</span>
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="mt-1 md:mt-5 shadow-lg rounded-lg">
         <table class="w-full table-fixed">
             <thead>
                 <tr class="bg-blue-100">
-                    <th class="w-2/4 py-4 px-2 md:px-6 text-left text-gray-600 font-bold uppercase">
+                    <th class="w-3/4 py-4 px-2 md:px-6 text-left text-gray-600 font-bold uppercase">
                         <div class="flex">
                             <span class="whitespace-nowrap lg:hidden">
                                 Name
@@ -28,55 +216,18 @@
                             </div>
                         </div>
                     </th>
-                    <th class="w-1/4 py-4 px-2 md:px-6 text-left md:text-center text-gray-600 font-bold uppercase">severity</th>
-                    <th class="w-2/4 md:w-1/4 py-4 px-4 text-left md:text-center text-gray-600 font-bold uppercase">
-                        <div class="flex w-full justify-between relative">
-                            <div class="flex-grow">
-                                <span class="hidden lg:flex pl-32">CVSS</span>
-                            </div>
-                            <span class="md:hidden">CVSS</span>
-                            <div class="flex items-center justify-center -mt-1 mx-2 p-1 bg-blue-300 rounded-md group">
-                                <a href="{{ url_for('audits.scan_result', audit_name=audit.name) }}" type="submit">
-                                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M22 9H2M6 17.5L8.5 15L6 12.5M11 17.5L15 17.5M2 7.8L2 16.2C2 17.8802 2 18.7202 2.32698 19.362C2.6146 19.9265 3.07354 20.3854 3.63803 20.673C4.27976 21 5.11984 21 6.8 21H17.2C18.8802 21 19.7202 21 20.362 20.673C20.9265 20.3854 21.3854 19.9265 21.673 19.362C22 18.7202 22 17.8802 22 16.2V7.8C22 6.11984 22 5.27977 21.673 4.63803C21.3854 4.07354 20.9265 3.6146 20.362 3.32698C19.7202 3 18.8802 3 17.2 3L6.8 3C5.11984 3 4.27976 3 3.63803 3.32698C3.07354 3.6146 2.6146 4.07354 2.32698 4.63803C2 5.27976 2 6.11984 2 7.8Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
-                                </a>
-                                <div class='absolute hidden group-hover:block mt-20 bg-black rounded-md p-1 px-2 action-triangle-top'>
-                                    <span class='text-white text-xs normal-case font-normal whitespace-nowrap'>Scan Result</span>
-                                </div>
-                            </div>
-                            {% if audit.status == 'finished' %}
-                            <div class="flex items-center justify-center -mt-1 p-1 bg-blue-300 rounded-md group" id="generate-report">
-                                <button class="download-icon">
-                                    <svg class="w-6 h-6" id="download-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                        <g id="SVGRepo_iconCarrier">
-                                            <path d="M17 17H17.01M17.4 14H18C18.9319 14 19.3978 14 19.7654 14.1522C20.2554 14.3552 20.6448 14.7446 20.8478 15.2346C21 15.6022 21 16.0681 21 17C21 17.9319 21 18.3978 20.8478 18.7654C20.6448 19.2554 20.2554 19.6448 19.7654 19.8478C19.3978 20 18.9319 20 18 20H6C5.06812 20 4.60218 20 4.23463 19.8478C3.74458 19.6448 3.35523 19.2554 3.15224 18.7654C3 18.3978 3 17.9319 3 17C3 16.0681 3 15.6022 3.15224 15.2346C3.35523 14.7446 3.74458 14.3552 4.23463 14.1522C4.60218 14 5.06812 14 6 14H6.6M12 15V4M12 15L9 12M12 15L15 12" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                        </g>
-                                    </svg>
-                                    <svg class="w-6 h-6 spinner hidden" id="loading-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                        <g id="SVGRepo_iconCarrier">
-                                            <path d="M20.0001 12C20.0001 13.3811 19.6425 14.7386 18.9623 15.9405C18.282 17.1424 17.3022 18.1477 16.1182 18.8587C14.9341 19.5696 13.5862 19.9619 12.2056 19.9974C10.825 20.0328 9.45873 19.7103 8.23975 19.0612" stroke="#000000" stroke-width="3.55556" stroke-linecap="round"></path>
-                                        </g>
-                                    </svg>
-                                </button>
-                                <div class='absolute hidden group-hover:block mt-20 bg-black rounded-md p-1 px-2 action-triangle-top'>
-                                    <span class='text-white text-xs normal-case font-normal whitespace-nowrap'>Generate Report</span>
-                                </div>
-                            </div>
-                            {% endif %}
-                        </div>
-                     </th>
+                    <th class="w-1/5 py-4 px-2 md:px-6 text-left md:text-center text-gray-600 font-bold uppercase">severity</th>
+                    <th class="w-1/5 py-4 px-2 md:px-6 text-left md:text-center text-gray-600 font-bold uppercase">status</th>
+                    <th class="w-1/5 py-4 px-2 md:px-6 text-left md:text-center text-gray-600 font-bold uppercase">cvss</th>
                 </tr>
             </thead>
         </table>
-        <div class="w-full scrollable-table rounded-lg">
+        <div class="w-full scrollable-table-vulnerability rounded-lg">
             <table class="w-full table-fixed" id="audit-list">
                 <tbody class="bg-white">
                     {% for vulnerability in vulnerabilities %}
                     <tr>
-                        <td class="w-1/3 md:w-2/4 py-4 px-2 md:px-6 border-b border-gray-200 capitalize">
+                        <td class="w-3/4 py-4 px-2 md:px-6 text-left border-b border-gray-200 capitalize">
                             <a href="{{ url_for('audits.vulnerability', audit_name=audit.name, vulnerability_name=vulnerability.name) }}">
                                 <p class="group inline-block">
                                     <span class="relative inline-block transition-all duration-300">{{ vulnerability.name }}
@@ -85,7 +236,7 @@
                                   </p>
                             </a>
                         </td>
-                        <td class="w-1/4 py-4 px-2 md:px-6 border-b border-gray-200 text-center">
+                        <td class="w-1/5 py-4 px-2 md:px-6 border-b border-gray-200 text-center">
                             {% if vulnerability.Template.severity == 'CRITICAL' %}
                                 <span class="px-2 inline-flex text-sm leading-5 font-semibold rounded-full bg-red-400 text-red-950">{{ vulnerability.Template.severity }}</span>
                             {% elif vulnerability.Template.severity == 'HIGH' %}
@@ -98,7 +249,14 @@
                                 <span class="px-2 inline-flex text-sm leading-5 font-semibold rounded-full bg-blue-200 text-blue-800">{{ vulnerability.Template.severity }}</span>
                             {% endif %}
                         </td>
-                        <td class="w-1/3 md:w-1/4 py-4 px-2 md:px-6 border-b border-gray-200 truncate text-center">{{ vulnerability.Template.cvss }}</td>
+                        <td class="w-1/5 py-4 px-2 md:px-6 border-b border-gray-200 text-center">
+                            {% if vulnerability.status == 'unsolved' %}
+                                <span class="inline-flex text-sm leading-5 font-bold text-red-500">{{ vulnerability.status }}</span>
+                            {% elif vulnerability.status == 'solved' %}
+                                <span class="inline-flex text-sm leading-5 font-bold text-green-600">{{ vulnerability.status }}</span>
+                            {% endif %}
+                        </td>
+                        <td class="w-1/5 py-4 px-2 md:px-6 border-b border-gray-200 truncate text-center">{{ vulnerability.Template.cvss }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -107,63 +265,100 @@
     </div>
 </div>
 
-<script>
-    const generatePdfBtn = document.getElementById('generate-report');
-    const downloadIconSvg = document.getElementById('download-icon-svg');
-    const loadingIconSvg = document.getElementById('loading-icon-svg');
 
-    const MAX_ATTEMPTS = 5; // Maximum number of attempts to fetch the download
-    generatePdfBtn.addEventListener('click', () => {
-        downloadIconSvg.classList.add('hidden');
-        loadingIconSvg.classList.remove('hidden');
-        fetch('/report/{{ audit.id }}', { method: 'GET' })
-            .then(response => {
-            if (!response.redirected) {
-                return response.text();
-            } else {
-                downloadIconSvg.classList.remove('hidden');
-                loadingIconSvg.classList.add('hidden');
-                throw new Error('Failed to generate PDF');
-            }
-            })
-            .then(jobId => {
-            let attempts = 0;
-            const checkDownloadInterval = setInterval(() => {
-                fetch(`/report/{{ audit.id }}/download/${jobId}`, { method: 'GET' })
-                .then(response => {
-                    if (response.status === 200) {
-                    clearInterval(checkDownloadInterval);
-                    return response.blob();
-                    } else {
-                    return response.text();
-                    }
-                })
-                .then(data => {
-                    if (typeof data === 'string') {
-                        attempts++;
-                        if (attempts >= MAX_ATTEMPTS) {
-                            clearInterval(checkDownloadInterval);
-                            console.log('Maximum attempts reached, terminating PDF download');
-                            downloadIconSvg.classList.remove('hidden');
-                            loadingIconSvg.classList.add('hidden');
-                        } else {
-                            console.log(data);
-                        }
-                    } else {
-                    downloadIconSvg.classList.remove('hidden');
-                    loadingIconSvg.classList.add('hidden');
-                    const downloadUrl = window.URL.createObjectURL(new Blob([data]));
-                    const link = document.createElement('a');
-                    link.href = downloadUrl;
-                    link.download = '{{ audit.name }}-report.pdf';
-                    link.click();
-                    }
-                })
-                .catch(error => console.error(error));
-            }, 5000);
-            })
-            .catch(error => console.error(error));
-        });
-</script>
+<!-- Delete Modal -->
+<div id="deleteModal" class="fixed z-10 inset-0 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-6 pb-20 text-center sm:block sm:p-0">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <form id="submitForm" action="" method="POST">
+            <div class="bg-white px-6 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div class="sm:flex sm:items-start">
+                    <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                        <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                        </svg>
+                      </div>
+                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+                            Delete Audit
+                        </h3>
+                        <div class="mt-2">
+                            <p class="text-sm text-gray-500 pb-3" id="auditDeleteMessage">
+                                
+                            </p>
+                            <p class="text-sm text-gray-500">
+                                All of your data associated with this audit will be permanently removed. This action cannot be undone.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gray-50 px-6 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <button type="submit"  class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-6 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 sm:ml-3 sm:w-auto sm:text-sm" id="deleteConfirm">
+                    Delete
+                </button>
+                <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-6 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 sm:mt-0 sm:w-auto sm:text-sm" id="deleteCancel">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Initiate Rescan Modal -->
+<div id="initiateAuditModal" class="fixed z-10 inset-0 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-6 pb-20 text-center sm:block sm:p-0">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <form id="submitForm" action="" method="POST">
+            <div class="bg-white px-6 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div class="sm:flex sm:items-start">
+                    <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
+                        <svg class="h-6 w-6 text-red-600" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                            <g id="SVGRepo_iconCarrier"> 
+                                <path d="M12 6L12 18" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> 
+                                <path d="M9 9L9 15" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> 
+                                <path d="M18 11L18 13" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> 
+                                <path d="M6 11L6 13" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> 
+                                <path d="M15 7L15 17" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> 
+                                <path d="M6 3H3V6" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> 
+                                <path d="M18 3H21V6" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> 
+                                <path d="M6 21H3V18" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> 
+                                <path d="M18 21H21V18" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> 
+                            </g>
+                        </svg>
+                      </div>
+                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+                            Initiate Audit Rescan
+                        </h3>
+                        <div class="mt-2">
+                            <p class="text-sm text-gray-500 pb-3" id="auditScanMessage">
+                                
+                            </p>
+                            <p class="text-sm text-gray-500">
+                                I acknowledge and am willing to accept the risks involved; during the audit, the scanner will generate some traffic.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gray-50 px-6 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <button type="submit"  class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-6 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 sm:ml-3 sm:w-auto sm:text-sm" id="initiateAuditConfirm">
+                    Initiate Rescan
+                </button>
+                <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-6 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 sm:mt-0 sm:w-auto sm:text-sm" id="initiateAuditCancel">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 {% endblock content %}
