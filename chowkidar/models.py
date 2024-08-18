@@ -1,7 +1,6 @@
 from datetime import datetime, timezone
 from chowkidar import login_manager
 from flask_login import UserMixin
-from flask import current_app
 from flask_sqlalchemy import SQLAlchemy
 
 
@@ -33,12 +32,15 @@ class Audit(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     name = db.Column(db.String(100), nullable=False)
     asset_type = db.Column(db.String(100), nullable=False, default='web')
+    date = db.Column(db.DateTime, nullable=False, default=datetime.now(timezone.utc))
+    scan_date = db.Column(db.DateTime, nullable=False, default=datetime.now(timezone.utc))
     container_id = db.Column(db.String(100))
     task_id = db.Column(db.String(100))
     status = db.Column(db.String(100), nullable=False, default='unscanned')
     scan_verified = db.Column(db.Boolean, nullable=False, default=False)
-    date = db.Column(db.DateTime, nullable=False, default=datetime.now(timezone.utc))
-    scan_date = db.Column(db.DateTime, nullable=False, default=datetime.now(timezone.utc))
+    progress = db.Column(db.Integer, default=0)
+    progress_msg = db.Column(db.String(100))
+    rescan = db.Column(db.Integer, default=3)
     # web scan config
     url = db.Column(db.String(100), nullable=False, default='')
     tools = db.Column(db.Text(), nullable=False, default='')
@@ -81,7 +83,8 @@ class VulnerabilityDiscovered(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     audit_id = db.Column(db.Integer, db.ForeignKey('audit.id'))
     template_id = db.Column(db.Integer, db.ForeignKey('vulnerability_templates.id'))
-    name = db.Column(db.String(100))
+    name = db.Column(db.String(100), nullable=False)
+    status = db.Column(db.String(10), nullable=False, default='unsolved')
     data = db.Column(db.Text(4294000000))
 
     def __repr__(self):
@@ -99,7 +102,7 @@ class VulnerabilityTemplates(db.Model):
     steps = db.Column(db.Text)
     fix = db.Column(db.Text, nullable=False)
     cvss = db.Column(db.String(10), nullable=False)
-    cvss_string = db.Column(db.String(100), nullable=False)
+    cvss_string = db.Column(db.String(100), nullable=False, default='')
     cwe = db.Column(db.String(400))
     type = db.Column(db.String(100))
     vulnerability = db.relationship('VulnerabilityDiscovered', backref='Template', lazy=True, cascade="all, delete")
