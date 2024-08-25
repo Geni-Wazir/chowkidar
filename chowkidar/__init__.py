@@ -62,8 +62,8 @@ class AdminPanelView(ModelView):
 
 class AdminPanelAuditView(AdminPanelView):
     column_display_pk = True
-    column_list = ['id', 'name', 'asset_type', 'date', 'scan_date', 'task_id', 'container_id', 'status', 'scan_verified', 'progress', 'progress_msg', 'rescan', 'url', 'tools', 'access_key', 'secret_id', 'regions', 'sevices', 'Auditor']
-    form_columns = ['name', 'asset_type', 'date', 'scan_date', 'task_id', 'container_id', 'status', 'scan_verified', 'progress', 'progress_msg', 'rescan', 'url', 'tools', 'access_key', 'secret_id', 'regions', 'sevices', 'Auditor']
+    column_list = ['id', 'name', 'asset_type', 'date', 'scan_date', 'task_id', 'container_id', 'status', 'scan_verified', 'progress', 'progress_msg', 'rescan', 'url', 'tools', 'access_id', 'secret_key', 'regions', 'services', 'Auditor']
+    form_columns = ['name', 'asset_type', 'date', 'scan_date', 'task_id', 'container_id', 'status', 'scan_verified', 'progress', 'progress_msg', 'rescan', 'url', 'tools', 'access_id', 'secret_key', 'regions', 'services', 'Auditor']
 
 
 
@@ -90,10 +90,12 @@ def create_app(config_class=Config):
         
         admin = Admin(app, name='admin')
 
-        from chowkidar.models import User, Audit, ScanResults, VulnerabilityDiscovered, VulnerabilityTemplates
+        from chowkidar.models import User, Audit, ScanResults, VulnerabilityDiscovered, VulnerabilityTemplates, CloudRegions, CloudServices
         
         admin.add_view(AdminPanelView(User, db.session))
         admin.add_view(AdminPanelAuditView(Audit, db.session))
+        admin.add_view(AdminPanelView(CloudRegions, db.session))
+        admin.add_view(AdminPanelView(CloudServices, db.session))
         admin.add_view(AdminPanelView(ScanResults, db.session))
         admin.add_view(AdminPanelView(VulnerabilityDiscovered, db.session))
         admin.add_view(AdminPanelTemplatesView(VulnerabilityTemplates, db.session))
