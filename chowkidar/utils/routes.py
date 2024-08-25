@@ -267,6 +267,6 @@ def audit_progress(audit_id):
         'name': audit.name,
         'status': audit.status,
         'progress': audit.progress,
-        'msg': audit.progress_mmsg
+        'msg': audit.progress_msg
     }
     return response
