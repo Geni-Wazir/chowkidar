@@ -1,11 +1,11 @@
 from flask import render_template,Blueprint, flash, redirect, url_for
 from flask_login import current_user, login_required
-from chowkidar.models import User, Audit, ScanResults, VulnerabilityDiscovered, VulnerabilityTemplates, db
-from chowkidar.admin.forms import UpdateAuditForm
+from chowkidar.models import User, Audit, ScanResults, VulnerabilityDiscovered, VulnerabilityTemplates, CloudServices, CloudRegions, db
+from chowkidar.audits.forms import WebUpdateAuditForm, CloudUpdateAuditForm
+from chowkidar.audits.routes import initiate_scan
 from chowkidar import limiter, task_queue
-from chowkidar.utils.scheduler import delete_container, remove_task, run_scan, generate_report
+from chowkidar.utils.scheduler import delete_container, remove_task, run_scan
 import os
-from chowkidar.utils.routes import get_vulnerability_counts
 
 
 
@@ -36,20 +36,29 @@ def admin_audit(user_email, audit_name):
     
     user = User.query.filter_by(email=user_email).first()
     audit = Audit.query.filter_by(name=audit_name, Auditor=user).first()
+    webform = WebUpdateAuditForm()
+    cloudform = CloudUpdateAuditForm()
+    regions = CloudRegions.query.filter_by(asset_type='aws')
+    services = CloudServices.query.filter_by(asset_type='aws')
+    cloudform.regions.choices = [ (region.name, region.name) for region in regions ]
+    cloudform.services.choices = [ (service.name, service.name.replace('_', ' ')) for service in services ]
     if audit:
-        tools = eval(audit.tools)
-        form = UpdateAuditForm()
-        form.nmap.data = tools['nmap']
-        form.dirsearch.data = tools['dirsearch']
-        form.headers.data = tools['headers']
-        form.testssl.data = tools['testssl']
-        form.nuclei.data = tools['nuclei']
-        form.sublister.data = tools['sublister']
-        form.wpscan.data = tools['wpscan']
+        if 'web' in audit.asset_type:
+            tools = eval(audit.tools)
+            webform.nmap.data = tools['nmap']
+            webform.dirsearch.data = tools['dirsearch']
+            webform.headers.data = tools['headers']
+            webform.testssl.data = tools['testssl']
+            webform.nuclei.data = tools['nuclei']
+            webform.sublister.data = tools['sublister']
+            webform.wpscan.data = tools['wpscan']
+        elif 'cloud' in audit.asset_type:
+            cloudform.regions.data = eval(audit.regions)
+            cloudform.services.data = eval(audit.services)
     else:
         flash('Unfortunately, you do not have the privilege to access this audit', 'danger')
         return redirect(url_for('admin_view.all_audits'))
-    return render_template('admin/add_audit.html', title="Admin", audit=audit, form=form, legend="Audit Insights")
+    return render_template('admin/update_audit.html', title="Admin", audit=audit, webform=webform, cloudform=cloudform, legend="Audit Insights")
 
 
 
@@ -69,28 +78,53 @@ def admin_audit_post(user_email, audit_name):
         flash('Unfortunately, you do not have the privilege to access this', 'danger')
         return redirect(url_for('admin_view.all_audits'))
 
-    form = UpdateAuditForm()
+    webform = WebUpdateAuditForm()
+    cloudform = CloudUpdateAuditForm()
 
-    if form.validate_on_submit():
+    # Set choices for cloud regions and services
+    regions = CloudRegions.query.filter_by(asset_type='aws')
+    services = CloudServices.query.filter_by(asset_type='aws')
+    cloudform.regions.choices = [(region.name, region.name) for region in regions]
+    cloudform.services.choices = [(service.name, service.name.replace('_', ' ')) for service in services]
+
+    # Process web audit
+    if 'web' in audit.asset_type and webform.validate_on_submit():
         if audit.status == 'unscanned':
-            if any(list(form.data.values())[2:-1]):
-                audit.tools=str({
-                    'nmap': form.nmap.data,
-                    'dirsearch': form.dirsearch.data,
-                    'headers': form.headers.data,
-                    'testssl': form.testssl.data,
-                    'nuclei': form.nuclei.data,
-                    'sublister': form.sublister.data,
-                    'wpscan': form.wpscan.data,
-                }),
+            if any(list(webform.data.values())[:-1]):  # Exclude CSRF token
+                audit.tools = str({
+                    'nmap': webform.nmap.data,
+                    'dirsearch': webform.dirsearch.data,
+                    'headers': webform.headers.data,
+                    'testssl': webform.testssl.data,
+                    'nuclei': webform.nuclei.data,
+                    'sublister': webform.sublister.data,
+                    'wpscan': webform.wpscan.data,
+                })
                 db.session.commit()
                 flash('The audit has been upgraded', 'success')
+                return redirect(url_for('admin_view.admin_audit', user_email=user_email, audit_name=audit_name))
             else:
                 flash('Boost Your Scan with at Least One Empowering Tool', 'info')
         else:
-            flash('Audit can not be updated', 'info')
+            flash('Audit cannot be updated', 'info')
 
-    return redirect(url_for('admin_view.admin_audit', user_email=user.email, audit_name=audit.name))
+    # Process cloud audit
+    elif 'cloud' in audit.asset_type and cloudform.validate_on_submit():
+        if any(cloudform.services.data):
+            audit.regions = str(cloudform.regions.data)
+            audit.services = str(cloudform.services.data)
+            db.session.commit()
+            flash('The audit has been upgraded', 'success')
+            return redirect(url_for('admin_view.admin_audit', user_email=user_email, audit_name=audit_name))
+        else:
+            flash('Boost Your Scan with At Least One Cloud Service', 'info')
+    else:
+        # Handle form validation errors for cloud form
+        errors = cloudform.errors.get('services')
+        if errors:
+            flash(", ".join(errors), 'info')
+
+    return redirect(url_for('admin_view.admin_audit', user_email=user_email, audit_name=audit_name))
 
 
 
@@ -146,17 +180,12 @@ def admin_scan_audit(user_email, audit_name):
     if audit.status != 'unscanned':
         flash(f'Initiating the scan for {audit.name} is not possible', 'info')
         return redirect(url_for('admin_view.all_audits'))
-
-    add_vulnerability_api = 'http://localhost' + url_for('audits.add_vulnerability')
-    scan_result_api = 'http://localhost' + url_for('audits.add_scan_result')
-    scan_status_api = 'http://localhost' + url_for('audits.scan_status')
-    secret_key = os.environ.get('SCANNER_SECRET_KEY')
-
-    scan_task = task_queue.enqueue(run_scan, args=(secret_key, scan_result_api, add_vulnerability_api, scan_status_api, audit), job_timeout='10h')
-    audit.task_id = scan_task.id
-    audit.status = 'scanning'
     
-    db.session.commit()
+    try:
+        initiate_scan(current_user, audit, 'scanning', db)
+    except:
+        flash(f'Error Initiating Scan for {audit.name}', 'danger')
+
     flash(f'Congratulations! Your {audit.name} scan has been successfully started.', 'success')
     return redirect(url_for('admin_view.all_audits'))
 
@@ -185,17 +214,11 @@ def admin_rescan_audit(user_email, audit_name):
         flash(f'{audit.name} scan is not verified', 'info')
         return redirect(url_for('admin_view.admin_vulnerabilities', user_email=user.email, audit_name=audit_name))
 
-    # add_vulnerability_api = os.getenv('SERVER_URL') + url_for('audits.add_vulnerability')
-    # scan_result_api = os.getenv('SERVER_URL') + url_for('audits.add_scan_result')
-    # scan_status_api = os.getenv('SERVER_URL') + url_for('audits.scan_status')
-    # secret_key = os.environ.get('SCANNER_SECRET_KEY')
+    try:
+        initiate_scan(current_user, audit, 'rescanning', db)
+    except Exception as e:
+        flash(f'Error Initiating Rescan for {audit.name}', 'danger')
 
-    # scan_task = task_queue.enqueue(run_scan, args=(secret_key, scan_result_api, add_vulnerability_api, scan_status_api, audit), job_timeout=-1)
-    # audit.task_id = scan_task.id
-    # audit.status = 'rescanning'
-
-    
-    db.session.commit()
     flash(f'Congratulations! Your {audit.name} Rescan has been successfully started.', 'success')
     return redirect(url_for('admin_view.admin_vulnerabilities', user_email=user.email, audit_name=audit_name))
 
