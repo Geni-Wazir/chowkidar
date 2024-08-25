@@ -1,8 +1,8 @@
 from flask import render_template,Blueprint, flash, redirect, url_for, request, abort
 from flask_login import current_user, login_required
-from chowkidar.models import Audit, ScanResults, VulnerabilityDiscovered, VulnerabilityTemplates, db
+from chowkidar.models import Audit, ScanResults, VulnerabilityDiscovered, VulnerabilityTemplates, CloudRegions, CloudServices, db
 from chowkidar import limiter, task_queue, mail
-from chowkidar.audits.forms import AuditForm, UpdateAuditForm
+from chowkidar.audits.forms import WebAuditForm, WebUpdateAuditForm, CloudAuditForm, CloudUpdateAuditForm
 from chowkidar.utils.scheduler import run_scan, delete_container, remove_task
 import os
 from flask_mail import Message
@@ -25,19 +25,36 @@ def audit_list():
 
 
 @limiter.limit("5/minute")
-def add_audit_post(form):
+def add_web_audit(webform):
     audit = Audit(
-        name=form.name.data.lower(),
-        url=form.url.data,
+        name=webform.name.data.lower(),
+        url=webform.url.data,
         tools=str({
-            'nmap': form.nmap.data,
-            'dirsearch': form.dirsearch.data,
-            'headers': form.headers.data,
-            'testssl': form.testssl.data,
-            'nuclei': form.nuclei.data,
-            'sublister': form.sublister.data,
-            'wpscan': form.wpscan.data,
+            'nmap': webform.nmap.data,
+            'dirsearch': webform.dirsearch.data,
+            'headers': webform.headers.data,
+            'testssl': webform.testssl.data,
+            'nuclei': webform.nuclei.data,
+            'sublister': webform.sublister.data,
+            'wpscan': webform.wpscan.data,
         }),
+        Auditor=current_user
+    )
+    db.session.add(audit)
+    db.session.commit()
+
+
+
+
+@limiter.limit("5/minute")
+def add_cloud_audit(cloudform):
+    audit = Audit(
+        name=cloudform.name.data.lower(),
+        asset_type=cloudform.asset_type.data,
+        access_id=cloudform.access_id.data,
+        secret_key=cloudform.secret_key.data,
+        regions=str(cloudform.regions.data),
+        services=str(cloudform.services.data),
         Auditor=current_user
     )
     db.session.add(audit)
@@ -49,21 +66,35 @@ def add_audit_post(form):
 @audits.route('/audits/new', methods=['GET', 'POST'])
 @login_required
 def add_audit():
-    form = AuditForm()
-    if form.validate_on_submit():
+    webform = WebAuditForm()
+    cloudform = CloudAuditForm()
+    regions = CloudRegions.query.filter_by(asset_type='aws')
+    services = CloudServices.query.filter_by(asset_type='aws')
+    cloudform.regions.choices = [ (region.name, region.name) for region in regions ]
+    cloudform.services.choices = [ (service.name, service.name.replace('_', ' ')) for service in services ]
+    if webform.validate_on_submit():
         if current_user.scan_available:
-            if any(list(form.data.values())[2:-1]):
-                add_audit_post(form)
+            if any(list(webform.data.values())[2:-1]):
+                add_web_audit(webform)
                 flash('Audit has been Added to Your Universe', 'success')
                 return redirect(url_for('audits.audit_list'))
-            flash('Boost Your Scan with at Least One Empowering Tool', 'info')
+            flash('Boost Your Scan with At Least One Empowering Tool', 'info')
+        else:
+            flash('Your Scan Count is Low! Connect with Admin for Additional Scans', 'info')
+    elif cloudform.validate_on_submit():
+        if current_user.scan_available:
+            if any(list(cloudform.services.data)):
+                add_cloud_audit(cloudform)
+                flash('Audit has been Added to Your Universe', 'success')
+                return redirect(url_for('audits.audit_list'))
+            flash('Boost Your Scan with At Least One Cloud Service', 'info')
         else:
             flash('Your Scan Count is Low! Connect with Admin for Additional Scans', 'info')
     else:
-        errors = list(form.errors.values())
+        errors = list(webform.errors.values())
         if errors:
             flash(", ".join(errors[0]), 'info')
-    return render_template('audits/add_audit.html', title="Add Audit", form=form, legend="New Audit")
+    return render_template('audits/add_audit.html', title="Add Audit", webform=webform, cloudform=cloudform, legend="New Audit")
 
 
 
@@ -72,17 +103,26 @@ def add_audit():
 @login_required
 def audit(audit_name):
     audit = Audit.query.filter_by(name=audit_name, Auditor=current_user).first()
+    webform = WebUpdateAuditForm()
+    cloudform = CloudUpdateAuditForm()
+    regions = CloudRegions.query.filter_by(asset_type='aws')
+    services = CloudServices.query.filter_by(asset_type='aws')
+    cloudform.regions.choices = [ (region.name, region.name) for region in regions ]
+    cloudform.services.choices = [ (service.name, service.name.replace('_', ' ')) for service in services ]
     if audit:
-        tools = eval(audit.tools)
-        form = UpdateAuditForm()
-        form.nmap.data = tools['nmap']
-        form.dirsearch.data = tools['dirsearch']
-        form.headers.data = tools['headers']
-        form.testssl.data = tools['testssl']
-        form.nuclei.data = tools['nuclei']
-        form.sublister.data = tools['sublister']
-        form.wpscan.data = tools['wpscan']
-        return render_template('audits/add_audit.html', title="Audit Info", audit=audit, form=form, legend="Audit Insights")
+        if 'web' in audit.asset_type:
+            tools = eval(audit.tools)
+            webform.nmap.data = tools['nmap']
+            webform.dirsearch.data = tools['dirsearch']
+            webform.headers.data = tools['headers']
+            webform.testssl.data = tools['testssl']
+            webform.nuclei.data = tools['nuclei']
+            webform.sublister.data = tools['sublister']
+            webform.wpscan.data = tools['wpscan']
+        elif 'cloud' in audit.asset_type:
+            cloudform.regions.data = eval(audit.regions)
+            cloudform.services.data = eval(audit.services)
+        return render_template('audits/update_audit.html', title="Audit Info", audit=audit, webform=webform, cloudform=cloudform, legend="Audit Insights")
     else:
         flash('Unfortunately, you do not have the privilege to access this audit', 'danger')
         return redirect(url_for('audits.audit_list'))
@@ -95,32 +135,57 @@ def audit(audit_name):
 @limiter.limit("5/minute")
 def audit_post(audit_name):
     audit = Audit.query.filter_by(name=audit_name, Auditor=current_user).first()
-    if audit:
-        form = UpdateAuditForm()
-        if form.validate_on_submit():
-            if audit.status == 'unscanned':
-                if any(list(form.data.values())[:-1]):
-                    audit.tools = str({
-                        'nmap': form.nmap.data,
-                        'dirsearch': form.dirsearch.data,
-                        'headers': form.headers.data,
-                        'testssl': form.testssl.data,
-                        'nuclei': form.nuclei.data,
-                        'sublister': form.sublister.data,
-                        'wpscan': form.wpscan.data,
-                    })
-                    db.session.commit()
-                    flash('The audit has been upgraded', 'success')
-                    return redirect(url_for('audits.audit', audit_name=audit.name))
-                else:
-                    flash('Boost Your Scan with at Least One Empowering Tool', 'info')
-            else:
-                flash('Audit can not be updated', 'info')
-        return redirect(url_for('audits.audit', audit_name=audit.name))
-    else:
+    if not audit:
         flash('Unfortunately, you do not have the privilege to access this audit', 'danger')
         return redirect(url_for('audits.audit_list'))
 
+    webform = WebUpdateAuditForm()
+    cloudform = CloudUpdateAuditForm()
+
+    # Set choices for cloud regions and services
+    regions = CloudRegions.query.filter_by(asset_type='aws')
+    services = CloudServices.query.filter_by(asset_type='aws')
+    cloudform.regions.choices = [(region.name, region.name) for region in regions]
+    cloudform.services.choices = [(service.name, service.name.replace('_', ' ')) for service in services]
+
+    # Process web audit
+    if 'web' in audit.asset_type and webform.validate_on_submit():
+        if audit.status == 'unscanned':
+            if any(list(webform.data.values())[:-1]):  # Exclude CSRF token
+                audit.tools = str({
+                    'nmap': webform.nmap.data,
+                    'dirsearch': webform.dirsearch.data,
+                    'headers': webform.headers.data,
+                    'testssl': webform.testssl.data,
+                    'nuclei': webform.nuclei.data,
+                    'sublister': webform.sublister.data,
+                    'wpscan': webform.wpscan.data,
+                })
+                db.session.commit()
+                flash('The audit has been upgraded', 'success')
+                return redirect(url_for('audits.audit', audit_name=audit.name))
+            else:
+                flash('Boost Your Scan with at Least One Empowering Tool', 'info')
+        else:
+            flash('Audit cannot be updated', 'info')
+
+    # Process cloud audit
+    elif 'cloud' in audit.asset_type and cloudform.validate_on_submit():
+        if any(cloudform.services.data):
+            audit.regions = str(cloudform.regions.data)
+            audit.services = str(cloudform.services.data)
+            db.session.commit()
+            flash('The audit has been upgraded', 'success')
+            return redirect(url_for('audits.audit', audit_name=audit.name))
+        else:
+            flash('Boost Your Scan with At Least One Cloud Service', 'info')
+    else:
+        # Handle form validation errors for cloud form
+        errors = cloudform.errors.get('services')
+        if errors:
+            flash(", ".join(errors), 'info')
+
+    return redirect(url_for('audits.audit', audit_name=audit.name))
 
 
 
@@ -153,6 +218,27 @@ def delete_audit(audit_name):
 
 
 
+def initiate_scan(current_user, audit, status, db):
+
+    add_vulnerability_api = os.getenv('SERVER_URL') + url_for('audits.add_vulnerability')
+    scan_result_api = os.getenv('SERVER_URL') + url_for('audits.add_scan_result')
+    scan_status_api = os.getenv('SERVER_URL') + url_for('audits.scan_status')
+    secret_key = os.environ.get('SCANNER_SECRET_KEY')
+
+    scan_task = task_queue.enqueue(run_scan, args=(secret_key, scan_result_api, add_vulnerability_api, scan_status_api, audit), job_timeout=-1)
+    audit.task_id = scan_task.id
+    audit.status = status
+
+    if status == 'scanning':
+        if not current_user.admin:
+            current_user.scan_available -= 1
+    elif status == 'rescanning':
+        if not current_user.admin:
+            audit.rescan -= 1
+    db.session.commit()
+
+
+
 @limiter.limit("5/minute")
 @audits.route('/audits/<string:audit_name>/scan', methods=['GET', 'POST'])
 @login_required
@@ -170,19 +256,10 @@ def scan_audit(audit_name):
         flash(f'Initiating the scan for {audit.name} is not possible', 'info')
         return redirect(url_for('audits.audit_list'))
 
-    add_vulnerability_api = os.getenv('SERVER_URL') + url_for('audits.add_vulnerability')
-    scan_result_api = os.getenv('SERVER_URL') + url_for('audits.add_scan_result')
-    scan_status_api = os.getenv('SERVER_URL') + url_for('audits.scan_status')
-    secret_key = os.environ.get('SCANNER_SECRET_KEY')
-
-    scan_task = task_queue.enqueue(run_scan, args=(secret_key, scan_result_api, add_vulnerability_api, scan_status_api, audit), job_timeout=-1)
-    audit.task_id = scan_task.id
-    audit.status = 'scanning'
-    
-    if not current_user.admin:
-        current_user.scan_available -= 1
-    
-    db.session.commit()
+    try:
+        initiate_scan(current_user, audit, 'scanning', db)
+    except:
+        flash(f'Error Initiating Scan for {audit.name}', 'danger')
     flash(f'Congratulations! Your {audit.name} scan has been successfully started.', 'success')
     return redirect(url_for('audits.audit_list'))
 
@@ -209,21 +286,10 @@ def rescan_audit(audit_name):
     if not audit.scan_verified:
         flash(f'{audit.name} scan is not verified', 'info')
         return redirect(url_for('audits.vulnerabilities', audit_name=audit_name))
-
-    # add_vulnerability_api = os.getenv('SERVER_URL') + url_for('audits.add_vulnerability')
-    # scan_result_api = os.getenv('SERVER_URL') + url_for('audits.add_scan_result')
-    # scan_status_api = os.getenv('SERVER_URL') + url_for('audits.scan_status')
-    # secret_key = os.environ.get('SCANNER_SECRET_KEY')
-
-    # scan_task = task_queue.enqueue(run_scan, args=(secret_key, scan_result_api, add_vulnerability_api, scan_status_api, audit), job_timeout=-1)
-    # audit.task_id = scan_task.id
-    # audit.status = 'rescanning'
-
-    
-    if not current_user.admin:
-        audit.rescan -= 1
-    
-    db.session.commit()
+    try:
+        initiate_scan(current_user, audit, 'rescanning', db)
+    except:
+        flash(f'Error Initiating Rescan for {audit.name}', 'danger')
     flash(f'Congratulations! Your {audit.name} Rescan has been successfully started.', 'success')
     return redirect(url_for('audits.vulnerabilities', audit_name=audit_name))
 
@@ -272,6 +338,7 @@ def stop_scan(audit_name):
         return redirect(url_for('audits.audit_list'))
 
     audit.status = 'stopped'
+    audit.progress_msg = 'Scan Stopped'
     db.session.commit()
     flash(f'Your Scan for {audit.name} has been stopped', 'success')
 
@@ -310,7 +377,10 @@ def add_scan_result():
             if not scan_result:
                 scan_result = ScanResults(Audit=audit)
                 db.session.add(scan_result)
-            setattr(scan_result, data['tool'], data['output'])
+            if data['tool']:
+                setattr(scan_result, data['tool'], data['output'])
+            audit.progress = data['progress']
+            audit.progress_msg = data['progress_msg']
             db.session.commit()
             return 'ok', 200
         abort(404)  # audit not found
@@ -332,6 +402,8 @@ def scan_status():
             if data['status'] == 'stopped':
                 for tool in data['tools']:
                     setattr(scan_result, tool, "URL not reachable")
+            audit.progress = data['progress']
+            audit.progress_msg = data['progress_msg']
             audit.status = data['status']
             db.session.commit()
             reciever = [audit.Auditor.email]
@@ -339,11 +411,11 @@ def scan_status():
             message = render_template('audits/scan_complete_mail.html', audit=audit)
             msg = Message(subject, sender=os.environ['MAIL_USERNAME'], recipients=reciever)
             msg.html = message
-            try:
-                mail.send(msg)
-            except:
-                pass
-            delete_container(audit.container_id)
+            # try:
+            #     mail.send(msg)
+            # except:
+            #     pass
+            # delete_container(audit.container_id)
             return "ok", 200
         abort(404)  # audit not found
     abort(403)  # Incorrect secret_key
@@ -395,24 +467,6 @@ def vulnerabilities(audit_name):
         .order_by(VulnerabilityTemplates.cvss.desc()).all()
 
     return render_template('audits/vulnerabilities.html', title="Vulnerabilities", audit=audit, vulnerabilities=vulnerabilities)
-
-
-
-
-@audits.route('/audits/<string:audit_name>/progress')
-@login_required
-def audit_progress(audit_name):
-    audit = Audit.query.filter_by(name=audit_name, Auditor=current_user).first()
-
-    if not audit:
-        flash('Unfortunately, you do not have the privilege to access this audit', 'danger')
-        return redirect(url_for('audits.audit_list'))
-    response = {
-        'name': audit.name,
-        'status': audit.status,
-        'progress': audit.progress
-    }
-    return response
 
 
 
