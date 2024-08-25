@@ -39,16 +39,16 @@ class Audit(db.Model):
     status = db.Column(db.String(100), nullable=False, default='unscanned')
     scan_verified = db.Column(db.Boolean, nullable=False, default=False)
     progress = db.Column(db.Integer, default=0)
-    progress_msg = db.Column(db.String(100))
+    progress_msg = db.Column(db.String(100), default='scanning')
     rescan = db.Column(db.Integer, default=3)
     # web scan config
     url = db.Column(db.String(100), nullable=False, default='')
     tools = db.Column(db.Text(), nullable=False, default='')
     # cloud (AWS) scan config
-    access_key = db.Column(db.String(100), nullable=False, default='')
-    secret_id = db.Column(db.String(100), nullable=False, default='')
+    access_id = db.Column(db.String(100), nullable=False, default='')
+    secret_key = db.Column(db.String(100), nullable=False, default='')
     regions = db.Column(db.String(1000), nullable=False, default='')
-    sevices = db.Column(db.Text(), nullable=False, default='')
+    services = db.Column(db.Text(), nullable=False, default='')
 
     Auditor = db.relationship('User', back_populates='audit', lazy=True)
     audit_vuln = db.relationship('VulnerabilityDiscovered', backref='Audit', lazy=True, cascade="all, delete")
@@ -56,9 +56,25 @@ class Audit(db.Model):
 
     def __repr__(self):
         return "Audit({}, {}, {})".format(self.name, self.Auditor.name, self.Auditor.email)
-    
 
-    
+
+
+
+class CloudRegions(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False, default='')
+    asset_type = db.Column(db.String(100), nullable=False, default='aws')
+
+
+
+
+class CloudServices(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False, default='')
+    asset_type = db.Column(db.String(100), nullable=False, default='aws')
+
+
+
 
 class ScanResults(db.Model):
     id = db.Column(db.Integer, primary_key=True)
