@@ -22,7 +22,7 @@ body{
 }
 
 .new-audit-btn {
-  margin: 3rem 0 4rem 0;
+  margin: 2rem 0 2rem 0;
 }
 
 /* Extra Small Devices, Phones */
@@ -63,12 +63,8 @@ body{
     overflow-y: auto; /* Enable vertical scrolling if the content exceeds the maximum height */
   }
 
-  .new-audit {
-    height: 38rem;
-  }
-
   .new-audit-btn {
-    margin: 0.4rem 0 1rem 0;
+    margin: 0.4rem 0 0.4rem 0;
   }
 
   .tool-gap-y > *:not(:last-child) {
@@ -95,12 +91,8 @@ body{
     overflow-y: auto; /* Enable vertical scrolling if the content exceeds the maximum height */
   }
 
-  .new-audit {
-    height: 43.7rem;
-  }
-
   .new-audit-btn {
-    margin: 3rem 0 4rem 0;
+    margin: 2rem 0 2rem 0;
   }
 
 
@@ -429,6 +421,100 @@ body{
     border-style: solid;
     animation: blink-border 1s infinite;
   }
+
+
+  .asset-type-option {
+    display: inline-block;
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    margin: 5px;
+  }
+
+  .asset-type-option input[type="radio"] {
+      display: none;
+  }
+
+  .asset-type-option img {
+      width: 50px;
+      height: 50px;
+      display: block;
+      margin: 0 auto 5px;
+  }
+
+  .asset-type-option.selected {
+      border-color: #007bff;
+      background-color: #e7f3ff;
+  }
+
+
+.multi-select-header {
+    border-bottom: none; /* Remove bottom border to avoid double border with the container */
+    padding: 0.2rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.multi-select-options {
+    display: none; /* Hidden by default */
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    max-height: 15rem; /* Adjust height as needed */
+    overflow-y: auto;
+    margin-bottom: 3rem;
+}
+
+.multi-select-option {
+    padding: 0.5rem;
+    border-bottom: 0.01rem solid #959393;
+    cursor: pointer;
+    position: relative;
+    font-size: small;
+}
+
+.multi-select-option:hover {
+    background-color: #e7f3ff;
+}
+
+.multi-select-option.selected {
+    background-color: #ddf3ff;
+}
+
+.remove-icon {
+    position: absolute;
+    right: 10px; /* Adjust right margin as needed */
+    cursor: pointer;
+    color: #e44c4c; /* Color of the remove icon */
+}
+
+.selected-items {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.selected-item {
+    background-color: #c9edff;
+    padding: 5px 10px;
+    margin: 2px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    font-size: x-small;
+}
+
+.selected-item .remove-icon {
+    margin-left: 5px;
+    cursor: pointer;
+    color: #e44c4c; /* Color of the remove icon */
+}
 
 
 

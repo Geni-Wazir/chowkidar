@@ -329,6 +329,236 @@ if (scanProgress){
     }
 
 
+function showWebForm() {
+    document.getElementById('cloud-form').style.display = 'none';
+    document.getElementById('web-form').style.display = 'block';
+}
+
+function showCloudForm() {
+    document.getElementById('web-form').style.display = 'none';
+    document.getElementById('cloud-form').style.display = 'block';
+}
+
+
+document.querySelectorAll('.asset-type-option').forEach(function(option) {
+    option.addEventListener('click', function() {
+        // Remove 'selected' class from all options
+        document.querySelectorAll('.asset-type-option').forEach(function(opt) {
+            opt.classList.remove('selected');
+        });
+        // Add 'selected' class to the clicked option
+        option.classList.add('selected');
+        // Select the associated radio button
+        option.querySelector('input[type="radio"]').checked = true;
+    });
+});
+
+
+
+
+function toggleDropdown(event, optionsId) {
+    const options = document.getElementById(optionsId);
+
+    // Toggle the visibility of the dropdown
+    if (options.style.display === 'none' || options.style.display === '') {
+        options.style.display = 'block';
+    } else {
+        options.style.display = 'none';
+    }
+
+    // Stop the event from propagating to avoid closing the dropdown immediately
+    event.stopPropagation();
+}
+
+function removeFromSelection(event) {
+    const selectedItem = event.target.closest('.selected-item');
+    if (!selectedItem) return;
+
+    const value = selectedItem.getAttribute('data-value');
+
+    // Remove the hidden input if it exists
+    const hiddenInput = document.querySelector(`input[type="hidden"][value="${value}"]`);
+    if (hiddenInput) {
+        hiddenInput.remove();
+    }
+    // Remove the item from selected items
+    selectedItem.remove();
+
+    // Deselect the option
+    const option = document.querySelector(`.multi-select-option[data-value="${value}"]`);
+    option.classList.remove('selected');
+}
+
+function selectAllOptions(optionsId) {
+    const options = document.querySelectorAll(`#${optionsId} .multi-select-option`);
+    const selectedItemsContainer = optionsId === 'region-options' ? document.getElementById('selected-regions') : document.getElementById('selected-services');
+    const form = document.getElementById('audit-form');
+
+    options.forEach(option => {
+        if (!option.classList.contains('selected')) {
+            option.classList.add('selected');
+
+            const value = option.getAttribute('data-value');
+
+            const selectedItem = document.createElement('div');
+            selectedItem.className = 'selected-item';
+            selectedItem.setAttribute('data-value', value);
+            selectedItem.innerHTML = `<span class="mr-3">${value}</span><span class="remove-icon" onclick="removeFromSelection(event)">&times;</span>`;
+            selectedItemsContainer.appendChild(selectedItem);
+
+            const hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = optionsId === 'region-options' ? 'regions' : 'services';
+            hiddenInput.value = value;
+            hiddenInput.className = 'selected-input';
+            form.appendChild(hiddenInput);
+        }
+    });
+}
+
+function clearAllSelections(optionsId, selectedContainerId) {
+    const options = document.querySelectorAll(`#${optionsId} .multi-select-option`);
+    const selectedItemsContainer = document.getElementById(selectedContainerId);
+
+    // Remove selected class from options
+    options.forEach(option => {
+        option.classList.remove('selected');
+    });
+
+    // Remove all selected items
+    selectedItemsContainer.innerHTML = '';
+
+    // Remove all hidden inputs
+    const form = document.getElementById('audit-form');
+    const hiddenInputs = form.querySelectorAll(`input[name="${optionsId === 'region-options' ? 'regions' : 'services'}"]`);
+    hiddenInputs.forEach(input => input.remove());
+}
+
+function filterOptions(optionsId, searchValue) {
+    const options = document.querySelectorAll(`#${optionsId} .multi-select-option`);
+    const lowerCaseSearchValue = searchValue.toLowerCase();
+
+    options.forEach(option => {
+        const label = option.textContent.trim().toLowerCase();
+        if (label.includes(lowerCaseSearchValue)) {
+            option.style.display = '';
+        } else {
+            option.style.display = 'none';
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle regions
+    const regionOptions = document.querySelectorAll('#region-options .multi-select-option');
+    const selectedRegionsContainer = document.getElementById('selected-regions');
+    const form = document.getElementById('audit-form');
+
+    regionOptions.forEach(option => {
+        option.addEventListener('click', function(event) {
+            const value = this.getAttribute('data-value');
+
+            if (!this.classList.contains('selected')) {
+                this.classList.add('selected');
+
+                const selectedItem = document.createElement('div');
+                selectedItem.className = 'selected-item';
+                selectedItem.setAttribute('data-value', value);
+                selectedItem.innerHTML = `<span class="mr-3">${value}</span><span class="remove-icon" onclick="removeFromSelection(event)">&times;</span>`;
+                selectedRegionsContainer.appendChild(selectedItem);
+
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = 'regions';
+                hiddenInput.value = value;
+                hiddenInput.className = 'selected-input';
+                form.appendChild(hiddenInput);
+
+            } else {
+                this.classList.remove('selected');
+                const selectedItem = document.querySelector(`.selected-item[data-value="${value}"]`);
+                if (selectedItem) {
+                    selectedItem.remove();
+                }
+                document.querySelector(`input[type="hidden"][value="${value}"]`).remove();
+            }
+
+            event.stopPropagation();
+        });
+    });
+
+    // Handle services
+    const serviceOptions = document.querySelectorAll('#service-options .multi-select-option');
+    const selectedServicesContainer = document.getElementById('selected-services');
+
+    serviceOptions.forEach(option => {
+        option.addEventListener('click', function(event) {
+            const value = this.getAttribute('data-value');
+
+            if (!this.classList.contains('selected')) {
+                this.classList.add('selected');
+
+                const selectedItem = document.createElement('div');
+                selectedItem.className = 'selected-item';
+                selectedItem.setAttribute('data-value', value);
+                selectedItem.innerHTML = `<span class="mr-3">${value}</span><span class="remove-icon" onclick="removeFromSelection(event)">&times;</span>`;
+                selectedServicesContainer.appendChild(selectedItem);
+
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = 'services';
+                hiddenInput.value = value;
+                hiddenInput.className = 'selected-input';
+                form.appendChild(hiddenInput);
+
+            } else {
+                this.classList.remove('selected');
+                const selectedItem = document.querySelector(`.selected-item[data-value="${value}"]`);
+                if (selectedItem) {
+                    selectedItem.remove();
+                }
+                document.querySelector(`input[type="hidden"][value="${value}"]`).remove();
+            }
+
+            event.stopPropagation();
+        });
+    });
+
+    // Add event listener if selectedRegionsContainer exists
+    if (selectedRegionsContainer) {
+        selectedRegionsContainer.addEventListener('click', function(event) {
+            if (event.target.classList.contains('remove-icon')) {
+                removeFromSelection(event);
+            }
+        });
+    }
+
+    // Add event listener if selectedServicesContainer exists
+    if (selectedServicesContainer) {
+        selectedServicesContainer.addEventListener('click', function(event) {
+            if (event.target.classList.contains('remove-icon')) {
+                removeFromSelection(event);
+            }
+        });
+    }
+    if (selectedServicesContainer) {
+    document.addEventListener('click', function(event) {
+        const regionsContainer = document.getElementById('regions');
+        const servicesContainer = document.getElementById('services');
+
+        if (!regionsContainer.contains(event.target)) {
+            document.getElementById('region-options').style.display = 'none';
+        }
+
+        if (!servicesContainer.contains(event.target)) {
+            document.getElementById('service-options').style.display = 'none';
+        }
+    });
+    }
+});
+
+
+
 
     
 function copyText() {

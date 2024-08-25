@@ -5,8 +5,8 @@
     <div class="md:mt-3 bg-sky-300/30 rounded-lg p-3  flex flex-col md:flex-row gap-3 md:gap-0 items-center">
         <div class="flex-1 flex gap-8">
             <div class="w-auto">
-                <div class="flex">
-                    <span class="text-3xl font-semibold capitalize flex-1">{{ audit.name }}</span>
+                <div class="flex max-w-lg">
+                    <span class="text-3xl font-semibold capitalize flex-1 truncate">{{ audit.name }}</span>
                     <div class="flex ml-1 group">
                         <a href="{{ url_for('audits.audit', audit_name=audit.name) }}">
                             <svg class="w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -73,7 +73,7 @@
             
                 <!-- Percentage Text -->
                 <div class="absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2">
-                    <span id="progress-text" class="text-center text-xs font-semibold text-blue-600">{{ audit.progress }}%</span>
+                    <span id="progress-text" class="text-center text-xs font-semibold text-blue-600 select-none">{{ audit.progress }}%</span>
                 </div>
                 <div class='absolute hidden group-hover:block mt-24 bg-black rounded-md p-1 px-2 action-triangle-top'>
                     <span class='text-white text-xs font-normal whitespace-nowrap capitalize' id="progress-msg">{{ audit.progress_msg }}</span>
@@ -273,8 +273,8 @@
                 </button>
                 <button type="button"
                     class="px-2 rounded-lg hs-tab-active:border-blue-500 hs-tab-active:text-blue-600 py-1 pe-4 inline-flex items-center gap-x-2 border-e-4 border-transparent text-sm whitespace-nowrap text-gray-500 hover:text-blue-600 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none"
-                    data-hs-tab="#vertical-tab-sublister" role="tab">
-                    <span class="hidden lg:flex">SUBLISTER</span>
+                    data-hs-tab="#vertical-tab-subdomain" role="tab">
+                    <span class="hidden lg:flex">SUBDOMAINS</span>
                     <span class="lg:hidden">
                         <svg class="w-6 h-6" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000">
                             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -510,7 +510,7 @@
                     </div>
                 </div>
             </div>
-            <div id="vertical-tab-sublister" class="ml-5 relative" role="tabpanel">
+            <div id="vertical-tab-subdomain" class="ml-5 relative" role="tabpanel">
                 <div class="w-full absolute mx-auto bg-gray-900 rounded-lg px-3 pb-3">
                     <div class="h-full">
                         <div class="flex p-2 fix">
@@ -531,7 +531,7 @@
                                     <text x="10" y="45"><tspan class="blue">└─</tspan><tspan class="blue">$ </tspan><tspan class="green cursor">_</tspan></text>
                                 </svg>
                             </div>
-                            <pre class="text-left text-sm pb-3">{{ output.sublister }}</pre>
+                            <pre class="text-left text-sm pb-3">{{ output.subdomain }}</pre>
                         </div>
                     </div>
                 </div>

@@ -1,0 +1,627 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="flex justify-center pt-5">
+    <div class="w-5/6 m-2 bg-white shadow rounded-lg flex flex-col sm:flex-row gap-4 items-center">
+        <div class="w-full h-full p-6">
+            <div class="flex flex-col items-center">
+                <h1 class="text-2xl xl:text-3xl font-bold flex">
+                    {{ legend }}
+                    {% if 'web' in audit.asset_type %}
+                    <svg class="w-8 ml-2" version="1.1" id="Icons" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" xml:space="preserve" fill="#000000">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier"> 
+                            <style type="text/css"> 
+                                .st0{fill:none;stroke:#0ea5e9;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} 
+                                .st1{fill:none;stroke:#0ea5e9;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;} 
+                                .st2{fill:none;stroke:#0ea5e9;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:5.2066,0;} 
+                            </style>
+                            <line class="st0" x1="3" y1="11" x2="29" y2="11"></line>
+                            <line class="st0" x1="7" y1="8" x2="7" y2="8"></line>
+                            <line class="st0" x1="10" y1="8" x2="10" y2="8"></line>
+                            <line class="st0" x1="13" y1="8" x2="13" y2="8"></line>
+                            <path class="st0" d="M8.8,27H3V5h26v22l-5.8,0c0.3-0.1,0.6-0.1,0.9-0.1c0.1-0.6,0.2-1.3,0.2-1.9c0-0.7-0.1-1.3-0.2-1.9c-1,0.1-2-0.3-2.5-1.3c-0.5-0.9-0.4-2,0.2-2.8c-0.9-0.9-2.1-1.6-3.4-2c-0.4,0.9-1.3,1.6-2.4,1.6s-2-0.7-2.4-1.6c-1.3,0.4-2.4,1.1-3.4,2c0.6,0.8,0.7,1.9,0.2,2.8c-0.5,0.9-1.6,1.4-2.5,1.3c-0.1,0.6-0.2,1.3-0.2,1.9c0,0.7,0.1,1.3,0.2,1.9C8.2,26.9,8.5,26.9,8.8,27L8.8,27z"></path>
+                            <circle class="st0" cx="16" cy="25" r="3"></circle>
+                        </g>
+                    </svg>
+                    {% elif 'cloud' in audit.asset_type %}
+                    <svg class="w-9 ml-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier"> 
+                            <path d="M5.99988 18.9142C4.04366 18.5171 2.57129 16.7876 2.57129 14.7142C2.57129 12.6408 4.04366 10.9113 5.99988 10.5142C5.99987 10.5095 5.99986 10.5047 5.99986 10.5C5.99986 7.46243 8.4623 5 11.4999 5C14.5374 5 16.9999 7.46243 16.9999 10.5C16.9999 10.6685 16.9923 10.8353 16.9774 11H16.9999C19.209 11 20.9999 12.7909 20.9999 15C20.9999 16.8638 19.7251 18.4299 17.9999 18.874" stroke="#f97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> 
+                            <path d="M12 14.75C12.641 14.75 13.2007 15.1019 13.5002 15.6249M12 14.75C11.3589 14.75 10.7992 15.1019 10.4997 15.6249M12 14.75V13M12 20V18.2209M15 14.75L13.5002 15.6249M9 18.25L10.4997 17.3751M15 18.25L13.5003 17.3752M9 14.75L10.4997 15.6249M10.4997 17.3751C10.3523 17.1177 10.2679 16.8188 10.2679 16.5C10.2679 16.1812 10.3523 15.8823 10.4997 15.6249M10.4997 17.3751C10.8408 17.9707 11.4229 18.2326 12 18.2209M12 18.2209C12.5958 18.2088 13.1862 17.9049 13.5003 17.3752M13.5003 17.3752C13.6458 17.1298 13.732 16.8358 13.732 16.5C13.732 16.1812 13.6477 15.8823 13.5002 15.6249" stroke="#f97316" stroke-width="2" stroke-linecap="round"></path> 
+                        </g>
+                    </svg>
+                    {% endif %}
+                </h1>
+                <div class="w-full flex-1">
+                    {% if 'web' in audit.asset_type %}
+                    <form method="POST" action="">
+                        {{ webform.hidden_tag() }}
+                        <div class="relative mb-4">
+                            <input
+                                class="peer py-3 pe-0 ps-8 block w-full bg-transparent border-t-transparent border-b-2 border-x-transparent border-b-gray-500 text-sm disabled:opacity-70"
+                                disabled value="{{ audit.name }}">
+                            <div
+                                class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-2 peer-disabled:opacity-50 peer-disabled:pointer-events-none">
+                                <svg  class="w-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="2"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <path d="M18 10L13 10" stroke="#6365f1" stroke-width="1.5" stroke-linecap="round"></path>
+                                        <path d="M10 3H16.5C16.9644 3 17.1966 3 17.3916 3.02567C18.7378 3.2029 19.7971 4.26222 19.9743 5.60842C20 5.80337 20 6.03558 20 6.5" stroke="#6365f1" stroke-width="2"></path>
+                                        <path d="M2 6.94975C2 6.06722 2 5.62595 2.06935 5.25839C2.37464 3.64031 3.64031 2.37464 5.25839 2.06935C5.62595 2 6.06722 2 6.94975 2C7.33642 2 7.52976 2 7.71557 2.01738C8.51665 2.09229 9.27652 2.40704 9.89594 2.92051C10.0396 3.03961 10.1763 3.17633 10.4497 3.44975L11 4C11.8158 4.81578 12.2237 5.22367 12.7121 5.49543C12.9804 5.64471 13.2651 5.7626 13.5604 5.84678C14.0979 6 14.6747 6 15.8284 6H16.2021C18.8345 6 20.1506 6 21.0062 6.76946C21.0849 6.84024 21.1598 6.91514 21.2305 6.99383C22 7.84935 22 9.16554 22 11.7979V14C22 17.7712 22 19.6569 20.8284 20.8284C19.6569 22 17.7712 22 14 22H10C6.22876 22 4.34315 22 3.17157 20.8284C2 19.6569 2 17.7712 2 14V6.94975Z" stroke="#6365f1" stroke-width="2"></path>
+                                    </g>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="relative">
+                            <input
+                                class="peer py-3 pe-0 ps-8 block w-full bg-transparent border-t-transparent border-b-2 border-x-transparent border-b-gray-500 text-sm disabled:opacity-70"
+                                disabled value="{{ audit.url }}">
+                            <div
+                                class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-2 peer-disabled:opacity-50 peer-disabled:pointer-events-none">
+                                <svg class="w-4" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#6365f1">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <path d="M20.501 6.028V6h-.02A10.28 10.28 0 0 0 4.519 6H4.5v.028a10.262 10.262 0 0 0 0 12.944V19h.02a10.28 10.28 0 0 0 15.962 0h.021v-.028a10.262 10.262 0 0 0 0-12.944zM13 6V3.272A4.533 4.533 0 0 1 15.54 6zm2.935 1a16.827 16.827 0 0 1 .853 5H13V7zM12 3.272V6H9.46A4.533 4.533 0 0 1 12 3.272zM12 7v5H8.212a16.827 16.827 0 0 1 .853-5zm-4.787 5H3.226a9.234 9.234 0 0 1 1.792-5h2.984a17.952 17.952 0 0 0-.79 5zm0 1a17.952 17.952 0 0 0 .789 5H5.018a9.234 9.234 0 0 1-1.792-5zm1 0H12v5H9.065a16.827 16.827 0 0 1-.853-5zM12 19v2.728A4.533 4.533 0 0 1 9.46 19zm1 2.728V19h2.54A4.533 4.533 0 0 1 13 21.728zM13 18v-5h3.788a16.827 16.827 0 0 1-.853 5zm4.787-5h3.987a9.234 9.234 0 0 1-1.792 5h-2.984a17.952 17.952 0 0 0 .79-5zm0-1a17.952 17.952 0 0 0-.789-5h2.984a9.234 9.234 0 0 1 1.792 5zm1.352-6h-2.501a8.524 8.524 0 0 0-1.441-2.398A9.306 9.306 0 0 1 19.139 6zM9.803 3.602A8.524 8.524 0 0 0 8.363 6H5.86a9.306 9.306 0 0 1 3.942-2.398zM5.861 19h2.501a8.524 8.524 0 0 0 1.441 2.398A9.306 9.306 0 0 1 5.861 19zm9.336 2.398A8.524 8.524 0 0 0 16.637 19h2.502a9.306 9.306 0 0 1-3.942 2.398z"></path>
+                                        <path fill="none" d="M0 0h24v24H0z"></path>
+                                    </g>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="my-12 border-b text-center border-b-gray-300">
+                            <div
+                                class="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
+                                Empower Your Audit With Following Tools
+                            </div>
+                        </div>
+                        <div class="sm:max-w-full max-w-xs flex flex-col items-center justify-center">
+                            <div class="flex flex-wrap">
+                                {% if audit.status != 'unscanned' %}
+                                <label class="inline-flex items-center cursor-pointer my-3 mx-3">
+                                    {{ webform.nmap(type="checkbox", class="sr-only peer", disabled=True) }}
+                                    <div
+                                        class="relative flex h-6 w-11 cursor-pointer items-center rounded-full bg-gray-400 px-0.5 outline-gray-400 transition-colors before:h-5 before:w-5 before:rounded-full before:bg-white before:shadow before:transition-transform before:duration-300 peer-checked:bg-green-500 peer-checked:before:translate-x-full peer-focus-visible:outline peer-focus-visible:outline-offset-2 peer-focus-visible:outline-gray-400 peer-checked:peer-focus-visible:outline-green-500">
+                                    </div>
+                                    {{ webform.nmap.label(class='px-2 text-sm font-bold text-indigo-900') }}
+                                </label>
+                                <label class="inline-flex items-center cursor-pointer my-3 mx-3">
+                                    {{ webform.headers(type="checkbox", class="sr-only peer", disabled=True) }}
+                                    <div
+                                        class="relative flex h-6 w-11 cursor-pointer items-center rounded-full bg-gray-400 px-0.5 outline-gray-400 transition-colors before:h-5 before:w-5 before:rounded-full before:bg-white before:shadow before:transition-transform before:duration-300 peer-checked:bg-green-500 peer-checked:before:translate-x-full peer-focus-visible:outline peer-focus-visible:outline-offset-2 peer-focus-visible:outline-gray-400 peer-checked:peer-focus-visible:outline-green-500">
+                                    </div>
+                                    {{ webform.headers.label(class='px-2 text-sm font-bold text-indigo-900') }}
+                                </label>
+                                <label class="inline-flex items-center cursor-pointer my-3 mx-3">
+                                    {{ webform.dirsearch(type="checkbox", class="sr-only peer", disabled=True) }}
+                                    <div
+                                        class="relative flex h-6 w-11 cursor-pointer items-center rounded-full bg-gray-400 px-0.5 outline-gray-400 transition-colors before:h-5 before:w-5 before:rounded-full before:bg-white before:shadow before:transition-transform before:duration-300 peer-checked:bg-green-500 peer-checked:before:translate-x-full peer-focus-visible:outline peer-focus-visible:outline-offset-2 peer-focus-visible:outline-gray-400 peer-checked:peer-focus-visible:outline-green-500">
+                                    </div>
+                                    {{ webform.dirsearch.label(class='px-2 text-sm font-bold text-indigo-900') }}
+                                </label>
+                                <label class="inline-flex items-center cursor-pointer my-3 mx-3">
+                                    {{ webform.testssl(type="checkbox", class="sr-only peer", disabled=True) }}
+                                    <div
+                                        class="relative flex h-6 w-11 cursor-pointer items-center rounded-full bg-gray-400 px-0.5 outline-gray-400 transition-colors before:h-5 before:w-5 before:rounded-full before:bg-white before:shadow before:transition-transform before:duration-300 peer-checked:bg-green-500 peer-checked:before:translate-x-full peer-focus-visible:outline peer-focus-visible:outline-offset-2 peer-focus-visible:outline-gray-400 peer-checked:peer-focus-visible:outline-green-500">
+                                    </div>
+                                    {{ webform.testssl.label(class='px-2 text-sm font-bold text-indigo-900') }}
+                                </label>
+                                <label class="inline-flex items-center cursor-pointer my-3 mx-3">
+                                    {{ webform.nuclei(type="checkbox", class="sr-only peer", disabled=True) }}
+                                    <div
+                                        class="relative flex h-6 w-11 cursor-pointer items-center rounded-full bg-gray-400 px-0.5 outline-gray-400 transition-colors before:h-5 before:w-5 before:rounded-full before:bg-white before:shadow before:transition-transform before:duration-300 peer-checked:bg-green-500 peer-checked:before:translate-x-full peer-focus-visible:outline peer-focus-visible:outline-offset-2 peer-focus-visible:outline-gray-400 peer-checked:peer-focus-visible:outline-green-500">
+                                    </div>
+                                    {{ webform.nuclei.label(class='px-2 text-sm font-bold text-indigo-900') }}
+                                </label>
+                                <label class="inline-flex items-center cursor-pointer my-3 mx-3">
+                                    {{ webform.sublister(type="checkbox", class="sr-only peer", disabled=True) }}
+                                    <div
+                                        class="relative flex h-6 w-11 cursor-pointer items-center rounded-full bg-gray-400 px-0.5 outline-gray-400 transition-colors before:h-5 before:w-5 before:rounded-full before:bg-white before:shadow before:transition-transform before:duration-300 peer-checked:bg-green-500 peer-checked:before:translate-x-full peer-focus-visible:outline peer-focus-visible:outline-offset-2 peer-focus-visible:outline-gray-400 peer-checked:peer-focus-visible:outline-green-500">
+                                    </div>
+                                    {{ webform.sublister.label(class='px-2 text-sm font-bold text-indigo-900') }}
+                                </label>
+                                <label class="inline-flex items-center cursor-pointer my-3 mx-3">
+                                    {{ webform.wpscan(type="checkbox", class="sr-only peer", disabled=True) }}
+                                    <div
+                                        class="relative flex h-6 w-11 cursor-pointer items-center rounded-full bg-gray-400 px-0.5 outline-gray-400 transition-colors before:h-5 before:w-5 before:rounded-full before:bg-white before:shadow before:transition-transform before:duration-300 peer-checked:bg-green-500 peer-checked:before:translate-x-full peer-focus-visible:outline peer-focus-visible:outline-offset-2 peer-focus-visible:outline-gray-400 peer-checked:peer-focus-visible:outline-green-500">
+                                    </div>
+                                    {{ webform.wpscan.label(class='px-2 text-sm font-bold text-indigo-900') }}
+                                </label>
+                                {% else %}
+                                <label class="inline-flex items-center cursor-pointer my-3 mx-3">
+                                    {{ webform.nmap(type="checkbox", class="sr-only peer") }}
+                                    <div
+                                        class="relative flex h-6 w-11 cursor-pointer items-center rounded-full bg-gray-400 px-0.5 outline-gray-400 transition-colors before:h-5 before:w-5 before:rounded-full before:bg-white before:shadow before:transition-transform before:duration-300 peer-checked:bg-green-500 peer-checked:before:translate-x-full peer-focus-visible:outline peer-focus-visible:outline-offset-2 peer-focus-visible:outline-gray-400 peer-checked:peer-focus-visible:outline-green-500">
+                                    </div>
+                                    {{ webform.nmap.label(class='px-2 text-sm font-bold text-indigo-900') }}
+                                </label>
+                                <label class="inline-flex items-center cursor-pointer my-3 mx-3">
+                                    {{ webform.headers(type="checkbox", class="sr-only peer") }}
+                                    <div
+                                        class="relative flex h-6 w-11 cursor-pointer items-center rounded-full bg-gray-400 px-0.5 outline-gray-400 transition-colors before:h-5 before:w-5 before:rounded-full before:bg-white before:shadow before:transition-transform before:duration-300 peer-checked:bg-green-500 peer-checked:before:translate-x-full peer-focus-visible:outline peer-focus-visible:outline-offset-2 peer-focus-visible:outline-gray-400 peer-checked:peer-focus-visible:outline-green-500">
+                                    </div>
+                                    {{ webform.headers.label(class='px-2 text-sm font-bold text-indigo-900') }}
+                                </label>
+                                <label class="inline-flex items-center cursor-pointer my-3 mx-3">
+                                    {{ webform.dirsearch(type="checkbox", class="sr-only peer") }}
+                                    <div
+                                        class="relative flex h-6 w-11 cursor-pointer items-center rounded-full bg-gray-400 px-0.5 outline-gray-400 transition-colors before:h-5 before:w-5 before:rounded-full before:bg-white before:shadow before:transition-transform before:duration-300 peer-checked:bg-green-500 peer-checked:before:translate-x-full peer-focus-visible:outline peer-focus-visible:outline-offset-2 peer-focus-visible:outline-gray-400 peer-checked:peer-focus-visible:outline-green-500">
+                                    </div>
+                                    {{ webform.dirsearch.label(class='px-2 text-sm font-bold text-indigo-900') }}
+                                </label>
+                                <label class="inline-flex items-center cursor-pointer my-3 mx-3">
+                                    {{ webform.testssl(type="checkbox", class="sr-only peer") }}
+                                    <div
+                                        class="relative flex h-6 w-11 cursor-pointer items-center rounded-full bg-gray-400 px-0.5 outline-gray-400 transition-colors before:h-5 before:w-5 before:rounded-full before:bg-white before:shadow before:transition-transform before:duration-300 peer-checked:bg-green-500 peer-checked:before:translate-x-full peer-focus-visible:outline peer-focus-visible:outline-offset-2 peer-focus-visible:outline-gray-400 peer-checked:peer-focus-visible:outline-green-500">
+                                    </div>
+                                    {{ webform.testssl.label(class='px-2 text-sm font-bold text-indigo-900') }}
+                                </label>
+                                <label class="inline-flex items-center cursor-pointer my-3 mx-3">
+                                    {{ webform.nuclei(type="checkbox", class="sr-only peer") }}
+                                    <div
+                                        class="relative flex h-6 w-11 cursor-pointer items-center rounded-full bg-gray-400 px-0.5 outline-gray-400 transition-colors before:h-5 before:w-5 before:rounded-full before:bg-white before:shadow before:transition-transform before:duration-300 peer-checked:bg-green-500 peer-checked:before:translate-x-full peer-focus-visible:outline peer-focus-visible:outline-offset-2 peer-focus-visible:outline-gray-400 peer-checked:peer-focus-visible:outline-green-500">
+                                    </div>
+                                    {{ webform.nuclei.label(class='px-2 text-sm font-bold text-indigo-900') }}
+                                </label>
+                                <label class="inline-flex items-center cursor-pointer my-3 mx-3">
+                                    {{ webform.sublister(type="checkbox", class="sr-only peer") }}
+                                    <div
+                                        class="relative flex h-6 w-11 cursor-pointer items-center rounded-full bg-gray-400 px-0.5 outline-gray-400 transition-colors before:h-5 before:w-5 before:rounded-full before:bg-white before:shadow before:transition-transform before:duration-300 peer-checked:bg-green-500 peer-checked:before:translate-x-full peer-focus-visible:outline peer-focus-visible:outline-offset-2 peer-focus-visible:outline-gray-400 peer-checked:peer-focus-visible:outline-green-500">
+                                    </div>
+                                    {{ webform.sublister.label(class='px-2 text-sm font-bold text-indigo-900') }}
+                                </label>
+                                <label class="inline-flex items-center cursor-pointer my-3 mx-3 group">
+                                    {% if current_user.wpscan_api == None %}
+                                        {{ webform.wpscan(type="checkbox", class="sr-only peer", disabled=True) }}
+                                        <div class='absolute hidden group-hover:block mt-20 bg-black rounded-md p-1 px-2 auth-triangle-top'>
+                                            <span class='text-white text-xs normal-case font-normal whitespace-nowrap'>Add WPScan API Key to your profile to enable it</span>
+                                        </div>
+                                    {% else %}
+                                        {{ webform.wpscan(type="checkbox", class="sr-only peer") }}
+                                    {% endif %}
+                                    <div
+                                        class="relative flex h-6 w-11 cursor-pointer items-center rounded-full bg-gray-400 px-0.5 outline-gray-400 transition-colors before:h-5 before:w-5 before:rounded-full before:bg-white before:shadow before:transition-transform before:duration-300 peer-checked:bg-green-500 peer-checked:before:translate-x-full peer-focus-visible:outline peer-focus-visible:outline-offset-2 peer-focus-visible:outline-gray-400 peer-checked:peer-focus-visible:outline-green-500">
+                                    </div>
+                                    {{ webform.wpscan.label(class='px-2 text-sm font-bold text-indigo-900') }}
+                                </label>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="new-audit-btn mx-auto flex flex-wrap items-center justify-center gap-4">
+                            <a href="{{ url_for('audits.delete_audit', audit_name=audit.name) }}"
+                                class="tracking-wide font-semibold bg-red-500 text-gray-100 py-3 rounded-lg hover:bg-red-700 flex items-center justify-center px-3">
+                                <svg viewBox="0 0 1024 1024" class="w-6 h-6" version="1.1"
+                                    xmlns="http://www.w3.org/2000/svg" fill="#000000">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+                                    </g>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <path
+                                            d="M960 160h-291.2a160 160 0 0 0-313.6 0H64a32 32 0 0 0 0 64h896a32 32 0 0 0 0-64zM512 96a96 96 0 0 1 90.24 64h-180.48A96 96 0 0 1 512 96zM844.16 290.56a32 32 0 0 0-34.88 6.72A32 32 0 0 0 800 320a32 32 0 1 0 64 0 33.6 33.6 0 0 0-9.28-22.72 32 32 0 0 0-10.56-6.72zM832 416a32 32 0 0 0-32 32v96a32 32 0 0 0 64 0v-96a32 32 0 0 0-32-32zM832 640a32 32 0 0 0-32 32v224a32 32 0 0 1-32 32H256a32 32 0 0 1-32-32V320a32 32 0 0 0-64 0v576a96 96 0 0 0 96 96h512a96 96 0 0 0 96-96v-224a32 32 0 0 0-32-32z"
+                                            fill="#ffffff"></path>
+                                        <path
+                                            d="M384 768V352a32 32 0 0 0-64 0v416a32 32 0 0 0 64 0zM544 768V352a32 32 0 0 0-64 0v416a32 32 0 0 0 64 0zM704 768V352a32 32 0 0 0-64 0v416a32 32 0 0 0 64 0z"
+                                            fill="#ffffff"></path>
+                                    </g>
+                                </svg>
+                                <span class="ml-2">
+                                    Delete
+                                </span>
+                            </a>
+                            {% if audit.status == 'unscanned' %}
+                                <button
+                                    class="tracking-wide font-semibold bg-teal-500 text-gray-100 py-3 rounded-lg hover:bg-teal-700 flex items-center justify-center px-3">
+                                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+                                        </g>
+                                        <g id="SVGRepo_iconCarrier">
+                                            <path
+                                                d="M16 8.98987V20.3499C16 21.7999 14.96 22.4099 13.69 21.7099L9.76001 19.5199C9.34001 19.2899 8.65999 19.2899 8.23999 19.5199L4.31 21.7099C3.04 22.4099 2 21.7999 2 20.3499V8.98987C2 7.27987 3.39999 5.87988 5.10999 5.87988H12.89C14.6 5.87988 16 7.27987 16 8.98987Z"
+                                                stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"
+                                                stroke-linejoin="round"></path>
+                                            <path
+                                                d="M22 5.10999V16.47C22 17.92 20.96 18.53 19.69 17.83L16 15.77V8.98999C16 7.27999 14.6 5.88 12.89 5.88H8V5.10999C8 3.39999 9.39999 2 11.11 2H18.89C20.6 2 22 3.39999 22 5.10999Z"
+                                                stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"
+                                                stroke-linejoin="round"></path>
+                                            <path d="M7 12H11" stroke="#ffffff" stroke-width="1.5"
+                                                stroke-linecap="round" stroke-linejoin="round"></path>
+                                            <path d="M9 14V10" stroke="#ffffff" stroke-width="1.5"
+                                                stroke-linecap="round" stroke-linejoin="round"></path>
+                                        </g>
+                                    </svg>
+                                    <span class="ml-2">
+                                        Update
+                                    </span>
+                                </button>
+                            <a href="{{ url_for('audits.scan_audit', audit_name=audit.name) }}"
+                                class="tracking-wide font-semibold bg-green-500 text-gray-100 py-3 rounded-lg hover:bg-green-700 flex items-center justify-center px-3">
+                                <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+                                    </g>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <path
+                                            d="M3 12L3 18.9671C3 21.2763 5.53435 22.736 7.59662 21.6145L10.7996 19.8727M3 8L3 5.0329C3 2.72368 5.53435 1.26402 7.59661 2.38548L20.4086 9.35258C22.5305 10.5065 22.5305 13.4935 20.4086 14.6474L14.0026 18.131"
+                                            stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path>
+                                    </g>
+                                </svg>
+                                <span class="ml-2">
+                                    Initiate
+                                </span>
+                            </a>
+                            {% elif audit.status == 'scanning' %}
+                                <a href="{{ url_for('audits.stop_scan', audit_name=audit.name) }}"
+                                    class="tracking-wide font-semibold bg-amber-500 text-gray-100 py-3 rounded-lg hover:bg-amber-700 flex items-center justify-center px-3">
+                                    <svg class="w-8 h-7" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+                                        </g>
+                                        <g id="SVGRepo_iconCarrier">
+                                            <path d="M14.5 9.50002L9.5 14.5M9.49998 9.5L14.5 14.5" stroke="#ffffff"
+                                                stroke-width="1.5" stroke-linecap="round"></path>
+                                            <path
+                                                d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7"
+                                                stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path>
+                                        </g>
+                                    </svg>
+                                    <span class="ml-2">
+                                        Stop
+                                    </span>
+                                </a>
+                            {% endif %}
+                            {% if audit.status != 'unscanned' %}
+                            <a href="{{ url_for('audits.vulnerabilities', audit_name=audit.name) }}"
+                                class="tracking-wide font-semibold bg-cyan-500 text-gray-100 py-3 rounded-lg hover:bg-cyan-700 flex items-center justify-center px-3">
+                                <svg class="w-8 h-7" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+                                    </g>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <path
+                                            d="M18.18 8.03933L18.6435 7.57589C19.4113 6.80804 20.6563 6.80804 21.4241 7.57589C22.192 8.34374 22.192 9.58868 21.4241 10.3565L20.9607 10.82M18.18 8.03933C18.18 8.03933 18.238 9.02414 19.1069 9.89309C19.9759 10.762 20.9607 10.82 20.9607 10.82M18.18 8.03933L13.9194 12.2999C13.6308 12.5885 13.4865 12.7328 13.3624 12.8919C13.2161 13.0796 13.0906 13.2827 12.9882 13.4975C12.9014 13.6797 12.8368 13.8732 12.7078 14.2604L12.2946 15.5L12.1609 15.901M20.9607 10.82L16.7001 15.0806C16.4115 15.3692 16.2672 15.5135 16.1081 15.6376C15.9204 15.7839 15.7173 15.9094 15.5025 16.0118C15.3203 16.0986 15.1268 16.1632 14.7396 16.2922L13.5 16.7054L13.099 16.8391M13.099 16.8391L12.6979 16.9728C12.5074 17.0363 12.2973 16.9867 12.1553 16.8447C12.0133 16.7027 11.9637 16.4926 12.0272 16.3021L12.1609 15.901M13.099 16.8391L12.1609 15.901"
+                                            stroke="#ffffff" stroke-width="1.5"></path>
+                                        <path d="M8 13H10.5" stroke="#ffffff" stroke-width="1.5"
+                                            stroke-linecap="round"></path>
+                                        <path d="M8 9H14.5" stroke="#ffffff" stroke-width="1.5"
+                                            stroke-linecap="round"></path>
+                                        <path d="M8 17H9.5" stroke="#ffffff" stroke-width="1.5"
+                                            stroke-linecap="round"></path>
+                                        <path
+                                            d="M3 14V10C3 6.22876 3 4.34315 4.17157 3.17157C5.34315 2 7.22876 2 11 2H13C16.7712 2 18.6569 2 19.8284 3.17157M21 14C21 17.7712 21 19.6569 19.8284 20.8284M4.17157 20.8284C5.34315 22 7.22876 22 11 22H13C16.7712 22 18.6569 22 19.8284 20.8284M19.8284 20.8284C20.7715 19.8853 20.9554 18.4796 20.9913 16"
+                                            stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path>
+                                    </g>
+                                </svg>
+                                <span class="ml-2">
+                                    Get Report
+                                </span>
+                            </a>
+                            {% endif %}
+                        </div>
+                    </form>
+                    {% elif 'cloud' in audit.asset_type %}
+                    <form method="POST" action="" id="audit-form">
+                        {{ cloudform.hidden_tag() }}
+                        <div class="relative mb-4">
+                            <input
+                                class="peer py-3 pe-0 ps-8 block w-full bg-transparent border-t-transparent border-b-2 border-x-transparent border-b-gray-500 text-sm disabled:opacity-70"
+                                disabled value="{{ audit.name }}">
+                            <div
+                                class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-2 peer-disabled:opacity-50 peer-disabled:pointer-events-none">
+                                <svg  class="w-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="2"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <path d="M18 10L13 10" stroke="#6365f1" stroke-width="1.5" stroke-linecap="round"></path>
+                                        <path d="M10 3H16.5C16.9644 3 17.1966 3 17.3916 3.02567C18.7378 3.2029 19.7971 4.26222 19.9743 5.60842C20 5.80337 20 6.03558 20 6.5" stroke="#6365f1" stroke-width="2"></path>
+                                        <path d="M2 6.94975C2 6.06722 2 5.62595 2.06935 5.25839C2.37464 3.64031 3.64031 2.37464 5.25839 2.06935C5.62595 2 6.06722 2 6.94975 2C7.33642 2 7.52976 2 7.71557 2.01738C8.51665 2.09229 9.27652 2.40704 9.89594 2.92051C10.0396 3.03961 10.1763 3.17633 10.4497 3.44975L11 4C11.8158 4.81578 12.2237 5.22367 12.7121 5.49543C12.9804 5.64471 13.2651 5.7626 13.5604 5.84678C14.0979 6 14.6747 6 15.8284 6H16.2021C18.8345 6 20.1506 6 21.0062 6.76946C21.0849 6.84024 21.1598 6.91514 21.2305 6.99383C22 7.84935 22 9.16554 22 11.7979V14C22 17.7712 22 19.6569 20.8284 20.8284C19.6569 22 17.7712 22 14 22H10C6.22876 22 4.34315 22 3.17157 20.8284C2 19.6569 2 17.7712 2 14V6.94975Z" stroke="#6365f1" stroke-width="2"></path>
+                                    </g>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="flex-1 relative">
+                                <input
+                                    class="peer py-3 pe-0 ps-9 block w-full bg-transparent border-t-transparent border-b-2 border-x-transparent border-b-gray-500 text-sm disabled:opacity-70"
+                                    disabled value="{{ audit.access_id }}">
+                                <div
+                                    class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-2 peer-disabled:opacity-50 peer-disabled:pointer-events-none">
+                                    <svg class="w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                        <g id="SVGRepo_iconCarrier">
+                                            <path d="M15 16C14.7164 14.8589 13.481 14 12 14C10.519 14 9.28364 14.8589 9 16M11 3H13M12 10H12.01M8 5H6.2C5.0799 5 4.51984 5 4.09202 5.21799C3.71569 5.40973 3.40973 5.71569 3.21799 6.09202C3 6.51984 3 7.0799 3 8.2V16.8C3 17.9201 3 18.4802 3.21799 18.908C3.40973 19.2843 3.71569 19.5903 4.09202 19.782C4.51984 20 5.0799 20 6.2 20H17.8C18.9201 20 19.4802 20 19.908 19.782C20.2843 19.5903 20.5903 19.2843 20.782 18.908C21 18.4802 21 17.9201 21 16.8V8.2C21 7.07989 21 6.51984 20.782 6.09202C20.5903 5.71569 20.2843 5.40973 19.908 5.21799C19.4802 5 18.9201 5 17.8 5H16M13 10C13 10.5523 12.5523 11 12 11C11.4477 11 11 10.5523 11 10C11 9.44772 11.4477 9 12 9C12.5523 9 13 9.44772 13 10Z" stroke="#6365f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                        </g>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="flex-1 relative">
+                                <input
+                                    class="peer py-3 pe-0 ps-9 block w-full bg-transparent border-t-transparent border-b-2 border-x-transparent border-b-gray-500 text-sm disabled:opacity-70"
+                                    disabled value="{{ audit.secret_key }}">
+                                <div
+                                    class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-2 peer-disabled:opacity-50 peer-disabled:pointer-events-none">
+                                    <svg class="w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="matrix(1, 0, 0, 1, 0, 0)rotate(0)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M21.0667 5C21.6586 5.95805 22 7.08604 22 8.29344C22 11.7692 19.1708 14.5869 15.6807 14.5869C15.0439 14.5869 13.5939 14.4405 12.8885 13.8551L12.0067 14.7333C11.272 15.465 11.8598 15.465 12.1537 16.0505C12.1537 16.0505 12.8885 17.075 12.1537 18.0995C11.7128 18.6849 10.4783 19.5045 9.06754 18.0995L8.77362 18.3922C8.77362 18.3922 9.65538 19.4167 8.92058 20.4412C8.4797 21.0267 7.30403 21.6121 6.27531 20.5876C6.22633 20.6364 5.952 20.9096 5.2466 21.6121C4.54119 22.3146 3.67905 21.9048 3.33616 21.6121L2.45441 20.7339C1.63143 19.9143 2.1115 19.0264 2.45441 18.6849L10.0963 11.0743C10.0963 11.0743 9.3615 9.90338 9.3615 8.29344C9.3615 4.81767 12.1907 2 15.6807 2C16.4995 2 17.282 2.15509 18 2.43738" stroke="#6365f1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M17.8851 8.29353C17.8851 9.50601 16.8982 10.4889 15.6807 10.4889C14.4633 10.4889 13.4763 9.50601 13.4763 8.29353C13.4763 7.08105 14.4633 6.09814 15.6807 6.09814C16.8982 6.09814 17.8851 7.08105 17.8851 8.29353Z" stroke="#6365f1" stroke-width="2"></path> </g></svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex mt-4 md:mt-8 w-full justify-center">
+                            {% if 'aws' in audit.asset_type %}
+                            <label class="inline-block p-2 border-2 border-blue-500 bg-blue-50 rounded-lg cursor-pointer mx-2 flex items-center justify-center">
+                            {% else %}
+                            <label class="inline-block p-2 border-2 border-gray-400 rounded-lg cursor-pointer mx-2 flex items-center justify-center">
+                            {% endif %}
+                                <svg class="w-7" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <path fill="#252F3E" d="M4.51 7.687c0 .197.02.357.058.475.042.117.096.245.17.384a.233.233 0 01.037.123c0 .053-.032.107-.1.16l-.336.224a.255.255 0 01-.138.048c-.054 0-.107-.026-.16-.074a1.652 1.652 0 01-.192-.251 4.137 4.137 0 01-.165-.315c-.415.491-.936.737-1.564.737-.447 0-.804-.129-1.064-.385-.261-.256-.394-.598-.394-1.025 0-.454.16-.822.484-1.1.325-.278.756-.416 1.304-.416.18 0 .367.016.564.042.197.027.4.07.612.118v-.39c0-.406-.085-.689-.25-.854-.17-.166-.458-.246-.868-.246-.186 0-.377.022-.574.07a4.23 4.23 0 00-.575.181 1.525 1.525 0 01-.186.07.326.326 0 01-.085.016c-.075 0-.112-.054-.112-.166v-.262c0-.085.01-.15.037-.186a.399.399 0 01.15-.113c.185-.096.409-.176.67-.24.26-.07.537-.101.83-.101.633 0 1.096.144 1.394.432.293.288.442.726.442 1.314v1.73h.01zm-2.161.811c.175 0 .356-.032.548-.096.191-.064.362-.182.505-.342a.848.848 0 00.181-.341c.032-.129.054-.283.054-.465V7.03a4.43 4.43 0 00-.49-.09 3.996 3.996 0 00-.5-.033c-.357 0-.618.07-.793.214-.176.144-.26.347-.26.614 0 .25.063.437.196.566.128.133.314.197.559.197zm4.273.577c-.096 0-.16-.016-.202-.054-.043-.032-.08-.106-.112-.208l-1.25-4.127a.938.938 0 01-.049-.214c0-.085.043-.133.128-.133h.522c.1 0 .17.016.207.053.043.032.075.107.107.208l.894 3.535.83-3.535c.026-.106.058-.176.1-.208a.365.365 0 01.214-.053h.425c.102 0 .17.016.213.053.043.032.08.107.101.208l.841 3.578.92-3.578a.458.458 0 01.107-.208.346.346 0 01.208-.053h.495c.085 0 .133.043.133.133 0 .027-.006.054-.01.086a.76.76 0 01-.038.133l-1.283 4.127c-.032.107-.069.177-.111.209a.34.34 0 01-.203.053h-.457c-.101 0-.17-.016-.213-.053-.043-.038-.08-.107-.101-.214L8.213 5.37l-.82 3.439c-.026.107-.058.176-.1.213-.043.038-.118.054-.213.054h-.458zm6.838.144a3.51 3.51 0 01-.82-.096c-.266-.064-.473-.134-.612-.214-.085-.048-.143-.101-.165-.15a.378.378 0 01-.031-.149v-.272c0-.112.042-.166.122-.166a.3.3 0 01.096.016c.032.011.08.032.133.054.18.08.378.144.585.187.213.042.42.064.633.064.336 0 .596-.059.777-.176a.575.575 0 00.277-.508.52.52 0 00-.144-.373c-.095-.102-.276-.193-.537-.278l-.772-.24c-.388-.123-.676-.305-.851-.545a1.275 1.275 0 01-.266-.774c0-.224.048-.422.143-.593.096-.17.224-.32.384-.438.16-.122.34-.213.553-.277.213-.064.436-.091.67-.091.118 0 .24.005.357.021.122.016.234.038.346.06.106.026.208.052.303.085.096.032.17.064.224.096a.46.46 0 01.16.133.289.289 0 01.047.176v.251c0 .112-.042.171-.122.171a.552.552 0 01-.202-.064 2.427 2.427 0 00-1.022-.208c-.303 0-.543.048-.708.15-.165.1-.25.256-.25.475 0 .149.053.277.16.379.106.101.303.202.585.293l.756.24c.383.123.66.294.825.513.165.219.244.47.244.748 0 .23-.047.437-.138.619a1.436 1.436 0 01-.388.47c-.165.133-.362.23-.591.299-.24.075-.49.112-.761.112z"></path>
+                                        <g fill="#F90" fill-rule="evenodd" clip-rule="evenodd">
+                                            <path d="M14.465 11.813c-1.75 1.297-4.294 1.986-6.481 1.986-3.065 0-5.827-1.137-7.913-3.027-.165-.15-.016-.353.18-.235 2.257 1.313 5.04 2.109 7.92 2.109 1.941 0 4.075-.406 6.039-1.239.293-.133.543.192.255.406z"></path>
+                                            <path d="M15.194 10.98c-.223-.287-1.479-.138-2.048-.069-.17.022-.197-.128-.043-.24 1-.705 2.645-.502 2.836-.267.192.24-.053 1.89-.99 2.68-.143.123-.281.06-.218-.1.213-.53.687-1.72.463-2.003z"></path>
+                                        </g>
+                                    </g>
+                                </svg>
+                                <span class="mx-2 text-sm">AWS</span>
+                            </label>
+                            {% if 'azure' in audit.asset_type %}
+                            <label class="inline-block p-2 border-2 border-blue-500 bg-blue-50 rounded-lg cursor-pointer mx-2 flex items-center justify-center">
+                            {% else %}
+                            <label class="inline-block p-2 border-2 border-gray-400 rounded-lg cursor-pointer mx-2 flex items-center justify-center">
+                            {% endif %}
+                                <svg class="w-7" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <g fill="#0089D6">
+                                            <path d="M7.47 12.412l3.348-.592.031-.007-1.722-2.049a291.474 291.474 0 01-1.723-2.058c0-.01 1.779-4.909 1.789-4.926a788.95 788.95 0 012.934 5.066l2.95 5.115.023.039-10.948-.001 3.317-.587zM.9 11.788c0-.003.811-1.412 1.803-3.131L4.507 5.53l2.102-1.764C7.765 2.797 8.714 2 8.717 2a.37.37 0 01-.033.085L6.4 6.981 4.16 11.789l-1.63.002c-.897.001-1.63 0-1.63-.003z"></path>
+                                        </g>
+                                    </g>
+                                </svg>
+                                <span class="mx-2 text-sm">Azure</span>
+                            </label>
+                            {% if 'gcp' in audit.asset_type %}
+                            <label class="inline-block p-2 border-2 border-blue-500 bg-blue-50 rounded-lg cursor-pointer mx-2 flex items-center justify-center">
+                            {% else %}
+                            <label class="inline-block p-2 border-2 border-gray-400 rounded-lg cursor-pointer mx-2 flex items-center justify-center">
+                            {% endif %}
+                                <svg class="w-7" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <path fill="#EA4335" d="M10.313 5.376l1.887-1.5-.332-.414a5.935 5.935 0 00-5.586-1.217 5.89 5.89 0 00-3.978 4.084c-.03.113.312-.098.463-.056l2.608-.428s.127-.124.201-.205c1.16-1.266 3.126-1.432 4.465-.354l.272.09z"></path>
+                                        <path fill="#4285F4" d="M13.637 6.3a5.835 5.835 0 00-1.77-2.838l-1.83 1.82a3.226 3.226 0 011.193 2.564v.323c.9 0 1.63.725 1.63 1.62 0 .893-.73 1.619-1.63 1.619l-3.257-.003-.325.035v2.507l.325.053h3.257a4.234 4.234 0 004.08-2.962A4.199 4.199 0 0013.636 6.3z"></path>
+                                        <path fill="#34A853" d="M4.711 13.999H7.97v-2.594H4.71c-.232 0-.461-.066-.672-.161l-.458.14-1.313 1.297-.114.447a4.254 4.254 0 002.557.87z"></path>
+                                        <path fill="#FBBC05" d="M4.711 5.572A4.234 4.234 0 00.721 8.44a4.206 4.206 0 001.433 4.688l1.89-1.884a1.617 1.617 0 01.44-3.079 1.63 1.63 0 011.714.936l1.89-1.878A4.24 4.24 0 004.71 5.572z"></path>
+                                    </g>
+                                </svg>
+                                <span class="mx-2 text-sm">GCP</span>
+                            </label>
+                        </div>
+                        <div class="mt-4">
+                            <label class="text-sm text-gray-500">Select Regions <strong>[ Leave it blank to include all regions ]</strong></label>
+                            <div class="relative border-b-2 border-b-indigo-500 mt-2" id="regions">
+                                <div class="multi-select-header flex justify-between items-center">
+                                    <div class="selected-items" id="selected-regions">
+                                        {% for selected_region in cloudform.regions.data %}
+                                            <div class="selected-item flex items-center space-x-2" data-value="{{ selected_region }}">
+                                                <span class="mr-3">{{ selected_region }}</span>
+                                                <span class="remove-icon cursor-pointer" onclick="removeFromSelection(event)">&times;</span>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <button type="button" class="select-all-btn text-sm font-bold" onclick="selectAllOptions('region-options')">
+                                            <svg class="w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M8.5 12.5L10.5 14.5L15.5 9.5" stroke="#27b300" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7" stroke="#27b300" stroke-width="1.5" stroke-linecap="round"></path> </g></svg>
+                                        </button>
+                                        <button type="button" class="clear-all-btn text-sm font-bold" onclick="clearAllSelections('region-options', 'selected-regions')">
+                                            <svg class="w-5" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M905.92 237.76a32 32 0 0 0-52.48 36.48A416 416 0 1 1 96 512a418.56 418.56 0 0 1 297.28-398.72 32 32 0 1 0-18.24-61.44A480 480 0 1 0 992 512a477.12 477.12 0 0 0-86.08-274.24z" fill="#f53500"></path><path d="M630.72 113.28A413.76 413.76 0 0 1 768 185.28a32 32 0 0 0 39.68-50.24 476.8 476.8 0 0 0-160-83.2 32 32 0 0 0-18.24 61.44zM489.28 86.72a36.8 36.8 0 0 0 10.56 6.72 30.08 30.08 0 0 0 24.32 0 37.12 37.12 0 0 0 10.56-6.72A32 32 0 0 0 544 64a33.6 33.6 0 0 0-9.28-22.72A32 32 0 0 0 505.6 32a20.8 20.8 0 0 0-5.76 1.92 23.68 23.68 0 0 0-5.76 2.88l-4.8 3.84a32 32 0 0 0-6.72 10.56A32 32 0 0 0 480 64a32 32 0 0 0 2.56 12.16 37.12 37.12 0 0 0 6.72 10.56zM726.72 297.28a32 32 0 0 0-45.12 0l-169.6 169.6-169.28-169.6A32 32 0 0 0 297.6 342.4l169.28 169.6-169.6 169.28a32 32 0 1 0 45.12 45.12l169.6-169.28 169.28 169.28a32 32 0 0 0 45.12-45.12L557.12 512l169.28-169.28a32 32 0 0 0 0.32-45.44z" fill="#f53500"></path></g></svg>
+                                        </button>
+                                        <div class="dropdown-toggle font-bold" onclick="toggleDropdown(event, 'region-options')">
+                                            <svg class="w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 12H20M4 8H20M4 16H12" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="multi-select-options border-2 bg-gray-50 rounded-lg" id="region-options">
+                                    <input type="text" class="text-sm p-2 border-b w-full focus:border-transparent focus:outline-none w-full" placeholder="Search regions..." onkeyup="filterOptions('region-options', this.value)">
+                                    {% for region in cloudform.regions.choices %}
+                                        {% if region[0] in cloudform.regions.data %}
+                                        <div class="multi-select-option selected flex items-center justify-between" data-value="{{ region[0] }}">
+                                            <span>{{ region[1] }}</span>
+                                                <span class="remove-icon cursor-pointer" onclick="removeFromSelection(event)"></span>
+                                                <input class="selected-input" type="hidden" name="regions" value="{{ region[0] }}">
+                                        {% else %}
+                                        <div class="multi-select-option flex items-center justify-between" data-value="{{ region[0] }}">
+                                            <span>{{ region[1] }}</span>
+                                            {% endif %}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <label class="text-sm text-gray-500">Select Services</label>
+                            <div class="relative border-b-2 border-b-indigo-500 mt-2" id="services">
+                                <div class="multi-select-header flex justify-between items-center">
+                                    <div class="selected-items" id="selected-services">
+                                        {% for selected_service in cloudform.services.data %}
+                                            <div class="selected-item flex items-center space-x-2" data-value="{{ selected_service }}">
+                                                <span class="mr-3">{{ selected_service }}</span>
+                                                <span class="remove-icon cursor-pointer" onclick="removeFromSelection(event)">&times;</span>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <button type="button" class="select-all-btn text-sm font-bold" onclick="selectAllOptions('service-options')">
+                                            <svg class="w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M8.5 12.5L10.5 14.5L15.5 9.5" stroke="#27b300" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7" stroke="#27b300" stroke-width="1.5" stroke-linecap="round"></path> </g></svg>
+                                        </button>
+                                        <button type="button" class="clear-all-btn text-sm font-bold" onclick="clearAllSelections('service-options', 'selected-services')">
+                                            <svg class="w-5" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M905.92 237.76a32 32 0 0 0-52.48 36.48A416 416 0 1 1 96 512a418.56 418.56 0 0 1 297.28-398.72 32 32 0 1 0-18.24-61.44A480 480 0 1 0 992 512a477.12 477.12 0 0 0-86.08-274.24z" fill="#f53500"></path><path d="M630.72 113.28A413.76 413.76 0 0 1 768 185.28a32 32 0 0 0 39.68-50.24 476.8 476.8 0 0 0-160-83.2 32 32 0 0 0-18.24 61.44zM489.28 86.72a36.8 36.8 0 0 0 10.56 6.72 30.08 30.08 0 0 0 24.32 0 37.12 37.12 0 0 0 10.56-6.72A32 32 0 0 0 544 64a33.6 33.6 0 0 0-9.28-22.72A32 32 0 0 0 505.6 32a20.8 20.8 0 0 0-5.76 1.92 23.68 23.68 0 0 0-5.76 2.88l-4.8 3.84a32 32 0 0 0-6.72 10.56A32 32 0 0 0 480 64a32 32 0 0 0 2.56 12.16 37.12 37.12 0 0 0 6.72 10.56zM726.72 297.28a32 32 0 0 0-45.12 0l-169.6 169.6-169.28-169.6A32 32 0 0 0 297.6 342.4l169.28 169.6-169.6 169.28a32 32 0 1 0 45.12 45.12l169.6-169.28 169.28 169.28a32 32 0 0 0 45.12-45.12L557.12 512l169.28-169.28a32 32 0 0 0 0.32-45.44z" fill="#f53500"></path></g></svg>
+                                        </button>
+                                        <div class="dropdown-toggle font-bold" onclick="toggleDropdown(event, 'service-options')">
+                                            <svg class="w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 12H20M4 8H20M4 16H12" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="multi-select-options border-2 bg-gray-50 rounded-lg" id="service-options">
+                                    <input type="text" class="text-sm p-2 border-b w-full focus:border-transparent focus:outline-none w-full" placeholder="Search Services..." onkeyup="filterOptions('service-options', this.value)">
+                                    {% for service in cloudform.services.choices %}
+                                        {% if service[0] in cloudform.services.data %}
+                                        <div class="multi-select-option selected flex items-center justify-between uppercase" data-value="{{ service[0] }}">
+                                            <span>{{ service[1] }}</span>
+                                                <span class="remove-icon cursor-pointer" onclick="removeFromSelection(event)"></span>
+                                                <input class="selected-input" type="hidden" name="services" value="{{ service[0] }}">
+                                        {% else %}
+                                        <div class="multi-select-option flex items-center justify-between uppercase" data-value="{{ service[0] }}">
+                                            <span>{{ service[1] }}</span>
+                                            {% endif %}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="new-audit-btn mx-auto flex flex-wrap items-center justify-center gap-4">
+                            <a href="{{ url_for('audits.delete_audit', audit_name=audit.name) }}"
+                                class="tracking-wide font-semibold bg-red-500 text-gray-100 py-3 rounded-lg hover:bg-red-700 flex items-center justify-center px-3">
+                                <svg viewBox="0 0 1024 1024" class="w-6 h-6" version="1.1"
+                                    xmlns="http://www.w3.org/2000/svg" fill="#000000">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+                                    </g>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <path
+                                            d="M960 160h-291.2a160 160 0 0 0-313.6 0H64a32 32 0 0 0 0 64h896a32 32 0 0 0 0-64zM512 96a96 96 0 0 1 90.24 64h-180.48A96 96 0 0 1 512 96zM844.16 290.56a32 32 0 0 0-34.88 6.72A32 32 0 0 0 800 320a32 32 0 1 0 64 0 33.6 33.6 0 0 0-9.28-22.72 32 32 0 0 0-10.56-6.72zM832 416a32 32 0 0 0-32 32v96a32 32 0 0 0 64 0v-96a32 32 0 0 0-32-32zM832 640a32 32 0 0 0-32 32v224a32 32 0 0 1-32 32H256a32 32 0 0 1-32-32V320a32 32 0 0 0-64 0v576a96 96 0 0 0 96 96h512a96 96 0 0 0 96-96v-224a32 32 0 0 0-32-32z"
+                                            fill="#ffffff"></path>
+                                        <path
+                                            d="M384 768V352a32 32 0 0 0-64 0v416a32 32 0 0 0 64 0zM544 768V352a32 32 0 0 0-64 0v416a32 32 0 0 0 64 0zM704 768V352a32 32 0 0 0-64 0v416a32 32 0 0 0 64 0z"
+                                            fill="#ffffff"></path>
+                                    </g>
+                                </svg>
+                                <span class="ml-2">
+                                    Delete
+                                </span>
+                            </a>
+                            {% if audit.status == 'unscanned' %}
+                                <button
+                                    class="tracking-wide font-semibold bg-teal-500 text-gray-100 py-3 rounded-lg hover:bg-teal-700 flex items-center justify-center px-3">
+                                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+                                        </g>
+                                        <g id="SVGRepo_iconCarrier">
+                                            <path
+                                                d="M16 8.98987V20.3499C16 21.7999 14.96 22.4099 13.69 21.7099L9.76001 19.5199C9.34001 19.2899 8.65999 19.2899 8.23999 19.5199L4.31 21.7099C3.04 22.4099 2 21.7999 2 20.3499V8.98987C2 7.27987 3.39999 5.87988 5.10999 5.87988H12.89C14.6 5.87988 16 7.27987 16 8.98987Z"
+                                                stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"
+                                                stroke-linejoin="round"></path>
+                                            <path
+                                                d="M22 5.10999V16.47C22 17.92 20.96 18.53 19.69 17.83L16 15.77V8.98999C16 7.27999 14.6 5.88 12.89 5.88H8V5.10999C8 3.39999 9.39999 2 11.11 2H18.89C20.6 2 22 3.39999 22 5.10999Z"
+                                                stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"
+                                                stroke-linejoin="round"></path>
+                                            <path d="M7 12H11" stroke="#ffffff" stroke-width="1.5"
+                                                stroke-linecap="round" stroke-linejoin="round"></path>
+                                            <path d="M9 14V10" stroke="#ffffff" stroke-width="1.5"
+                                                stroke-linecap="round" stroke-linejoin="round"></path>
+                                        </g>
+                                    </svg>
+                                    <span class="ml-2">
+                                        Update
+                                    </span>
+                                </button>
+                            <a href="{{ url_for('audits.scan_audit', audit_name=audit.name) }}"
+                                class="tracking-wide font-semibold bg-green-500 text-gray-100 py-3 rounded-lg hover:bg-green-700 flex items-center justify-center px-3">
+                                <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+                                    </g>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <path
+                                            d="M3 12L3 18.9671C3 21.2763 5.53435 22.736 7.59662 21.6145L10.7996 19.8727M3 8L3 5.0329C3 2.72368 5.53435 1.26402 7.59661 2.38548L20.4086 9.35258C22.5305 10.5065 22.5305 13.4935 20.4086 14.6474L14.0026 18.131"
+                                            stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path>
+                                    </g>
+                                </svg>
+                                <span class="ml-2">
+                                    Initiate
+                                </span>
+                            </a>
+                            {% elif audit.status == 'scanning' %}
+                                <a href="{{ url_for('audits.stop_scan', audit_name=audit.name) }}"
+                                    class="tracking-wide font-semibold bg-amber-500 text-gray-100 py-3 rounded-lg hover:bg-amber-700 flex items-center justify-center px-3">
+                                    <svg class="w-8 h-7" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+                                        </g>
+                                        <g id="SVGRepo_iconCarrier">
+                                            <path d="M14.5 9.50002L9.5 14.5M9.49998 9.5L14.5 14.5" stroke="#ffffff"
+                                                stroke-width="1.5" stroke-linecap="round"></path>
+                                            <path
+                                                d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7"
+                                                stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path>
+                                        </g>
+                                    </svg>
+                                    <span class="ml-2">
+                                        Stop
+                                    </span>
+                                </a>
+                            {% endif %}
+                            {% if audit.status != 'unscanned' %}
+                            <a href="{{ url_for('audits.vulnerabilities', audit_name=audit.name) }}"
+                                class="tracking-wide font-semibold bg-cyan-500 text-gray-100 py-3 rounded-lg hover:bg-cyan-700 flex items-center justify-center px-3">
+                                <svg class="w-8 h-7" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+                                    </g>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <path
+                                            d="M18.18 8.03933L18.6435 7.57589C19.4113 6.80804 20.6563 6.80804 21.4241 7.57589C22.192 8.34374 22.192 9.58868 21.4241 10.3565L20.9607 10.82M18.18 8.03933C18.18 8.03933 18.238 9.02414 19.1069 9.89309C19.9759 10.762 20.9607 10.82 20.9607 10.82M18.18 8.03933L13.9194 12.2999C13.6308 12.5885 13.4865 12.7328 13.3624 12.8919C13.2161 13.0796 13.0906 13.2827 12.9882 13.4975C12.9014 13.6797 12.8368 13.8732 12.7078 14.2604L12.2946 15.5L12.1609 15.901M20.9607 10.82L16.7001 15.0806C16.4115 15.3692 16.2672 15.5135 16.1081 15.6376C15.9204 15.7839 15.7173 15.9094 15.5025 16.0118C15.3203 16.0986 15.1268 16.1632 14.7396 16.2922L13.5 16.7054L13.099 16.8391M13.099 16.8391L12.6979 16.9728C12.5074 17.0363 12.2973 16.9867 12.1553 16.8447C12.0133 16.7027 11.9637 16.4926 12.0272 16.3021L12.1609 15.901M13.099 16.8391L12.1609 15.901"
+                                            stroke="#ffffff" stroke-width="1.5"></path>
+                                        <path d="M8 13H10.5" stroke="#ffffff" stroke-width="1.5"
+                                            stroke-linecap="round"></path>
+                                        <path d="M8 9H14.5" stroke="#ffffff" stroke-width="1.5"
+                                            stroke-linecap="round"></path>
+                                        <path d="M8 17H9.5" stroke="#ffffff" stroke-width="1.5"
+                                            stroke-linecap="round"></path>
+                                        <path
+                                            d="M3 14V10C3 6.22876 3 4.34315 4.17157 3.17157C5.34315 2 7.22876 2 11 2H13C16.7712 2 18.6569 2 19.8284 3.17157M21 14C21 17.7712 21 19.6569 19.8284 20.8284M4.17157 20.8284C5.34315 22 7.22876 22 11 22H13C16.7712 22 18.6569 22 19.8284 20.8284M19.8284 20.8284C20.7715 19.8853 20.9554 18.4796 20.9913 16"
+                                            stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path>
+                                    </g>
+                                </svg>
+                                <span class="ml-2">
+                                    Get Report
+                                </span>
+                            </a>
+                            {% endif %}
+                        </div>
+                    </form>
+                    {% endif %}
+                </div>
+                <div class="flex-1 flex justify-center max-w-xs">
+                    <p class="text-xs text-gray-600 text-center">
+                        I agree to abide by chowkidar's
+                        <a href="#" class="border-b border-gray-500 border-dotted">
+                            Terms of Service
+                        </a>
+                        and its
+                        <a href="#" class="border-b border-gray-500 border-dotted">
+                            Privacy Policy
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}
