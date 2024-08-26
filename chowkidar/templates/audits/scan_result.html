@@ -193,6 +193,7 @@
     <div class="flex flex-wrap w-full md:py-4">
         <div class="border-e border-gray-300 w-30">
             <nav class="flex flex-col tool-gap-y font-bold">
+                {% if 'web' in audit.asset_type %}
                 <button type="button"
                     class="px-2 bg-blue-200 rounded-lg hs-tab-active:border-blue-500 hs-tab-active:text-blue-600 py-1 inline-flex items-center gap-x-2 border-e-4 border-transparent text-sm whitespace-nowrap text-gray-500 hover:text-blue-600 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none active"
                     data-hs-tab="#vertical-tab-nmap" role="tab">
@@ -325,9 +326,13 @@
                         </svg>
                     </span>
                 </button>
+                {% elif 'cloud' in audit.asset_type %}
+                <button type="button" class="active" data-hs-tab="#vertical-tab-cloud" role="tab"></button>
+                {% endif %}
             </nav>
         </div>
         <div class="flex-1">
+            {% if 'web' in audit.asset_type %}
             <div id="vertical-tab-nmap" class="ml-5 relative" role="tabpanel">
                 <div class="w-full absolute mx-auto bg-gray-900 rounded-lg px-3 pb-3">
                     <div class="h-full">
@@ -588,6 +593,34 @@
                     </div>
                 </div>
             </div>
+            {% elif 'cloud' in audit.asset_type %}
+            <div id="vertical-tab-cloud" class="relative" role="tabpanel">
+                <div class="w-full absolute mx-auto bg-gray-900 rounded-lg px-3 pb-3">
+                    <div class="h-full">
+                        <div class="flex p-2 fix">
+                            <div class="mx-1">
+                                <span class="inline-block w-2.5 h-2.5 bg-red-500 rounded-full"></span>
+                            </div>
+                            <div class="mx-1">
+                                <span class="inline-block w-2.5 h-2.5 bg-yellow-400 rounded-full"></span>
+                            </div>
+                            <div class="mx-1">
+                                <span class="inline-block w-2.5 h-2.5 bg-green-500 rounded-full"></span>
+                            </div>
+                        </div>
+                        <div class="text-green-400 terminal">
+                            <div class="flex h-14 px-2 text-red-500 items-start text-sm">
+                                <svg class="" xmlns="http://www.w3.org/2000/svg">
+                                    <text x="10" y="25"><tspan class="blue">┌──(</tspan><tspan class="red">chowkidar@root</tspan><tspan class="blue">)-[</tspan><tspan class="green">~</tspan><tspan class="blue">]</tspan></text>
+                                    <text x="10" y="45"><tspan class="blue">└─</tspan><tspan class="blue">$ </tspan><tspan class="green cursor">_</tspan></text>
+                                </svg>
+                            </div>
+                            <pre class="text-left text-sm pb-3">{{ output.cloud }}</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>
