@@ -18,7 +18,7 @@ body{
 }
 
 .tool-gap-y > *:not(:last-child) {
-  margin-bottom: 2vh; /* Adjust this value to change the spacing */
+  margin-bottom: 1.5rem; /* Adjust this value to change the spacing */
 }
 
 .new-audit-btn {
@@ -32,9 +32,6 @@ body{
 
 /* For mobile phones */
 @media only screen and (min-height: 481px) and (max-height: 767px) {
-  .tool-gap-y > *:not(:last-child) {
-    margin-bottom: 1.5rem; /* Adjust this value to change the spacing */
-  }
 
   .terminal {
     height: 31.7rem; /* Set the maximum height to 35rem */
@@ -67,10 +64,6 @@ body{
     margin: 0.4rem 0 0.4rem 0;
   }
 
-  .tool-gap-y > *:not(:last-child) {
-    margin-bottom: 1.8rem; /* Adjust this value to change the spacing */
-  }
-
 }
 
 /* Medium Devices, Landscape Tablets */
@@ -93,11 +86,6 @@ body{
 
   .new-audit-btn {
     margin: 2rem 0 2rem 0;
-  }
-
-
-  .tool-gap-y > *:not(:last-child) {
-    margin-bottom: 2.6rem; /* Adjust this value to change the spacing */
   }
 
 }
