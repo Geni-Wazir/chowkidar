@@ -91,7 +91,10 @@ def add_audit():
         else:
             flash('Your Scan Count is Low! Connect with Admin for Additional Scans', 'info')
     else:
-        errors = list(webform.errors.values())
+        if cloudform.access_id.data:
+            errors = list(cloudform.errors.values())
+        elif webform.name.data:
+            errors = list(webform.errors.values())
         if errors:
             flash(", ".join(errors[0]), 'info')
     return render_template('audits/add_audit.html', title="Add Audit", webform=webform, cloudform=cloudform, legend="New Audit")
@@ -377,8 +380,13 @@ def add_scan_result():
             if not scan_result:
                 scan_result = ScanResults(Audit=audit)
                 db.session.add(scan_result)
-            if data['tool']:
-                setattr(scan_result, data['tool'], data['output'])
+            if 'web' in audit.asset_type:
+                if data['tool']:
+                    setattr(scan_result, data['tool'], str(data['output']))
+            elif 'cloud' in audit.asset_type:
+                output = eval(scan_result.cloud)
+                output.update(data['output'])
+                setattr(scan_result, data['tool'], str(output))
             audit.progress = data['progress']
             audit.progress_msg = data['progress_msg']
             db.session.commit()
@@ -399,7 +407,7 @@ def scan_status():
             if not scan_result:
                 scan_result = ScanResults(Audit=audit)
                 db.session.add(scan_result)
-            if data['status'] == 'stopped':
+            if 'web' in audit.asset_type and data['status'] == 'stopped':
                 for tool in data['tools']:
                     setattr(scan_result, tool, "URL not reachable")
             audit.progress = data['progress']
@@ -485,6 +493,9 @@ def scan_result(audit_name):
         return redirect(url_for('audits.vulnerabilities', audit_name=audit_name))
 
     output = ScanResults.query.filter_by(Audit=audit).first()
+
+    if 'cloud' in audit.asset_type:
+        output = eval(output.cloud)
 
     if not output:
         flash(f'Currently, there are no scan results available for {audit_name}', 'info')

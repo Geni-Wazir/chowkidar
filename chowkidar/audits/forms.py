@@ -49,7 +49,7 @@ class CloudAuditForm(FlaskForm):
     name = StringField('Project Name', validators=[DataRequired(), Length(min=3, max=100)])
     access_id = StringField('Access ID', validators=[DataRequired(), Length(min=3, max=100)])
     secret_key = StringField('Secret Key', validators=[DataRequired(), Length(min=3, max=100)])
-    asset_type = RadioField('Asset Type', choices=cloud_asset_type, validators=[DataRequired()])
+    asset_type = RadioField('Asset Type', choices=cloud_asset_type, validators=[DataRequired(message="Select the Cloud Platform")])
     regions = SelectMultipleField('Regions', choices=[])
     services = SelectMultipleField('Services', choices=[])
 
