@@ -115,7 +115,7 @@ class VulnerabilityTemplates(db.Model):
     severity = db.Column(db.String(100), nullable=False)
     steps = db.Column(db.Text)
     fix = db.Column(db.Text, nullable=False)
-    cvss = db.Column(db.String(10))
+    cvss = db.Column(db.Float, nullable=False, default=0.0)
     cvss_string = db.Column(db.String(100))
     cwe = db.Column(db.String(400))
     type = db.Column(db.String(100))
