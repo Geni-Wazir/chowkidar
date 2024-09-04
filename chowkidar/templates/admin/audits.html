@@ -188,12 +188,9 @@
                                             </g>
                                         </g>
                                     </svg>
-                                    <div class='absolute hidden group-hover:block mt-20 bg-black rounded-md p-1 px-2 action-triangle-top'>
-                                        <span class='text-white text-xs normal-case font-normal whitespace-nowrap'>Delete Audit</span>
-                                    </div>
                                 </div>
                                 {% if audit.status == 'unscanned' %}
-                                    <div class='flex items-center justify-center p-2 rounded-md hover:bg-green-200 group' data-toggle="initiateAuditModal" data-target="#initiateAuditModal" data-audit-name="{{ audit.name }}" data-initiate-audit-url="{{ url_for('admin_view.admin_scan_audit', user_email=audit.Auditor.email, audit_name=audit.name) }}">
+                                    <div class='flex items-center justify-center p-2 rounded-md hover:bg-green-200' data-toggle="initiateAuditModal" data-target="#initiateAuditModal" data-audit-name="{{ audit.name }}" data-initiate-audit-url="{{ url_for('admin_view.admin_scan_audit', user_email=audit.Auditor.email, audit_name=audit.name) }}">
                                         <svg class="w-6 h-6 flex-none" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <g id="SVGRepo_bgCarrier" strokeWidth="1.5"></g>
                                             <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
@@ -201,13 +198,10 @@
                                                 <path d="M3 12L3 18.9671C3 21.2763 5.53435 22.736 7.59662 21.6145L10.7996 19.8727M3 8L3 5.0329C3 2.72368 5.53435 1.26402 7.59661 2.38548L20.4086 9.35258C22.5305 10.5065 22.5305 13.4935 20.4086 14.6474L14.0026 18.131" stroke="currentColor" stroke-width="1.2" strokeLinecap="round"></path>
                                             </g>
                                         </svg>
-                                        <div class='absolute hidden group-hover:block mt-20 bg-black rounded-md p-1 px-2 action-triangle-top'>
-                                            <span class='text-white text-xs normal-case font-normal whitespace-nowrap'>Initiate Audit</span>
-                                        </div>
                                     </div>
                                 {% elif audit.status == 'finished' %}
                                     <a href="{{ url_for('admin_view.admin_vulnerabilities', user_email=audit.Auditor.email, audit_name=audit.name) }}">
-                                        <div class="flex items-center justify-center p-2 rounded-md hover:bg-cyan-200 group">
+                                        <div class="flex items-center justify-center p-2 rounded-md hover:bg-cyan-200">
                                             <svg class="w-6 h-6 flex-none" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -219,14 +213,11 @@
                                                     <path d="M3 14V10C3 6.22876 3 4.34315 4.17157 3.17157C5.34315 2 7.22876 2 11 2H13C16.7712 2 18.6569 2 19.8284 3.17157M21 14C21 17.7712 21 19.6569 19.8284 20.8284M4.17157 20.8284C5.34315 22 7.22876 22 11 22H13C16.7712 22 18.6569 22 19.8284 20.8284M19.8284 20.8284C20.7715 19.8853 20.9554 18.4796 20.9913 16" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path> 
                                                 </g>
                                             </svg>
-                                            <div class='absolute hidden group-hover:block mt-20 bg-black rounded-md p-1 px-2 action-triangle-top'>
-                                                <span class='text-white text-xs normal-case font-normal whitespace-nowrap'>Report</span>
-                                            </div>
                                         </div>
                                     </a>
                                 {% elif audit.status == 'scanning' %}
                                 <a href="{{ url_for('admin_view.admin_stop_scan', user_email=audit.Auditor.email, audit_name=audit.name) }}">
-                                    <div class="flex items-center justify-center p-2 rounded-md hover:bg-yellow-200 group">
+                                    <div class="flex items-center justify-center p-2 rounded-md hover:bg-yellow-200">
                                         <svg class="w-6 h-6 flex-none" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                                             <g id="SVGRepo_iconCarrier"> 
@@ -234,9 +225,6 @@
                                                 <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7" stroke="currentColor" stroke-width="1" stroke-linecap="round"></path> 
                                             </g>
                                         </svg>
-                                        <div class='absolute hidden group-hover:block mt-20 bg-black rounded-md p-1 px-2 action-triangle-top'>
-                                            <span class='text-white text-xs normal-case font-normal whitespace-nowrap'>Stop Scan</span>
-                                        </div>
                                     </div>
                                 </a>
                                 {% endif %}

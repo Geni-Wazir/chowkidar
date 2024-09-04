@@ -145,44 +145,6 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-
-// Get the scrollable container
-const scrollContainer = document.getElementById('all-audit');
-
-if (scrollContainer) {
-
-    // Add event listener for scroll event on the scrollable container
-    scrollContainer.addEventListener('scroll', handleTooltipPosition);
-
-    // Function to handle tooltip position
-    function handleTooltipPosition(event) {
-        const tooltips = document.querySelectorAll('.triangle-top');
-        const actiontooltips = document.querySelectorAll('.action-triangle-top');
-
-        // Iterate through each tooltip and update its position
-        tooltips.forEach(tooltip => {
-            const triggerElement = tooltip.parentElement;
-            const rect = triggerElement.getBoundingClientRect();
-            const scrollOffset = scrollContainer.scrollTop;
-            const newTop = rect.top - scrollOffset / 200 + 23; // Adjust as needed
-
-            // Update the tooltip position
-            tooltip.style.top = `${newTop}px`;
-        });
-
-        actiontooltips.forEach(actiontooltip => {
-            const triggerElement = actiontooltip.parentElement;
-            const rect = triggerElement.getBoundingClientRect();
-            const scrollOffset = scrollContainer.scrollTop;
-            const newTop = rect.top - scrollOffset / 200 - 34; // Adjust as needed
-
-            // Update the actiontooltip position
-            actiontooltip.style.top = `${newTop}px`;
-        });
-    }
-}
-
-
 document.addEventListener('DOMContentLoaded', function () {
     // Get all the tab buttons
     const tabButtons = document.querySelectorAll('[role="tab"]');
