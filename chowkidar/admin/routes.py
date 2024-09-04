@@ -310,6 +310,9 @@ def admin_scan_result(user_email, audit_name):
         flash(f'Currently, there are no scan results available for {audit_name}', 'info')
         return redirect(url_for('admin_view.admin_vulnerabilities', user_email=user.email, audit_name=audit_name))
     
+    if 'cloud' in audit.asset_type:
+        output = eval(output.cloud)
+    
     vulnerabilities = VulnerabilityDiscovered.query \
         .join(VulnerabilityTemplates, VulnerabilityDiscovered.template_id == VulnerabilityTemplates.id) \
         .filter(VulnerabilityDiscovered.audit_id == audit.id).count()
