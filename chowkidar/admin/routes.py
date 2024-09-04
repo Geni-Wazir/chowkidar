@@ -192,39 +192,6 @@ def admin_scan_audit(user_email, audit_name):
 
 
 
-@limiter.limit("5/minute")
-@admin_view.route('/admin/audits/<string:user_email>/<string:audit_name>/rescan', methods=['POST'])
-@login_required
-def admin_rescan_audit(user_email, audit_name):
-    if not current_user.admin:
-        flash('Unfortunately, you do not have the privilege to access this', 'danger')
-        return redirect(url_for('audits.audit_list'))
-
-    user = User.query.filter_by(email=user_email).first()
-    audit = Audit.query.filter_by(name=audit_name, Auditor=user).first()
-    if not audit:
-        flash('Unfortunately, you do not have the privilege to access this audit', 'danger')
-        return redirect(url_for('admin_view.all_audits'))
-
-    if audit.status != 'finished':
-        flash(f'Initiating the Rescan for {audit.name} is not possible', 'info')
-        return redirect(url_for('admin_view.admin_vulnerabilities', user_email=user.email, audit_name=audit_name))
-
-    if not audit.scan_verified:
-        flash(f'{audit.name} scan is not verified', 'info')
-        return redirect(url_for('admin_view.admin_vulnerabilities', user_email=user.email, audit_name=audit_name))
-
-    try:
-        initiate_scan(current_user, audit, 'rescanning', db)
-    except Exception as e:
-        flash(f'Error Initiating Rescan for {audit.name}', 'danger')
-
-    flash(f'Congratulations! Your {audit.name} Rescan has been successfully started.', 'success')
-    return redirect(url_for('admin_view.admin_vulnerabilities', user_email=user.email, audit_name=audit_name))
-
-
-
-
 @admin_view.route('/admin/audits/<string:user_email>/<string:audit_name>/stop', methods=['GET', 'POST'])
 @login_required
 def admin_stop_scan(user_email, audit_name):

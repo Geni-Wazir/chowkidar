@@ -40,7 +40,6 @@ class Audit(db.Model):
     scan_verified = db.Column(db.Boolean, nullable=False, default=False)
     progress = db.Column(db.Integer, default=0)
     progress_msg = db.Column(db.String(100), default='scanning')
-    rescan = db.Column(db.Integer, default=3)
     # web scan config
     url = db.Column(db.String(100), nullable=False, default='')
     tools = db.Column(db.Text(), nullable=False, default='')
@@ -90,7 +89,7 @@ class ScanResults(db.Model):
     nuclei = db.Column(db.Text(4294000000), nullable=False, default='NA')
     wpscan = db.Column(db.Text(4294000000), nullable=False, default='NA')
     # cloud (AWS) output [ERRORS]
-    cloud = db.Column(db.Text(4294000000), nullable=False, default='NA')
+    cloud = db.Column(db.Text(4294000000), nullable=False, default='{}')
 
 
 
@@ -100,7 +99,6 @@ class VulnerabilityDiscovered(db.Model):
     audit_id = db.Column(db.Integer, db.ForeignKey('audit.id'))
     template_id = db.Column(db.Integer, db.ForeignKey('vulnerability_templates.id'))
     name = db.Column(db.String(100), nullable=False)
-    status = db.Column(db.String(10), nullable=False, default='unsolved')
     data = db.Column(db.Text(4294000000))
 
     def __repr__(self):
@@ -113,12 +111,12 @@ class VulnerabilityTemplates(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200), nullable=False)
     description = db.Column(db.Text, nullable=False)
-    impact = db.Column(db.Text, nullable=False)
+    impact = db.Column(db.Text,)
     severity = db.Column(db.String(100), nullable=False)
     steps = db.Column(db.Text)
     fix = db.Column(db.Text, nullable=False)
-    cvss = db.Column(db.String(10), nullable=False)
-    cvss_string = db.Column(db.String(100), nullable=False, default='')
+    cvss = db.Column(db.String(10))
+    cvss_string = db.Column(db.String(100))
     cwe = db.Column(db.String(400))
     type = db.Column(db.String(100))
     vulnerability = db.relationship('VulnerabilityDiscovered', backref='Template', lazy=True, cascade="all, delete")

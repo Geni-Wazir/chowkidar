@@ -91,6 +91,7 @@ def add_audit():
         else:
             flash('Your Scan Count is Low! Connect with Admin for Additional Scans', 'info')
     else:
+        errors = []
         if cloudform.access_id.data:
             errors = list(cloudform.errors.values())
         elif webform.name.data:
@@ -232,12 +233,8 @@ def initiate_scan(current_user, audit, status, db):
     audit.task_id = scan_task.id
     audit.status = status
 
-    if status == 'scanning':
-        if not current_user.admin:
-            current_user.scan_available -= 1
-    elif status == 'rescanning':
-        if not current_user.admin:
-            audit.rescan -= 1
+    if not current_user.admin:
+        current_user.scan_available -= 1
     db.session.commit()
 
 
@@ -265,36 +262,6 @@ def scan_audit(audit_name):
         flash(f'Error Initiating Scan for {audit.name}', 'danger')
     flash(f'Congratulations! Your {audit.name} scan has been successfully started.', 'success')
     return redirect(url_for('audits.audit_list'))
-
-
-
-
-@limiter.limit("5/minute")
-@audits.route('/audits/<string:audit_name>/rescan', methods=['POST'])
-@login_required
-def rescan_audit(audit_name):
-    audit = Audit.query.filter_by(name=audit_name, Auditor=current_user).first()
-    if not audit:
-        flash('Unfortunately, you do not have the privilege to access this audit', 'danger')
-        return redirect(url_for('audits.audit_list'))
-    
-    if not audit.rescan:
-        flash('Your Rescan Count is Low! Connect with Admin for Additional Rescans', 'info')
-        return redirect(url_for('audits.vulnerabilities', audit_name=audit_name))
-
-    if audit.status != 'finished':
-        flash(f'Initiating the Rescan for {audit.name} is not possible', 'info')
-        return redirect(url_for('audits.vulnerabilities', audit_name=audit_name))
-
-    if not audit.scan_verified:
-        flash(f'{audit.name} scan is not verified', 'info')
-        return redirect(url_for('audits.vulnerabilities', audit_name=audit_name))
-    try:
-        initiate_scan(current_user, audit, 'rescanning', db)
-    except:
-        flash(f'Error Initiating Rescan for {audit.name}', 'danger')
-    flash(f'Congratulations! Your {audit.name} Rescan has been successfully started.', 'success')
-    return redirect(url_for('audits.vulnerabilities', audit_name=audit_name))
 
 
 
@@ -379,6 +346,7 @@ def add_scan_result():
         if audit:
             if not scan_result:
                 scan_result = ScanResults(Audit=audit)
+                scan_result.cloud = '{}'
                 db.session.add(scan_result)
             if 'web' in audit.asset_type:
                 if data['tool']:
@@ -451,7 +419,7 @@ def vulnerability(audit_name, vulnerability_name):
         flash('Vulnerability or template not found.', 'danger')
         return redirect(url_for('audits.audit_list'))
 
-    return render_template('audits/vulnerability.html', title=f'Vulnerabilities | {vulnerability_name}', vulnerability=eval(vulnerability.data), template=template)
+    return render_template('audits/vulnerability.html', title=f'Vulnerabilities | {vulnerability_name}', audit=audit, vulnerability=eval(vulnerability.data), template=template)
 
 
 
@@ -494,12 +462,13 @@ def scan_result(audit_name):
 
     output = ScanResults.query.filter_by(Audit=audit).first()
 
-    if 'cloud' in audit.asset_type:
-        output = eval(output.cloud)
 
     if not output:
         flash(f'Currently, there are no scan results available for {audit_name}', 'info')
         return redirect(url_for('audits.vulnerabilities', audit_name=audit_name))
+
+    if 'cloud' in audit.asset_type:
+        output = eval(output.cloud)
     
     vulnerabilities = VulnerabilityDiscovered.query \
         .join(VulnerabilityTemplates, VulnerabilityDiscovered.template_id == VulnerabilityTemplates.id) \

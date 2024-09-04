@@ -62,8 +62,8 @@ class AdminPanelView(ModelView):
 
 class AdminPanelAuditView(AdminPanelView):
     column_display_pk = True
-    column_list = ['id', 'name', 'asset_type', 'date', 'scan_date', 'task_id', 'container_id', 'status', 'scan_verified', 'progress', 'progress_msg', 'rescan', 'url', 'tools', 'access_id', 'secret_key', 'regions', 'services', 'Auditor']
-    form_columns = ['name', 'asset_type', 'date', 'scan_date', 'task_id', 'container_id', 'status', 'scan_verified', 'progress', 'progress_msg', 'rescan', 'url', 'tools', 'access_id', 'secret_key', 'regions', 'services', 'Auditor']
+    column_list = ['id', 'name', 'asset_type', 'date', 'scan_date', 'task_id', 'container_id', 'status', 'scan_verified', 'progress', 'progress_msg', 'url', 'tools', 'access_id', 'secret_key', 'regions', 'services', 'Auditor']
+    form_columns = ['name', 'asset_type', 'date', 'scan_date', 'task_id', 'container_id', 'status', 'scan_verified', 'progress', 'progress_msg', 'url', 'tools', 'access_id', 'secret_key', 'regions', 'services', 'Auditor']
 
 
 
@@ -101,11 +101,22 @@ def create_app(config_class=Config):
         admin.add_view(AdminPanelTemplatesView(VulnerabilityTemplates, db.session))
 
         try:
-            if not VulnerabilityTemplates.query.first():
-                all_templates = templates()
-                initial_templates = []
-                for template in all_templates:
-                    initial_templates.append(VulnerabilityTemplates(
+            all_templates = templates()
+            for template in all_templates:
+                existing_template = VulnerabilityTemplates.query.filter_by(name=template[0]).first()
+                
+                if existing_template:
+                    existing_template.description = template[1]
+                    existing_template.impact = template[2]
+                    existing_template.severity = template[3]
+                    existing_template.steps = template[4]
+                    existing_template.fix = template[5]
+                    existing_template.cvss = template[6]
+                    existing_template.cvss_string = template[7]
+                    existing_template.cwe = template[8]
+                    existing_template.type = template[9]
+                else:
+                    new_template = VulnerabilityTemplates(
                         name=template[0],
                         description=template[1],
                         impact=template[2],
@@ -115,11 +126,12 @@ def create_app(config_class=Config):
                         cvss=template[6],
                         cvss_string=template[7],
                         cwe=template[8],
-                        type=template[9])
+                        type=template[9]
                     )
-                db.session.add_all(initial_templates)
-                db.session.commit()
-                print('Vulnerability Templates Added Successfuly')
+                    db.session.add(new_template)
+
+            db.session.commit()
+            print('Vulnerability Templates Added Successfuly')
         except Exception as e:
             print(f'Error Adding Vulnerability Templates: {e}')
 

@@ -115,26 +115,6 @@
                         </div>
                     </div>
                 </a>
-                {% elif audit.status == 'finished' %}
-                <div class='flex items-center justify-center p-1 rounded-md hover:bg-green-300 group' data-toggle="initiateAuditModal" data-target="#initiateAuditModal" data-audit-name="{{ audit.name }}" data-initiate-audit-url="{{ url_for('audits.rescan_audit', audit_name=audit.name) }}">
-                    <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                        <g id="SVGRepo_iconCarrier">
-                            <g clip-path="url(#clip0_1276_7761)">
-                                <path d="M19.7285 10.9288C20.4413 13.5978 19.7507 16.5635 17.6569 18.6573C15.1798 21.1344 11.4826 21.6475 8.5 20.1966M18.364 8.05071L17.6569 7.3436C14.5327 4.21941 9.46736 4.21941 6.34316 7.3436C3.42964 10.2571 3.23318 14.8588 5.75376 18M18.364 8.05071H14.1213M18.364 8.05071V3.80807" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                            </g>
-                            <defs>
-                                <clipPath id="clip0_1276_7761">
-                                    <rect width="24" height="24" fill="white"></rect>
-                                </clipPath>
-                            </defs>
-                        </g>
-                    </svg>
-                    <div class='absolute hidden group-hover:block mt-20 bg-black rounded-md p-1 px-2 action-triangle-top'>
-                        <span class='text-white text-xs normal-case font-normal whitespace-nowrap'>Initiate Rescan [{{audit.rescan}}/3]</span>
-                    </div>
-                </div>
                 {% endif %}
             </div>
         </div>
@@ -615,7 +595,23 @@
                                     <text x="10" y="45"><tspan class="blue">└─</tspan><tspan class="blue">$ </tspan><tspan class="green cursor">_</tspan></text>
                                 </svg>
                             </div>
-                            <pre class="text-left text-sm pb-3">{{ output.cloud }}</pre>
+                            <div class="break-words">
+                                {% for service in output %}
+                                <p class="text-xl pb-3 font-bold text-green-600 break-words">{{ service }}</p>
+                                {% for error in output[service] %}
+                                <div class="pl-5 flex items-start pb-5">
+                                    <svg class="w-6 mr-1 flex-none" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                        <g id="SVGRepo_iconCarrier">
+                                            <path d="M12 16H12.01M12 8V12M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z" stroke="#b80000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                        </g>
+                                    </svg>
+                                    <pre class="text-sm text-red-600 whitespace-pre-wrap break-words">{{ error }}</pre>
+                                </div>
+                                {% endfor %}
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -660,59 +656,6 @@
                     Delete
                 </button>
                 <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-6 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 sm:mt-0 sm:w-auto sm:text-sm" id="deleteCancel">
-                    Cancel
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Initiate Rescan Modal -->
-<div id="initiateAuditModal" class="fixed z-10 inset-0 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-    <div class="flex items-end justify-center min-h-screen pt-4 px-6 pb-20 text-center sm:block sm:p-0">
-        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
-        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-            <form id="submitForm" action="" method="POST">
-            <div class="bg-white px-6 pt-5 pb-4 sm:p-6 sm:pb-4">
-                <div class="sm:flex sm:items-start">
-                    <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
-                        <svg class="h-6 w-6 text-red-600" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                            <g id="SVGRepo_iconCarrier"> 
-                                <path d="M12 6L12 18" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> 
-                                <path d="M9 9L9 15" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> 
-                                <path d="M18 11L18 13" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> 
-                                <path d="M6 11L6 13" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> 
-                                <path d="M15 7L15 17" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> 
-                                <path d="M6 3H3V6" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> 
-                                <path d="M18 3H21V6" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> 
-                                <path d="M6 21H3V18" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> 
-                                <path d="M18 21H21V18" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> 
-                            </g>
-                        </svg>
-                      </div>
-                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                        <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
-                            Initiate Audit Rescan
-                        </h3>
-                        <div class="mt-2">
-                            <p class="text-sm text-gray-500 pb-3" id="auditScanMessage">
-                                
-                            </p>
-                            <p class="text-sm text-gray-500">
-                                I acknowledge and am willing to accept the risks involved; during the audit, the scanner will generate some traffic.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="bg-gray-50 px-6 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                <button type="submit"  class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-6 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 sm:ml-3 sm:w-auto sm:text-sm" id="initiateAuditConfirm">
-                    Initiate Rescan
-                </button>
-                <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-6 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 sm:mt-0 sm:w-auto sm:text-sm" id="initiateAuditCancel">
                     Cancel
                 </button>
             </div>
