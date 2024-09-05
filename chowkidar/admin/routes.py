@@ -281,7 +281,7 @@ def admin_vulnerability(user_email, audit_name, vulnerability_name):
         flash('Vulnerability or template not found.', 'danger')
         return redirect(url_for('admin_view.all_audits'))
 
-    return render_template('admin/vulnerability.html', title="Admin", vulnerability=eval(vulnerability.data), template=template)
+    return render_template('admin/vulnerability.html', title="Admin", audit=audit, vulnerability=eval(vulnerability.data), template=template)
 
 
 
