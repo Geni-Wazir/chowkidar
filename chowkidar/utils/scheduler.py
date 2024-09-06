@@ -73,7 +73,7 @@ def generate_report(content):
                 'page-size': 'A4',
                 'margin-top': '0in',
                 'margin-right': '0in',
-                'margin-bottom': '0in',
+                'margin-bottom': '0.5in',
                 'margin-left': '0in',
                 'encoding': "UTF-8",
                 }

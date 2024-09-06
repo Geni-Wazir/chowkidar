@@ -77,15 +77,16 @@
                 labels: ["CRITICAL", "HIGH", "MEDIUM", "LOW", "INFO"],
                 datasets: [
                     {
-                    label: "",
+                    label: " Vulnerability Count",
                     data: [{{critical_count}}, {{ high_count }}, {{ medium_count }}, {{ low_count }}, {{ info_count }}],
                     fill: true,
                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
                     borderColor: 'rgb(54, 162, 235)',
-                    pointBackgroundColor: 'rgb(54, 162, 235)',
+                    pointBackgroundColor: ['#7f1d1d', '#dc2626', '#f97316', '#fbbf24', '#0ea5e9'],
                     pointBorderColor: '#fff',
                     pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: 'rgb(54, 162, 235)'
+                    pointHoverBorderColor: ['#7f1d1d', '#dc2626', '#f97316', '#fbbf24', '#0ea5e9'],
+                    pointRadius: 4
                     },
                 ],
                 };
