@@ -223,6 +223,7 @@ def report(audit_id):
             audit=audit,
             vulnerabilities=vulnerabilities,
             vulnerability_data=vulnerability_data,
+            server=os.getenv('SERVER_URL'),
             **get_vulnerability_counts(audit.Auditor.id, audit_id=audit.id)
         )
 

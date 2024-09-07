@@ -1,0 +1,61 @@
+# Dump & Import database [ Execute in db container ]
+
+    # get the shell of the running db container
+    sudo docker exec -it <container-name-or-id> bash
+
+    # Export the current database
+    mariadb-dump --databases -u root -p scanner > data.sql
+
+    # Export the data.sql file from docker container to the host [ Run this in new terminal]
+    sudo docker cp <container-name-or-id>:/path/to/data.sql ./
+
+    # Transfer the sql file from AWS to the local system
+    scp -i "chowkidar.pem" -r ubuntu@ec2-3-25-54-8.ap-southeast-2.compute.amazonaws.com:/home/ubuntu/data.sql 
+
+    # Move this file to the db container running on the host
+    docker cp data.sql <container-name-or-id>:/
+
+    # Import this to the database
+    mariadb -u root -p scanner scanner < data.sql
+
+
+# Migrate the models [ Execute in flask container ]
+    
+    # Update the database
+    flask db upgrade
+
+    # Migrate the models
+    flask db migrate -m "Added config for cloud scan"
+
+    # Upgrade the database again
+    flask db upgrade
+
+
+# Added missing field for old scans
+
+    # set the asset_type to web
+    UPDATE audit SET asset_type='web';
+    
+    # Add the scan_date for old scans
+    UPDATE audit SET scan_date=date;
+
+    # Add tools column [ Set common tools for all old scans ]
+    UPDATE audit SET tools="{'nmap': True, 'dirsearch': True, 'headers': True, 'testssl': True, 'nuclei': False, 'sublister': False, 'wpscan': False}"
+
+    # Set scan_verified to True for old scans
+    UPDATE audit SET scan_verified=0
+    UPDATE audit SET scan_verified=1 where status='finished';
+
+    # Set progress to 100 for old scans
+    UPDATE audit SET progress=0;
+    UPDATE audit SET progress=100 where status='finished';
+
+    # Set progress message 
+    UPDATE audit SET progress_msg = 'Scan Completed' where status ='finished';
+    UPDATE audit SET progress_msg = 'URL Not Reachable' where status ='stopped';
+
+    # Set cvss as float 
+    UPDATE vulnerability_templates SET cvss = NULL WHERE cvss = '' OR cvss NOT REGEXP '^[0-9]+(\.[0-9]+)?$'
+    ALTER TABLE vulnerability_templates MODIFY cvss FLOAT;
+
+
