@@ -192,7 +192,7 @@
                             </div>
                         </div>
                         <div class="new-audit-btn mx-auto flex flex-wrap items-center justify-center gap-4">
-                            <a href="{{ url_for('audits.delete_audit', audit_name=audit.name) }}"
+                            <a href="{{ url_for('admin_view.admin_delete_audit', user_email=audit.Auditor.email, audit_name=audit.name) }}"
                                 class="tracking-wide font-semibold bg-red-500 text-gray-100 py-3 rounded-lg hover:bg-red-700 flex items-center justify-center px-3">
                                 <svg viewBox="0 0 1024 1024" class="w-6 h-6" version="1.1"
                                     xmlns="http://www.w3.org/2000/svg" fill="#000000">
@@ -239,7 +239,7 @@
                                         Update
                                     </span>
                                 </button>
-                            <a href="{{ url_for('audits.scan_audit', audit_name=audit.name) }}"
+                            <a href="{{ url_for('admin_view.admin_scan_audit', user_email=audit.Auditor.email, audit_name=audit.name) }}"
                                 class="tracking-wide font-semibold bg-green-500 text-gray-100 py-3 rounded-lg hover:bg-green-700 flex items-center justify-center px-3">
                                 <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -257,7 +257,7 @@
                                 </span>
                             </a>
                             {% elif audit.status == 'scanning' %}
-                                <a href="{{ url_for('audits.stop_scan', audit_name=audit.name) }}"
+                                <a href="{{ url_for('admin_view.admin_stop_scan', user_email=audit.Auditor.email, audit_name=audit.name) }}"
                                     class="tracking-wide font-semibold bg-amber-500 text-gray-100 py-3 rounded-lg hover:bg-amber-700 flex items-center justify-center px-3">
                                     <svg class="w-8 h-7" viewBox="0 0 24 24" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -278,7 +278,7 @@
                                 </a>
                             {% endif %}
                             {% if audit.status != 'unscanned' %}
-                            <a href="{{ url_for('audits.vulnerabilities', audit_name=audit.name) }}"
+                            <a href="{{ url_for('admin_view.admin_vulnerabilities', user_email=audit.Auditor.email, audit_name=audit.name) }}"
                                 class="tracking-wide font-semibold bg-cyan-500 text-gray-100 py-3 rounded-lg hover:bg-cyan-700 flex items-center justify-center px-3">
                                 <svg class="w-8 h-7" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">

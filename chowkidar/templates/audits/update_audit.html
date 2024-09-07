@@ -370,7 +370,7 @@
                                         </g>
                                     </g>
                                 </svg>
-                                <span class="mx-2 text-sm">AWS</span>
+                                <span class="mx-2 text-sm select-none">AWS</span>
                             </label>
                             {% if 'azure' in audit.asset_type %}
                             <label class="inline-block p-2 border-2 border-blue-500 bg-blue-50 rounded-lg cursor-pointer mx-2 flex items-center justify-center">
@@ -386,7 +386,7 @@
                                         </g>
                                     </g>
                                 </svg>
-                                <span class="mx-2 text-sm">Azure</span>
+                                <span class="mx-2 text-sm select-none">Azure</span>
                             </label>
                             {% if 'gcp' in audit.asset_type %}
                             <label class="inline-block p-2 border-2 border-blue-500 bg-blue-50 rounded-lg cursor-pointer mx-2 flex items-center justify-center">
@@ -403,12 +403,12 @@
                                         <path fill="#FBBC05" d="M4.711 5.572A4.234 4.234 0 00.721 8.44a4.206 4.206 0 001.433 4.688l1.89-1.884a1.617 1.617 0 01.44-3.079 1.63 1.63 0 011.714.936l1.89-1.878A4.24 4.24 0 004.71 5.572z"></path>
                                     </g>
                                 </svg>
-                                <span class="mx-2 text-sm">GCP</span>
+                                <span class="mx-2 text-sm select-none">GCP</span>
                             </label>
                         </div>
                         <div class="mt-4">
-                            <label class="text-sm text-gray-500">Select Regions <strong>[ Leave it blank to include all regions ]</strong></label>
-                            <div class="relative border-b-2 border-b-indigo-500 mt-2" id="regions">
+                            <label class="text-sm text-gray-500 select-none">Select Regions <strong>[ Leave it blank to include all regions ]</strong></label>
+                            <div class="relative border-b-2 border-b-indigo-500 mt-2 select-none" id="regions">
                                 <div class="multi-select-header flex justify-between items-center">
                                     <div class="selected-items" id="selected-regions">
                                         {% for selected_region in cloudform.regions.data %}
@@ -448,8 +448,8 @@
                             </div>
                         </div>
                         <div class="mt-6">
-                            <label class="text-sm text-gray-500">Select Services</label>
-                            <div class="relative border-b-2 border-b-indigo-500 mt-2" id="services">
+                            <label class="text-sm text-gray-500 select-none">Select Services</label>
+                            <div class="relative border-b-2 border-b-indigo-500 mt-2 select-none" id="services">
                                 <div class="multi-select-header flex justify-between items-center">
                                     <div class="selected-items" id="selected-services">
                                         {% for selected_service in cloudform.services.data %}
@@ -505,7 +505,7 @@
                                             fill="#ffffff"></path>
                                     </g>
                                 </svg>
-                                <span class="ml-2">
+                                <span class="ml-2 select-none">
                                     Delete
                                 </span>
                             </a>
@@ -532,7 +532,7 @@
                                                 stroke-linecap="round" stroke-linejoin="round"></path>
                                         </g>
                                     </svg>
-                                    <span class="ml-2">
+                                    <span class="ml-2 select-none">
                                         Update
                                     </span>
                                 </button>
@@ -549,7 +549,7 @@
                                             stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path>
                                     </g>
                                 </svg>
-                                <span class="ml-2">
+                                <span class="ml-2 select-none">
                                     Initiate
                                 </span>
                             </a>
