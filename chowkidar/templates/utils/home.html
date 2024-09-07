@@ -13,75 +13,28 @@
                     </div>
                 </div>
             </div>
-            <img class="h-[42rem] hoverImage ml-10" src="{{ url_for('static', filename='chowkidar.png') }} " alt="chowkidar">
+            <img class="h-[42rem] hoverImage ml-10 select-none" src="{{ url_for('static', filename='chowkidar.png') }}" alt="chowkidar">
             <div class="absolute right-0 flex flex-col h-full py-10">
                 <div class="flex-1 flex items-center">
-                    <div class="tool-shape border-e-2 border-sky-500">
-                        <div class="tool flex items-center group">
-                            <svg class="flex-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                                <path fill="#015594" d="M450.392 268.216c2.128 1.475 4.178 2.3 6.484 3.554c1.87 1.017 3.773 1.97 5.649 2.973c1.462.781 4.171 2.425 2.529 4.345c-1.067 1.251-3.65 1.055-5.163 1.267c-2.399.333-5.349.206-7.74 0c-2.93-.254-5.992.44-8.974.44c-2.152 0-4.32.093-6.449.087c-.767-.002-1.734.176-2.258-.5c-.545-.702-.163-1.482.263-2.066c.511-.696.992-1.625 1.607-2.169c.55-.484 1.273-.82 1.825-1.246c1.344-1.036 1.811-2.132.62-3.47c-1.184-1.333-2.054-2.276-2.115-4.162c-.077-2.409 1.453-2.904 3.503-3.43c3.07-.787 2.81-.26 5.381 1.21c1.231.705 4.256 2.763 4.838 3.167m-391.838.965c-2.166 1.418-4.237 2.19-6.576 3.382c-1.895.968-3.823 1.87-5.724 2.825c-1.483.742-4.234 2.313-2.641 4.277c1.033 1.279 3.62 1.15 5.128 1.401c2.388.396 5.34.346 7.737.204c2.935-.179 5.978.597 8.958.673c2.152.059 4.316.208 6.445.257c.766.018 1.728.222 2.27-.441c.564-.686.202-1.476-.209-2.07c-.492-.71-.949-1.651-1.549-2.211c-.538-.5-1.25-.853-1.791-1.293c-1.317-1.072-1.756-2.18-.53-3.486c1.22-1.302 2.114-2.221 2.224-4.105c.14-2.406-1.303-3.343-3.413-3.522c-2.714-.23-2.609.327-5.304 1.333c-1.33.496-4.432 2.387-5.025 2.776m451.022 17.014c-16.683 19.24-48.328 9.606-100.566 34.597c-69.325 33.167-73.89 52.895-153.634 53.459c-82.488.584-84.365-22.069-157.445-54.632c-57.686-25.703-89.631-14.17-96.46-34.303c-9.305-26.434 27.8-50.805 48.083-65.09c92.024-64.802 132.11-82.259 203.869-82.191c77.032-4.397 151.521 40.851 207.19 82.192c19.829 14.725 61.893 42.91 48.963 65.968M258.599 269.69l-.008 16.347c17.096-1.496 30.743-15.325 32.38-32.767l-16.36.032c-1.384 8.431-7.852 15.066-16.012 16.388m9.442-16.374l-9.435.018l-.004 9.8c4.622-1.169 8.253-4.966 9.439-9.818m.1-6.415c-1.09-5.014-4.8-8.955-9.527-10.155l-.004 10.174zm-48.105.095l16.537-.033c1.223-8.462 7.553-15.2 15.63-16.708l.008-16.795c-17.234 1.628-30.88 15.813-32.175 33.536m32.151 15.989l.005-9.638l-8.976.018c1.157 4.666 4.584 8.326 8.971 9.62m-15.545-9.607l-16.56.033c1.687 17.282 15.173 30.996 32.094 32.611l.008-16.405c-7.92-1.487-14.159-8.001-15.542-16.24m15.553-6.446l.005-10.046c-4.534 1.333-8.07 5.182-9.114 10.064zm38.809-.077c-1.362-17.728-15.091-31.877-32.378-33.406l-.008 16.74c8.252 1.345 14.768 8.126 16.04 16.699zm-71.367 86.084c-34.085-13.75-58.083-46.557-58.083-84.859c0-20.928 7.177-40.21 19.234-55.648c-25.098 10.645-58.524 30.852-113.737 69.212c-8.738 6.07-35.162 13.14-28.931 18.98c4.69 4.399 29.905 1.173 48.67 7.037c66.902 20.907 96.914 38.248 132.847 45.278M445.66 261.86c-51.504-36.986-86.776-57.9-115.565-69.267c11.981 15.412 19.104 34.632 19.104 55.487c0 37.031-22.436 68.917-54.727 83.42c43.165-9.94 86.137-32.789 127.146-44.132c28.016-7.751 38.995-1.466 51.31-7.623c4.965-2.483-20.128-12.76-27.268-17.885"/>
-                            </svg>
-                            <div class="flex-1 absolute right-20 lg:left-20 items-center hidden group-hover:block bg-sky-200 border-sky-500 border-s-2 lg:border-s-0 lg:border-e-2 lg:rounded-e-full py-3 lg:ml-2 w-full">                                
-                                <p class="font-semibold text-sm whitespace-nowrap text-center">Port Scan</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex-1 flex items-center">
-                    <div class="tool-shape border-e-2 border-sky-500">
-                        <div class="tool flex items-center group">
-                            <svg class="flex-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1400" preserveAspectRatio="xMidYMid meet">
-                                <g transform="translate(0.000000,1400.000000) scale(0.10000,-0.10000)" stroke="none">
-                                    <path fill="#2188ff" d="M6905 7715 c-296 -54 -520 -264 -602 -566 -24 -87 -23 -270 1 -358 96 -354 409 -585 766 -568 198 10 352 79 496 222 77 76 98 105 137 185 57 115 76 186 84 305 24 381 -258 724 -645 784 -88 14 -147 13 -237 -4z" />
-                                    <path fill="#015594" d="M6770 13354 c-239 -51 -430 -159 -636 -357 -273 -262 -496 -606 -703 -1083 -364 -842 -635 -2040 -746 -3304 -8 -96 -18 -198 -21 -227 l-5 -51 -182 -128 c-484 -338 -932 -692 -1372 -1083 -177 -157 -655 -636 -795 -796 -552 -634 -865 -1166 -972 -1656 -19 -89 -22 -133 -22 -299 0 -180 2 -203 27 -295 126 -468 517 -759 1157 -860 139 -22 586 -31 775 -16 299 24 614 73 941 147 200 44 535 132 679 178 l75 24 6 -27 c216 -911 484 -1601 817 -2101 468 -703 1058 -950 1623 -681 116 56 197 108 305 197 408 338 784 1024 1060 1932 70 234 65 318 -27 421 -59 65 -127 95 -219 94 -76 0 -116 -14 -182 -62 -56 -41 -85 -94 -127 -237 -183 -616 -420 -1136 -667 -1461 -84 -110 -244 -265 -325 -313 -137 -82 -285 -102 -415 -56 -403 142 -829 850 -1125 1866 -46 158 -154 582 -154 605 0 8 21 21 48 31 298 108 802 319 1160 485 118 55 217 99 220 99 3 0 69 -30 146 -66 1192 -564 2381 -937 3356 -1055 249 -31 758 -34 945 -6 610 89 988 345 1145 774 80 221 82 498 5 790 -74 280 -256 644 -487 973 -249 353 -610 766 -983 1122 l-140 133 128 120 c243 229 577 590 775 837 752 943 955 1731 588 2281 -338 508 -1118 685 -2246 511 -1340 -207 -3122 -925 -4745 -1912 -142 -87 -150 -90 -153 -68 -2 13 11 136 28 272 183 1477 557 2688 1026 3321 77 104 255 280 326 322 118 69 173 85 283 85 85 0 109 -3 163 -26 227 -94 430 -313 642 -692 144 -258 267 -550 391 -931 98 -302 99 -304 149 -359 124 -134 340 -118 452 33 35 48 58 117 58 172 0 85 -183 623 -318 934 -209 485 -431 828 -706 1092 -208 200 -402 309 -638 357 -95 20 -298 20 -388 0z m4410 -3134 c243 -19 396 -53 545 -124 105 -50 206 -136 248 -214 87 -161 71 -402 -47 -692 -187 -457 -655 -1069 -1259 -1643 l-157 -150 -52 44 c-234 197 -667 527 -983 749 -332 234 -871 583 -951 616 -57 24 -175 16 -238 -16 -175 -89 -212 -338 -70 -471 22 -20 120 -87 219 -149 353 -221 808 -535 1135 -783 201 -153 480 -377 480 -385 -1 -10 -318 -261 -535 -424 -587 -439 -1243 -862 -1936 -1248 -481 -267 -1215 -623 -1684 -815 -224 -92 -468 -185 -473 -181 -13 14 -93 598 -127 928 -56 551 -75 904 -82 1531 -5 464 8 1146 23 1199 7 26 502 335 906 566 1481 849 3028 1444 4199 1616 327 48 606 63 839 46z m-6564 -2957 c-20 -902 57 -2027 200 -2906 20 -121 33 -221 31 -224 -9 -9 -301 -94 -492 -143 -352 -91 -664 -150 -980 -187 -211 -24 -638 -24 -790 0 -536 84 -741 303 -670 713 119 677 979 1725 2215 2695 114 90 483 368 489 369 2 0 1 -143 -3 -317z m6173 -926 c715 -710 1143 -1347 1227 -1827 68 -392 -130 -615 -626 -705 -127 -23 -513 -32 -703 -16 -780 66 -1741 336 -2801 788 -172 74 -245 109 -235 115 8 5 107 60 220 123 918 507 1807 1111 2608 1771 l26 22 30 -25 c16 -13 131 -124 254 -246z"/>
-                                    <path fill="#015594" d="M2667 10810 c-740 -67 -1187 -369 -1329 -898 -26 -97 -35 -330 -19 -456 62 -463 357 -1020 861 -1623 88 -107 110 -127 165 -154 152 -74 325 -15 396 135 51 107 36 224 -39 318 -20 25 -84 105 -142 176 -360 443 -588 864 -645 1188 -36 209 -2 356 112 475 137 144 360 221 718 249 322 26 807 -22 1280 -126 88 -19 191 -42 229 -50 84 -18 146 -8 224 36 119 69 172 220 122 352 -24 66 -69 121 -123 153 -92 53 -665 166 -1067 210 -171 19 -603 27 -743 15z"/>
-                                </g>
-                            </svg>
-                            <div class="flex-1 absolute right-20 lg:left-20 items-center hidden group-hover:block bg-sky-200 border-sky-500 border-s-2 lg:border-s-0 lg:border-e-2 lg:rounded-e-full py-3 lg:ml-2 w-full">                                
-                                <p class="font-semibold text-sm whitespace-nowrap text-center">Nuclei</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex-1 flex items-center">
-                    <div class="tool-shape border-e-2 border-sky-500">
-                        <div class="tool flex items-center group">
-                            <svg class="flex-1" fill="#015594" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
+                    <div class="tool-shape border-e-2 border-sky-500 group">
+                        <div class="tool flex items-center">
+                            <svg class="flex-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                <g id="SVGRepo_iconCarrier"> 
-                                    <path d="m1243.561 1811.41-238.305-636.197-272.866 638.118c-103.229-2.598-163.087-64.828-163.087-64.828L162.6 471.59s-16.037-63.36-106.842-63.36H-.034l37.045-96.226h519.755v96.226s-51.614 41.562-39.53 99.162c12.198 57.6 220.236 887.266 220.236 887.266l200.584-443.972-93.064-293.647c-35.69-90.24-65.054-177.205-88.433-200.245-32.979-35.802-93.063-48.564-93.063-48.564v-96.226h640.376v96.226h-105.939s-55.793 11.18-60.65 93.176c-1.016 16.49 8.584 73.864 8.584 73.864l248.47 816.903s255.248-468.706 258.862-570.805c3.727-101.872-35.802-268.687-147.275-335.322-178.334-107.407-133.27-321.092 4.179-396.65 58.729-32.188 111.02-33.43 170.54-33.43 209.845 0 233.45 237.854 233.45 237.854 13.892 81.996 4.066 221.478-35.463 344.47-103.229 319.85-358.702 895.286-457.638 1114.391-79.51 78.946-177.43 58.73-177.43 58.73" fill-rule="evenodd"></path> 
+                                <g id="SVGRepo_iconCarrier">
+                                    <path d="M5.99988 18.9142C4.04366 18.5171 2.57129 16.7876 2.57129 14.7142C2.57129 12.6408 4.04366 10.9113 5.99988 10.5142C5.99987 10.5095 5.99986 10.5047 5.99986 10.5C5.99986 7.46243 8.4623 5 11.4999 5C14.5374 5 16.9999 7.46243 16.9999 10.5C16.9999 10.6685 16.9923 10.8353 16.9774 11H16.9999C19.209 11 20.9999 12.7909 20.9999 15C20.9999 16.8638 19.7251 18.4299 17.9999 18.874" stroke="#015594" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    <path d="M12 14.75C12.641 14.75 13.2007 15.1019 13.5002 15.6249M12 14.75C11.3589 14.75 10.7992 15.1019 10.4997 15.6249M12 14.75V13M12 20V18.2209M15 14.75L13.5002 15.6249M9 18.25L10.4997 17.3751M15 18.25L13.5003 17.3752M9 14.75L10.4997 15.6249M10.4997 17.3751C10.3523 17.1177 10.2679 16.8188 10.2679 16.5C10.2679 16.1812 10.3523 15.8823 10.4997 15.6249M10.4997 17.3751C10.8408 17.9707 11.4229 18.2326 12 18.2209M12 18.2209C12.5958 18.2088 13.1862 17.9049 13.5003 17.3752M13.5003 17.3752C13.6458 17.1298 13.732 16.8358 13.732 16.5C13.732 16.1812 13.6477 15.8823 13.5002 15.6249" stroke="#015594" stroke-width="2" stroke-linecap="round"></path>
                                 </g>
                             </svg>
-                            <div class="flex-1 absolute right-20 lg:left-20 items-center hidden group-hover:block bg-sky-200 border-sky-500 border-s-2 lg:border-s-0 lg:border-e-2 lg:rounded-e-full py-3 lg:ml-2 w-full">                                
-                                <p class="font-semibold text-sm whitespace-nowrap text-center">Wordpress</p>
-                            </div>
+                        </div>
+                        <div class='absolute hidden group-hover:block mt-24 bg-sky-900 rounded-md p-1 px-2'>
+                            <span class='text-white text-sm normal-case font-normal whitespace-nowrap'>Cover Cloud Assets</span>
                         </div>
                     </div>
                 </div>
                 <div class="flex-1 flex items-center">
-                    <div class="tool-shape border-e-2 border-sky-500">
-                        <div class="tool flex items-center group">
-                            <svg class="flex-1" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" xml:space="preserve" fill="#000000">
-                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                <g id="SVGRepo_iconCarrier"> 
-                                    <style type="text/css"> .st0{fill:none;stroke:#015594;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st1{fill:none;stroke:#000000;stroke-width:2;stroke-linejoin:round;stroke-miterlimit:10;} </style> 
-                                    <polyline class="st0" points="22,12 22,20 26,20 "></polyline> 
-                                    <path class="st0" d="M29,24H3c-1.1,0-2-0.9-2-2V10c0-1.1,0.9-2,2-2h26c1.1,0,2,0.9,2,2v12C31,23.1,30.1,24,29,24z"></path> 
-                                    <path class="st0" d="M10,14L10,14c0-1.1-0.9-2-2-2h0c-1.1,0-2,0.9-2,2v0c0,1.1,0.9,2,2,2h0c1.1,0,2,0.9,2,2v0c0,1.1-0.9,2-2,2h0 c-1.1,0-2-0.9-2-2v0"></path> 
-                                    <path class="st0" d="M18,14L18,14c0-1.1-0.9-2-2-2h0c-1.1,0-2,0.9-2,2v0c0,1.1,0.9,2,2,2h0c1.1,0,2,0.9,2,2v0c0,1.1-0.9,2-2,2h0 c-1.1,0-2-0.9-2-2v0"></path> 
-                                </g>
-                            </svg>
-                            <div class="flex-1 absolute right-20 lg:left-20 items-center hidden group-hover:block bg-sky-200 border-sky-500 border-s-2 lg:border-s-0 lg:border-e-2 lg:rounded-e-full py-3 lg:ml-2 w-full">                                
-                                <p class="font-semibold text-sm whitespace-nowrap text-center">SSL Scan</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex-1 flex items-center">
-                    <div class="tool-shape border-e-2 border-sky-500">
-                        <div class="tool flex items-center group">
+                    <div class="tool-shape border-e-2 border-sky-500 group">
+                        <div class="tool flex items-center">
                             <svg class="flex-1" fill="#015594" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 264 264" xml:space="preserve">
                                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -98,9 +51,58 @@
                                     </g> 
                                 </g>
                             </svg>
-                            <div class="flex-1 absolute right-20 lg:left-20 items-center hidden group-hover:block bg-sky-200 border-sky-500 border-s-2 lg:border-s-0 lg:border-e-2 lg:rounded-e-full py-3 lg:ml-2 w-full">                                
-                                <p class="font-semibold text-sm whitespace-nowrap text-center">Headers</p>
-                            </div>
+                        </div>
+                        <div class='absolute hidden group-hover:block mt-24 bg-sky-900 rounded-md p-1 px-2'>
+                            <span class='text-white text-sm normal-case font-normal whitespace-nowrap'>Cover Web Assets</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-1 flex items-center">
+                    <div class="tool-shape border-e-2 border-sky-500 group">
+                        <div class="tool flex items-center">
+                            <svg class="flex-1" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <path d="M14 9.50006C11.5147 9.50006 9.5 11.5148 9.5 14.0001C9.5 16.4853 11.5147 18.5001 14 18.5001C15.3488 18.5001 16.559 17.9066 17.3838 16.9666C18.0787 16.1746 18.5 15.1365 18.5 14.0001C18.5 13.5401 18.431 13.0963 18.3028 12.6784C17.7382 10.8381 16.0253 9.50006 14 9.50006ZM11 14.0001C11 12.3432 12.3431 11.0001 14 11.0001C15.6569 11.0001 17 12.3432 17 14.0001C17 15.6569 15.6569 17.0001 14 17.0001C12.3431 17.0001 11 15.6569 11 14.0001Z" fill="#015594"></path>
+                                    <path d="M21.7093 22.3948L19.9818 21.6364C19.4876 21.4197 18.9071 21.4515 18.44 21.7219C17.9729 21.9924 17.675 22.4693 17.6157 23.0066L17.408 24.8855C17.3651 25.273 17.084 25.5917 16.7055 25.682C14.9263 26.1061 13.0725 26.1061 11.2933 25.682C10.9148 25.5917 10.6336 25.273 10.5908 24.8855L10.3834 23.0093C10.3225 22.4731 10.0112 21.9976 9.54452 21.7281C9.07783 21.4586 8.51117 21.4269 8.01859 21.6424L6.29071 22.4009C5.93281 22.558 5.51493 22.4718 5.24806 22.1859C4.00474 20.8536 3.07924 19.2561 2.54122 17.5137C2.42533 17.1384 2.55922 16.7307 2.8749 16.4977L4.40219 15.3703C4.83721 15.0501 5.09414 14.5415 5.09414 14.0007C5.09414 13.4598 4.83721 12.9512 4.40162 12.6306L2.87529 11.5051C2.55914 11.272 2.42513 10.8638 2.54142 10.4882C3.08038 8.74734 4.00637 7.15163 5.24971 5.82114C5.51684 5.53528 5.93492 5.44941 6.29276 5.60691L8.01296 6.36404C8.50793 6.58168 9.07696 6.54881 9.54617 6.27415C10.0133 6.00264 10.3244 5.52527 10.3844 4.98794L10.5933 3.11017C10.637 2.71803 10.9245 2.39704 11.3089 2.31138C12.19 2.11504 13.0891 2.01071 14.0131 2.00006C14.9147 2.01047 15.8128 2.11485 16.6928 2.31149C17.077 2.39734 17.3643 2.71823 17.4079 3.11017L17.617 4.98937C17.7116 5.85221 18.4387 6.50572 19.3055 6.50663C19.5385 6.507 19.769 6.45838 19.9843 6.36294L21.7048 5.60568C22.0626 5.44818 22.4807 5.53405 22.7478 5.81991C23.9912 7.1504 24.9172 8.74611 25.4561 10.487C25.5723 10.8623 25.4386 11.2703 25.1228 11.5035L23.5978 12.6297C23.1628 12.95 22.9 13.4586 22.9 13.9994C22.9 14.5403 23.1628 15.0489 23.5988 15.3698L25.1251 16.4965C25.441 16.7296 25.5748 17.1376 25.4586 17.5131C24.9198 19.2536 23.9944 20.8492 22.7517 22.1799C22.4849 22.4657 22.0671 22.5518 21.7093 22.3948ZM16.263 22.1966C16.4982 21.4685 16.9889 20.8288 17.6884 20.4238C18.5702 19.9132 19.6536 19.8547 20.5841 20.2627L21.9281 20.8526C22.791 19.8538 23.4593 18.7013 23.8981 17.4552L22.7095 16.5778L22.7086 16.5771C21.898 15.98 21.4 15.0277 21.4 13.9994C21.4 12.9719 21.8974 12.0195 22.7073 11.4227L22.7085 11.4218L23.8957 10.545C23.4567 9.2988 22.7881 8.14636 21.9248 7.1477L20.5922 7.73425L20.5899 7.73527C20.1844 7.91463 19.7472 8.00722 19.3039 8.00663C17.6715 8.00453 16.3046 6.77431 16.1261 5.15465L16.1259 5.15291L15.9635 3.69304C15.3202 3.57328 14.6677 3.50872 14.013 3.50017C13.3389 3.50891 12.6821 3.57367 12.0377 3.69328L11.8751 5.15452C11.7625 6.16272 11.1793 7.05909 10.3019 7.56986C9.41937 8.0856 8.34453 8.14844 7.40869 7.73694L6.07273 7.14893C5.20949 8.14751 4.54092 9.29983 4.10196 10.5459L5.29181 11.4233C6.11115 12.0269 6.59414 12.9837 6.59414 14.0007C6.59414 15.0173 6.11142 15.9742 5.29237 16.5776L4.10161 17.4566C4.54002 18.7044 5.2085 19.8585 6.07205 20.8587L7.41742 20.2682C8.34745 19.8613 9.41573 19.9215 10.2947 20.4292C11.174 20.937 11.7593 21.832 11.8738 22.84L11.8744 22.8445L12.0362 24.3088C13.3326 24.5638 14.6662 24.5638 15.9626 24.3088L16.1247 22.8418C16.1491 22.6217 16.1955 22.4055 16.263 22.1966Z" fill="#015594"></path>
+                                </g>
+                            </svg>
+                        </div>
+                        <div class='absolute hidden group-hover:block mt-24 bg-sky-900 rounded-md p-1 px-2'>
+                            <span class='text-white text-sm normal-case font-normal whitespace-nowrap'>300+ Scan Rules</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-1 flex items-center">
+                    <div class="tool-shape border-e-2 border-sky-500 group">
+                        <div class="tool flex items-center">
+                            <svg class="flex-1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#015594">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <path fill="none" stroke="#015594" stroke-width="1.2" d="M1,1 L23,1 M10,4.5 L14,4.5 C14,4.5 14,6 14,6 C14,7 12,8 12,8 C12,8 10,7 10,6 C10,6 10,4.5 10,4.5 Z M5,1 C5,1 5,3 5,6 C5,9 10,9.23530084 10,12 C10,14.7646992 5.00000001,15 5,18 C4.99999999,21 5,23 5,23 M19,1 C19,1 19,3 19,6 C19,9 14,9.23530084 14,12 C14,14.7646992 19,15 19,18 C19,21 19,23 19,23 M1,23 L23,23 M8,21 C8,19 12,17 12,17 C12,17 16,19 16,21 C16,21 16,23 16,23 L8,23 L8,21 Z"></path>
+                                </g>
+                            </svg>
+                        </div>
+                        <div class='absolute hidden group-hover:block mt-24 bg-sky-900 rounded-md p-1 px-2'>
+                            <span class='text-white text-sm normal-case font-normal whitespace-nowrap'>Get Live Progress</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-1 flex items-center">
+                    <div class="tool-shape border-e-2 border-sky-500 group">
+                        <div class="tool flex items-center">
+                            <svg class="flex-1" fill="#015594" viewBox="0 0 24 24" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <path d="M14.6,21.3c-.3.226-.619.464-.89.7H16a1,1,0,0,1,0,2H12a1,1,0,0,1-1-1c0-1.5,1.275-2.456,2.4-3.3.75-.562,1.6-1.2,1.6-1.7a1,1,0,0,0-2,0,1,1,0,0,1-2,0,3,3,0,0,1,6,0C17,19.5,15.725,20.456,14.6,21.3ZM23,15a1,1,0,0,0-1,1v3H21a1,1,0,0,1-1-1V16a1,1,0,0,0-2,0v2a3,3,0,0,0,3,3h1v2a1,1,0,0,0,2,0V16A1,1,0,0,0,23,15ZM13,12V7a1,1,0,0,0-2,0v4H8a1,1,0,0,0,0,2h4A1,1,0,0,0,13,12ZM23,2a1,1,0,0,0-1,1V5.374A12,12,0,1,0,7.636,23.182,1.015,1.015,0,0,0,8,23.25a1,1,0,0,0,.364-1.932A10,10,0,1,1,20.636,7H18a1,1,0,0,0,0,2h3a3,3,0,0,0,3-3V3A1,1,0,0,0,23,2Z"></path>
+                                </g>
+                            </svg>
+                        </div>
+                        <div class='absolute hidden group-hover:block mt-24 bg-sky-900 rounded-md p-1 px-2'>
+                            <span class='text-white text-sm normal-case font-normal whitespace-nowrap'>Scan Anytime 24/7</span>
                         </div>
                     </div>
                 </div>
@@ -115,11 +117,11 @@
             <div class="gap-10 flex-col flex mt-10 px-2">
                 <div class="flex pl-2 pr-4 py-2 rounded-xl items-center w-fit max-w-sm shadow-xl backdrop-blur-sm bg-opacity-25 bg-indigo-200">
                     <div class="relative h-16 w-24 mr-2">
-                        <img class="absolute -mt-3 image-animate select-none" src="{{ url_for('static', filename='ui.webp') }}" alt="Rounded avatar">
+                        <img class="absolute -mt-5 image-animate select-none" src="{{ url_for('static', filename='automate.webp') }}" alt="Rounded avatar">
                     </div>
                     <div class="">
-                        <p class="text-md font-semibold">Easy Navigation</p>
-                        <p class="text-sm">A minimalist UI focuses on essential elements</p>
+                        <p class="text-md font-semibold">Scanning for Multiple Assets</p>
+                        <p class="text-sm">Efficient Security Scanning for web and cloud assets</p>
                     </div>
                 </div>
                 <div class="flex pl-2 pr-4 py-2 rounded-xl items-center w-fit max-w-sm shadow-xl backdrop-blur-sm bg-opacity-25 bg-indigo-200 lg:ml-[-5rem] items-center">
@@ -133,11 +135,11 @@
                 </div>
                 <div class="flex pl-2 pr-4 py-2 rounded-xl items-center w-fit max-w-sm shadow-xl backdrop-blur-sm bg-opacity-25 bg-indigo-200">
                     <div class="relative h-16 w-24 mr-2">
-                        <img class="absolute -mt-5 image-animate select-none" src="{{ url_for('static', filename='automate.webp') }}" alt="Rounded avatar">
+                        <img class="absolute -mt-3 image-animate select-none" src="{{ url_for('static', filename='ui.webp') }}" alt="Rounded avatar">
                     </div>
                     <div class="">
-                        <p class="text-md font-semibold">Automation</p>
-                        <p class="text-sm">Effortlessly Automate Tasks Anywhere, Anytime</p>
+                        <p class="text-md font-semibold">Easy Navigation</p>
+                        <p class="text-sm">A minimalist UI focuses on essential elements</p>
                     </div>
                 </div>
             </div>
@@ -190,15 +192,37 @@
 </div>
 <div class="my-0 lg:my-10 p-5 w-full flex flex-col justify-center">
     <h1 class="flex-1 flex justify-center text-xl lg:text-4xl pb-5 font-semibold">Get Started in Just a Few Clicks ☝️</h1>
-    <video class="px-0 lg:px-32" controls playsinline>
-        <source src="{{ url_for('static', filename='demo.mp4') }}" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
+    <div class="flex grid lg:grid-cols-2 gap-5 mx-20">
+        <div class="relative flex-1 flex justify-center rounded-lg overflow-hidden group hover:scale-[1.25] transition-all duration-500 border-2 border-sky-700 hover:z-10">
+            <img class="rounded-lg transform transition-transform duration-500" src="{{ url_for('static', filename='audits.png') }}" alt="Comprehensive Report">
+            <div class="absolute w-full h-full bg-black bg-opacity-80 text-white text-center p-2 opacity-0 translate-y-full transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0 flex items-center justify-center">
+                Track all your audits from a single location: start, stop, delete, and update audit configurations seamlessly in one place.
+            </div>
+        </div>
+        <div class="relative flex-1 flex justify-center rounded-lg overflow-hidden group hover:scale-[1.25] transition-all duration-500 border-2 border-sky-700 hover:z-10">
+            <img class="rounded-lg" src="{{ url_for('static', filename='new-audit.gif') }}" alt="Comprehensive Report">
+            <div class="absolute w-full h-full bg-black bg-opacity-80 text-white text-center p-2 opacity-0 translate-y-full transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0 flex items-center justify-center">
+                Add web and cloud assets with ease on a single page, featuring straightforward scan configuration setup.
+            </div>
+        </div>
+        <div class="relative flex-1 flex justify-center rounded-lg overflow-hidden group hover:scale-[1.25] transition-all duration-500 border-2 border-sky-700 hover:z-10">
+            <img class="rounded-lg" src="{{ url_for('static', filename='progress.gif') }}" alt="Comprehensive Report">
+            <div class="absolute w-full h-full bg-black bg-opacity-80 text-white text-center p-2 opacity-0 translate-y-full transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0 flex items-center justify-center">
+                Track your scans live on the dashboard, view results in real-time, and catch any errors across all asset types
+            </div>
+        </div>
+        <div class="relative flex-1 flex justify-center rounded-lg overflow-hidden group hover:scale-[1.25] transition-all duration-500 border-2 border-sky-700 hover:z-10">
+            <img class="rounded-lg" src="{{ url_for('static', filename='report.gif') }}" alt="Comprehensive Report">
+            <div class="absolute w-full h-full bg-black bg-opacity-80 text-white text-center p-2 opacity-0 translate-y-full transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0 flex items-center justify-center">
+                Get detailed insights on every discovered vulnerability, verify that the scan ran successfully as per the configuration, and generate a comprehensive PDF report.
+            </div>
+        </div>
+        
+    </div>
 </div>
 <div class="my-0 lg:my-10 p-5 w-full flex flex-col justify-center">
-    <h1 class="flex-1 flex justify-center text-xl lg:text-4xl pb-5 font-semibold">Comprehensive Progress and Vulnerability Report</h1>
-    <img class="px-0 lg:px-32" src="{{ url_for('static', filename='home-report.png') }} " alt="Comprehensive Report">
-
+    <h1 class="flex-1 flex justify-center text-xl lg:text-4xl pb-5 font-semibold">Keep your performance in check<h1>
+    <img class="px-0 lg:px-40 select-none" src="{{ url_for('static', filename='profile-page.png') }}" alt="Comprehensive Report">
 </div>
 <script>
     // Get the target element
