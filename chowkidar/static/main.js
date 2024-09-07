@@ -294,11 +294,15 @@ if (scanProgress){
 function showWebForm() {
     document.getElementById('cloud-form').style.display = 'none';
     document.getElementById('web-form').style.display = 'block';
+    document.getElementById('cloudformbuttom').style.borderColor = '#fed7aa';
+    document.getElementById('webformbutton').style.borderColor = '#06b6d4'
 }
 
 function showCloudForm() {
     document.getElementById('web-form').style.display = 'none';
     document.getElementById('cloud-form').style.display = 'block';
+    document.getElementById('webformbutton').style.borderColor = '#a5f3fc'
+    document.getElementById('cloudformbuttom').style.borderColor = '#f97316'
 }
 
 
