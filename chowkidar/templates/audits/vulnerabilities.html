@@ -155,7 +155,7 @@
                     </div>
                 </div>
             {% else %}
-            <div class="flex items-center justify-center p-2 bg-teal-300/70 rounded-md">
+            <div class="flex items-center justify-center p-2 bg-teal-300/70 rounded-md group">
                 <a class="flex" href="{{ url_for('audits.scan_result', audit_name=audit.name) }}" type="button">
                     <svg class="w-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -166,6 +166,9 @@
                     </svg>
                     <span class="px-1">Unverified scan</span>
                 </a>
+                <div class='absolute hidden group-hover:block mt-20 bg-black rounded-md p-1 px-2 action-triangle-top'>
+                    <span class='text-white text-xs normal-case font-normal whitespace-nowrap'>Verify to get report</span>
+                </div>
             </div>
             {% endif %}
         </div>
