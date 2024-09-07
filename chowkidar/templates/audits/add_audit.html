@@ -4,7 +4,7 @@
 <div class="flex justify-center pt-5">
     <div class="w-5/6 m-2 bg-white shadow rounded-lg flex flex-col md:flex-row items-center">
         <div class="w-auto p-3 order-1 md:order-2 flex md:flex-col justify-center items-center gap-4">
-            <button class="flex w-40 rounded-lg border-2 border-cyan-500 bg-cyan-50 p-3 items-center" onclick=showWebForm()>
+            <button class="flex w-40 rounded-lg border-2 border-cyan-500 bg-cyan-50 p-3 items-center" id="webformbutton" onclick=showWebForm()>
                 <svg class="w-8 mr-2" version="1.1" id="Icons" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" xml:space="preserve" fill="#000000">
                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -22,9 +22,9 @@
                         <circle class="st0" cx="16" cy="25" r="3"></circle>
                     </g>
                 </svg>
-                <span class="text-md font-medium">Web Asset</span>
+                <span class="text-md font-medium select-none">Web Asset</span>
             </button>
-            <button class="flex w-40 rounded-lg border-2 border-orange-500 bg-orange-50 p-3 items-center" onclick=showCloudForm()>
+            <button class="flex w-40 rounded-lg border-2 border-orange-200 bg-orange-50 p-3 items-center" id="cloudformbuttom" onclick=showCloudForm()>
                 <svg class="w-8 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -37,7 +37,7 @@
                             stroke="#f97316" stroke-width="2" stroke-linecap="round"></path>
                     </g>
                 </svg>
-                <span class="text-md font-medium">Cloud Asset</span>
+                <span class="text-md font-medium select-none">Cloud Asset</span>
             </button>
         </div>
         <div class="w-full h-full sm:w-4/5 p-6 order-2 sm:order-1">
@@ -169,7 +169,7 @@
                                             stroke-linecap="round" stroke-linejoin="round"></path>
                                     </g>
                                 </svg>
-                                <span class="ml-2">Save</span>
+                                <span class="ml-2 select-none">Save</span>
                             </button>
                         </div>
                     </form>
@@ -233,7 +233,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="flex mt-4 md:mt-8 w-full justify-center">
+                        <div class="flex mt-4 md:mt-8 w-full justify-center select-none">
                         {% for value, label in cloudform.asset_type.choices %}
                             <label class="asset-type-option {% if cloudform.asset_type.data == value %}selected{% endif %} flex items-center justify-center">
                                 <input type="radio" name="{{ cloudform.asset_type.name }}" value="{{ value }}"
@@ -281,8 +281,8 @@
                         {% endfor %}
                         </div>
                         <div class="mt-4">
-                            <label class="text-sm text-gray-500">Select Regions <strong>[ Leave it blank to include all regions ]</strong></label>
-                            <div class="relative border-b-2 border-b-indigo-500 mt-2" id="regions">
+                            <label class="text-sm text-gray-500 select-none">Select Regions <strong>[ Leave it blank to include all regions ]</strong></label>
+                            <div class="relative border-b-2 border-b-indigo-500 mt-2 select-none" id="regions">
                                 <div class="multi-select-header flex justify-between items-center">
                                     <div class="selected-items" id="selected-regions"></div>
                                     <div class="flex items-center space-x-2">
@@ -309,8 +309,8 @@
                             </div>
                         </div>
                         <div class="mt-6">
-                            <label class="text-sm text-gray-500">Select Services</label>
-                            <div class="relative border-b-2 border-b-indigo-500 mt-2" id="services">
+                            <label class="text-sm text-gray-500 select-none">Select Services</label>
+                            <div class="relative border-b-2 border-b-indigo-500 mt-2 select-none" id="services">
                                 <div class="multi-select-header flex justify-between items-center">
                                     <div class="selected-items" id="selected-services"></div>
                                     <div class="flex items-center space-x-2">
@@ -357,7 +357,7 @@
                                             stroke-linecap="round" stroke-linejoin="round"></path>
                                     </g>
                                 </svg>
-                                <span class="ml-2">Save</span>
+                                <span class="ml-2 select-none">Save</span>
                             </button>
                         </div>
                     </form>
