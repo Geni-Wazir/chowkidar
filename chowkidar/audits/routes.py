@@ -371,6 +371,10 @@ def scan_status():
     if data['secret_key'] == os.environ['SCANNER_SECRET_KEY']:
         audit = Audit.query.filter_by(id=data['audit_id']).first()
         scan_result = ScanResults.query.filter_by(Audit = audit).first()
+        vulnerabilities = VulnerabilityDiscovered.query \
+        .join(VulnerabilityTemplates, VulnerabilityDiscovered.template_id == VulnerabilityTemplates.id) \
+        .filter(VulnerabilityDiscovered.audit_id == audit.id) \
+        .order_by(VulnerabilityTemplates.cvss.desc()).all()
         if audit:
             if not scan_result:
                 scan_result = ScanResults(Audit=audit)
@@ -382,16 +386,17 @@ def scan_status():
             audit.progress_msg = data['progress_msg']
             audit.status = data['status']
             db.session.commit()
-            reciever = [audit.Auditor.email]
-            subject = f'Completion of Vulnerability Scan for {audit.name}'
-            message = render_template('audits/scan_complete_mail.html', audit=audit)
-            msg = Message(subject, sender=os.environ['MAIL_USERNAME'], recipients=reciever)
-            msg.html = message
-            # try:
-            #     mail.send(msg)
-            # except:
-            #     pass
-            # delete_container(audit.container_id)
+            if data['status'] != 'stopped':
+                reciever = [audit.Auditor.email]
+                subject = f'Completion of Vulnerability Scan for {audit.name}'
+                message = render_template('audits/scan_complete_mail.html',server=os.getenv('SERVER_URL'), audit=audit, vulnerabilities=vulnerabilities)
+                msg = Message(subject, sender=os.environ['MAIL_USERNAME'], recipients=reciever)
+                msg.html = message
+                try:
+                    mail.send(msg)
+                except:
+                    pass
+            delete_container(audit.container_id)
             return "ok", 200
         abort(404)  # audit not found
     abort(403)  # Incorrect secret_key
