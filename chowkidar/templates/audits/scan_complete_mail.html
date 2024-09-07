@@ -11,9 +11,49 @@
     <div class="px-8 py-3">
         <p>This is to notify you that the vulnerability scan for <strong>{{audit.name}}</strong> has been completed
             successfully. You can
-            access the <a href="http://localhost//audits/{{audit.name}}/vulnerability">dashboard</a> to view all
+            access the <a href="{{ server }}/audits/{{audit.name}}/vulnerability">dashboard</a> to view all
             detected vulnerabilities, along with detailed information on each one.
         </p>
+        <p>Here is the list of all the discovered vulnerabilities: </p>
+        <div style="display: flex; flex-direction: column;">
+            <div style="display: flex; align-items: center;">
+                <div style="padding: 1.5px;">
+                    <div style="border: 1px solid #d1d5db; border-radius: 0.5rem; text-align: left; display: inline-block;">
+                        <table style="min-width: 100%;">
+                            <thead style="background-color: #ebf8ff; font-size: 1.125rem;">
+                                <tr>
+                                    <th scope="col" style="padding: 6px; font-size: 0.75rem; font-weight: 500; text-transform: uppercase; color: #000000; border-bottom: 1px solid #d1d5db;">No</th>
+                                    <th scope="col" style="padding: 6px; font-size: 0.75rem; font-weight: 500; text-transform: uppercase; color: #000000; border-bottom: 1px solid #d1d5db;">Vulnerability Name</th>
+                                    <th scope="col" style="padding: 6px; font-size: 0.75rem; font-weight: 500; text-transform: uppercase; color: #000000; border-bottom: 1px solid #d1d5db;">Severity</th>
+                                    <th scope="col" style="padding: 6px; font-size: 0.75rem; font-weight: 500; text-transform: uppercase; color: #000000; border-bottom: 1px solid #d1d5db;">CVSS</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for vulnerability in vulnerabilities %}
+                                <tr>
+                                    <td style="padding: 3px; font-size: 0.875rem; color: #1f2937; border-bottom: 1px solid #d1d5db; text-align: center;">{{ loop.index }}</td>
+                                    <td style="padding: 3px; font-size: 0.875rem; font-weight: 500; color: #1f2937; border-bottom: 1px solid #d1d5db;">{{ vulnerability.name }}</td>
+                                    {% if vulnerability.Template.severity == 'CRITICAL' %}
+                                        <td style="padding: 3px; font-size: 0.875rem; color: #7f1d1d; font-weight: 500; border-bottom: 1px solid #d1d5db; text-align: center;">{{ vulnerability.Template.severity }}</td>
+                                    {% elif vulnerability.Template.severity == 'HIGH' %}
+                                        <td style="padding: 3px; font-size: 0.875rem; color: #dc2626; font-weight: 500; border-bottom: 1px solid #d1d5db; text-align: center;">{{ vulnerability.Template.severity }}</td>
+                                    {% elif vulnerability.Template.severity == 'MEDIUM' %}
+                                        <td style="padding: 3px; font-size: 0.875rem; color: #d56e1e; font-weight: 500; border-bottom: 1px solid #d1d5db; text-align: center;">{{ vulnerability.Template.severity }}</td>
+                                    {% elif vulnerability.Template.severity == 'LOW' %}
+                                        <td style="padding: 3px; font-size: 0.875rem; color: #fbbf24; font-weight: 500; border-bottom: 1px solid #d1d5db; text-align: center;">{{ vulnerability.Template.severity }}</td>
+                                    {% elif vulnerability.Template.severity == 'INFO' %}
+                                        <td style="padding: 3px; font-size: 0.875rem; color: #3b82f6; font-weight: 500; border-bottom: 1px solid #d1d5db; text-align: center;">{{ vulnerability.Template.severity }}</td>
+                                    {% endif %}
+                                    <td style="padding: 3px; font-size: 0.875rem; color: #1f2937; border-bottom: 1px solid #d1d5db; text-align: center;">{{ vulnerability.Template.cvss }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
     </div>
     <div class="">
         <p style="font-weight: bold;">Next Steps</p>
@@ -43,7 +83,7 @@
 
     <div style="padding-top: 1rem;">
         <p class="">Regards Chowkidar</p>
-        <a href="http://localhost" target="_blank">
+        <a href="{{ server }}" target="_blank">
             <img src="{{ url_for('static', filename='logo.png') }}" style="width: 10rem;" alt="Chowkidar Logo">
         </a>
     </div>
