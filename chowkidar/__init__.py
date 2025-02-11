@@ -100,40 +100,6 @@ def create_app(config_class=Config):
         admin.add_view(AdminPanelView(VulnerabilityDiscovered, db.session))
         admin.add_view(AdminPanelTemplatesView(VulnerabilityTemplates, db.session))
 
-        try:
-            all_templates = templates()
-            for template in all_templates:
-                existing_template = VulnerabilityTemplates.query.filter_by(name=template[0]).first()
-                
-                if existing_template:
-                    existing_template.description = template[1]
-                    existing_template.impact = template[2]
-                    existing_template.severity = template[3]
-                    existing_template.steps = template[4]
-                    existing_template.fix = template[5]
-                    existing_template.cvss = float(template[6])
-                    existing_template.cvss_string = template[7]
-                    existing_template.cwe = template[8]
-                    existing_template.type = template[9]
-                else:
-                    new_template = VulnerabilityTemplates(
-                        name=template[0],
-                        description=template[1],
-                        impact=template[2],
-                        severity=template[3],
-                        steps=template[4],
-                        fix=template[5],
-                        cvss=float(template[6]),
-                        cvss_string=template[7],
-                        cwe=template[8],
-                        type=template[9]
-                    )
-                    db.session.add(new_template)
-
-            db.session.commit()
-            print('Vulnerability Templates Added Successfuly')
-        except Exception as e:
-            print(f'Error Adding Vulnerability Templates: {e}')
 
     from chowkidar.utils.routes import utils
     from chowkidar.audits.routes import audits

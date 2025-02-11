@@ -15,10 +15,12 @@ client = docker.DockerClient(base_url="unix://var/run/docker.sock")
 def run_scan(secret_key, scan_result_api, add_vulnerability_api, scan_status_api, audit):
     running_containers = client.containers.list(filters={'status': 'running'})
     previous_tasks = [container for container in running_containers if  container.name not in ['chowkidar-nginx-1', 'chowkidar-chowkidar-1', 'chowkidar-db-1', 'chowkidar-scheduler-1', 'chowkidar-certbot-1']]
+    print(previous_tasks)
     if len(previous_tasks) >= workers:
         for task in previous_tasks:
             task.wait()
     if 'web' in audit.asset_type:
+        print('started')
         tools = eval(audit.tools)
         command=f"python3 scanner.py {secret_key} {scan_result_api} {add_vulnerability_api} {scan_status_api} {audit.id} {audit.url} {tools['nmap']} {tools['headers']} {tools['dirsearch']} {tools['testssl']} {tools['nuclei']} {tools['sublister']} {tools['wpscan']} {audit.Auditor.wpscan_api}"
         container = client.containers.run("web-scanner", 
@@ -38,7 +40,7 @@ def run_scan(secret_key, scan_result_api, add_vulnerability_api, scan_status_api
     data = {'secret_key':os.environ['SCANNER_SECRET_KEY'],
             'audit_id':audit.id,
             'container_id':container.id}
-    response = requests.post(f'{os.getenv('SERVER_URL')}:5000/audits/containerid', json=data)
+    response = requests.post(f"{os.getenv('SERVER_URL')}:5000/audits/containerid", json=data)
     return container.id
 
 

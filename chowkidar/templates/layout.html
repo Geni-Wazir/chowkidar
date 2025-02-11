@@ -8,6 +8,7 @@
 	<link href="https://fonts.googleapis.com/css2?family=Akaya+Telivigala&display=swap" rel="stylesheet">
 	<script src="https://cdn.tailwindcss.com"></script>
 	<link rel="stylesheet" href="{{ url_for('static', filename='custom.css') }}">
+	<script src="{{ url_for('static', filename='tinymce/tinymce.min.js') }}"></script>
 
 	{% if title %}
 	<title>{{ title }}</title>
@@ -55,6 +56,16 @@
 								class="text-black">
 								{% endif %}
 								Admin
+							</a>
+						</li>
+						<li
+							class="hover:bg-gray-300 px-2 sm:px-3 py-2 flex flex-col items-center rounded-xl whitespace-nowrap">
+							<a href="{{ url_for('admin_view.templates') }}" {% if 'Template' in title %}
+								class="text-black border-b-2 border-sky-500">
+								{% else %}
+								class="text-black">
+								{% endif %}
+								Templates
 							</a>
 						</li>
 						{% endif %}

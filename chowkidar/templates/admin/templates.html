@@ -1,0 +1,83 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="flex-col flex items-center">
+    <p class="flex items-center justify-center font-bold text-3xl text-gray-700">Vulnerability Templates</p>
+    <div class="mt-5 shadow-lg rounded-lg overflow-hidden mx-4 lg:mx-0">
+        <table class="w-full table-fixed">
+            <thead>
+                <tr class="bg-blue-100">
+                    <th class="w-1/3 sm:w-3/4 py-4 px-2 md:px-6 text-left text-gray-600 font-bold uppercase">
+                        <div class="flex">
+                            <span class="whitespace-nowrap">Name ({{ templates | length }})</span>
+                            <div class="relative mx-3 w-full hidden lg:flex">
+                                <div class="start-0 flex items-center ">
+                                    <svg class="absolute flex-shrink-0 w-7 h-7" viewBox="0 -0.5 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                        <g id="SVGRepo_iconCarrier"> 
+                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M11.132 9.71395C10.139 11.2496 10.3328 13.2665 11.6 14.585C12.8468 15.885 14.8527 16.0883 16.335 15.065C16.6466 14.8505 16.9244 14.5906 17.159 14.294C17.3897 14.0023 17.5773 13.679 17.716 13.334C18.0006 12.6253 18.0742 11.8495 17.928 11.1C17.7841 10.3573 17.4268 9.67277 16.9 9.12995C16.3811 8.59347 15.7128 8.22552 14.982 8.07395C14.2541 7.92522 13.4982 8.00197 12.815 8.29395C12.1254 8.58951 11.5394 9.08388 11.132 9.71395Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> 
+                                            <path d="M17.5986 13.6868C17.2639 13.4428 16.7947 13.5165 16.5508 13.8513C16.3069 14.1861 16.3806 14.6552 16.7154 14.8991L17.5986 13.6868ZM19.0584 16.6061C19.3931 16.85 19.8623 16.7764 20.1062 16.4416C20.3501 16.1068 20.2764 15.6377 19.9416 15.3938L19.0584 16.6061ZM7.5 12.7499C7.91421 12.7499 8.25 12.4142 8.25 11.9999C8.25 11.5857 7.91421 11.2499 7.5 11.2499V12.7499ZM5.5 11.2499C5.08579 11.2499 4.75 11.5857 4.75 11.9999C4.75 12.4142 5.08579 12.7499 5.5 12.7499V11.2499ZM7.5 15.7499C7.91421 15.7499 8.25 15.4142 8.25 14.9999C8.25 14.5857 7.91421 14.2499 7.5 14.2499V15.7499ZM5.5 14.2499C5.08579 14.2499 4.75 14.5857 4.75 14.9999C4.75 15.4142 5.08579 15.7499 5.5 15.7499V14.2499ZM8.5 9.74994C8.91421 9.74994 9.25 9.41415 9.25 8.99994C9.25 8.58573 8.91421 8.24994 8.5 8.24994V9.74994ZM5.5 8.24994C5.08579 8.24994 4.75 8.58573 4.75 8.99994C4.75 9.41415 5.08579 9.74994 5.5 9.74994V8.24994ZM16.7154 14.8991L19.0584 16.6061L19.9416 15.3938L17.5986 13.6868L16.7154 14.8991ZM7.5 11.2499H5.5V12.7499H7.5V11.2499ZM7.5 14.2499H5.5V15.7499H7.5V14.2499ZM8.5 8.24994H5.5V9.74994H8.5V8.24994Z" fill="currentColor"></path> 
+                                        </g>
+                                    </svg>
+                                    <input id="search-audit" class="mx-3 pl-4 font-normal peer block w-72 bg-transparent border-t-transparent border-b-2 border-x-transparent border-b-gray-500 text-sm focus:outline-none focus:border-t-transparent focus:border-r-transparent focus:border-l-transparent focus:border-b-indigo-500" placeholder="Template Name">
+                                </div>
+                            </div>
+                        </div>
+                    </th>
+                    <th class="w-1/3 sm:w-1/4 py-4 px-4 text-left text-gray-600 font-bold text-center uppercase">severity</th>
+                    <th class="w-1/3 sm:w-1/4 py-4 px-4 text-left text-gray-600 font-bold uppercase text-center hidden sm:table-cell">cvss</th>
+                    <th class="w-1/4 py-4 px-4 text-left text-gray-600 font-bold uppercase text-center">
+                        <a href="{{ url_for('admin_view.add_template') }}" class="flex  items-center justify-center w-full">
+                            Add Template
+                            <svg class="w-7 ml-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Edit / Add_Plus_Circle"> <path id="Vector" d="M8 12H12M12 12H16M12 12V16M12 12V8M12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
+                        </a>
+                    </th>
+                </tr>
+            </thead>
+        </table>
+        <div class="w-full scrollable-table rounded-lg capitalize" id="all-audit">
+            <table class="w-full table-fixed" id="audit-list">
+                <tbody class="bg-white">
+                    {% for template in templates %}
+                    <tr>
+                        <td class="sm:w-3/4 py-1 px-4 border-b border-gray-200">
+                            <div class="flex items-center">
+                                    <a href="{{ url_for('admin_view.template', template_name=template.name) }}">
+                                        <p class="group inline-block">
+                                            <span class="relative inline-block transition-all duration-300">{{ template.name }}
+                                                <span class="absolute inset-x-0 bottom-0 h-0.5 bg-blue-300 w-0 transition-all duration-300 sm:group-hover:w-full"></span>
+                                            </span>
+                                        </p>
+                                    </a>
+                            </div>
+                        </td>
+                        <td class="w-1/3 sm:w-1/4 py-2 px-4 border-b border-gray-200 truncate text-center">
+                            {% if template.severity == 'CRITICAL' %}
+                                <span class="px-2 inline-flex text-sm leading-5 font-semibold rounded-full bg-red-400 text-red-950">{{ template.severity }}</span>
+                            {% elif template.severity == 'HIGH' %}
+                                <span class="px-2 inline-flex text-sm leading-5 font-semibold rounded-full bg-red-300 text-red-800">{{ template.severity }}</span>
+                            {% elif template.severity == 'MEDIUM' %}
+                                <span class="px-2 inline-flex text-sm leading-5 font-semibold rounded-full bg-orange-300 text-orange-800">{{ template.severity }}</span>
+                            {% elif template.severity == 'LOW' %}
+                                <span class="px-2 inline-flex text-sm leading-5 font-semibold rounded-full bg-yellow-200 text-yellow-800">{{ template.severity }}</span>
+                            {% elif template.severity == 'INFO' %}
+                                <span class="px-2 inline-flex text-sm leading-5 font-semibold rounded-full bg-blue-200 text-blue-800">{{ template.severity }}</span>
+                            {% endif %}
+                        </td>
+                        <td class="w-1/3 sm:w-1/4 py-2 px-4 border-b border-gray-200 hidden sm:table-cell text-center">{{ template.cvss }}</td>
+                        <td class="w-1/3 sm:w-1/4 py-2 px-4 border-b border-gray-200 text-center">
+                            <div class='flex gap-1 justify-center'>
+                                <a href="{{ url_for('admin_view.preview_template', template_name=template.name) }}" class='flex items-center justify-center p-1 rounded-md hover:bg-red-200 group' blank="">
+                                    <svg class="w-6 flex-none" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M11.9944 15.5C13.9274 15.5 15.4944 13.933 15.4944 12C15.4944 10.067 13.9274 8.5 11.9944 8.5C10.0614 8.5 8.49439 10.067 8.49439 12C8.49439 13.933 10.0614 15.5 11.9944 15.5ZM11.9944 13.4944C11.1691 13.4944 10.5 12.8253 10.5 12C10.5 11.1747 11.1691 10.5056 11.9944 10.5056C12.8197 10.5056 13.4888 11.1747 13.4888 12C13.4888 12.8253 12.8197 13.4944 11.9944 13.4944Z" fill="#0F0F0F"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 5C7.18879 5 3.9167 7.60905 2.1893 9.47978C0.857392 10.9222 0.857393 13.0778 2.1893 14.5202C3.9167 16.391 7.18879 19 12 19C16.8112 19 20.0833 16.391 21.8107 14.5202C23.1426 13.0778 23.1426 10.9222 21.8107 9.47978C20.0833 7.60905 16.8112 5 12 5ZM3.65868 10.8366C5.18832 9.18002 7.9669 7 12 7C16.0331 7 18.8117 9.18002 20.3413 10.8366C20.9657 11.5128 20.9657 12.4872 20.3413 13.1634C18.8117 14.82 16.0331 17 12 17C7.9669 17 5.18832 14.82 3.65868 13.1634C3.03426 12.4872 3.03426 11.5128 3.65868 10.8366Z" fill="#0F0F0F"></path> </g></svg>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

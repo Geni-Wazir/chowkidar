@@ -2,6 +2,7 @@ from flask import render_template,Blueprint, flash, redirect, url_for
 from flask_login import current_user, login_required
 from chowkidar.models import User, Audit, ScanResults, VulnerabilityDiscovered, VulnerabilityTemplates, CloudServices, CloudRegions, db
 from chowkidar.audits.forms import WebUpdateAuditForm, CloudUpdateAuditForm
+from chowkidar.admin.forms import TemplateForm
 from chowkidar.audits.routes import initiate_scan
 from chowkidar import limiter, task_queue
 from chowkidar.utils.scheduler import delete_container, remove_task, run_scan
@@ -344,3 +345,110 @@ def admin_scan_verify(user_email, audit_name):
     
     flash(f'The audit {audit_name} has not been scanned yet.', 'info')
     return redirect(url_for('admin_view.admin_vulnerabilities', user_email=user.email, audit_name=audit_name))
+
+
+
+
+@admin_view.route('/admin/templates')
+@login_required
+def templates():
+    if not current_user.admin:
+        flash('Unfortunately, you do not have the privilege to access this', 'danger')
+        return redirect(url_for('audits.audit_list'))
+    templates = VulnerabilityTemplates.query.order_by(VulnerabilityTemplates.cvss.desc()).all()
+    return render_template('admin/templates.html', title="Templates", templates=templates)
+
+
+
+
+@admin_view.route('/admin/templates/new', methods=['GET', 'POST'])
+@login_required
+def add_template():
+    if not current_user.admin:
+        flash('Unfortunately, you do not have the privilege to access this', 'danger')
+        return redirect(url_for('audits.audit_list'))
+
+    form = TemplateForm()
+    if form.validate_on_submit():
+        template = VulnerabilityTemplates(
+            name = form.name.data,
+            description = form.description.data,
+            impact = form.impact.data,
+            severity = form.severity.data,
+            steps = form.steps.data,
+            fix = form.fix.data,
+            cvss = form.cvss.data,
+            cvss_string = form.cvss_string.data,
+            cwe = form.cwe.data,
+            type = form.type.data,
+        )
+        db.session.add(template)
+        db.session.commit()
+        flash('Updated', 'success')
+    else:
+        errors = list(form.errors.values())
+        if errors:
+            flash(", ".join(errors[0]), 'info')
+
+    return render_template('admin/template.html', title="Templates", form=form)
+
+
+
+
+
+@admin_view.route('/admin/templates/<string:template_name>', methods=['GET', 'POST'])
+@login_required
+def template(template_name):
+    if not current_user.admin:
+        flash('Unfortunately, you do not have the privilege to access this', 'danger')
+        return redirect(url_for('audits.audit_list'))
+    template = VulnerabilityTemplates.query.filter_by(name=template_name).first()
+    if not template:
+        flash('No template with this name found', 'danger')
+        return redirect(url_for('admin_view.templates'))
+    form = TemplateForm()
+    if form.validate_on_submit():
+        template.name = form.name.data
+        template.description = form.description.data
+        template.impact = form.impact.data
+        template.severity = form.severity.data
+        template.steps = form.steps.data
+        template.fix = form.fix.data
+        template.cvss = form.cvss.data
+        template.cvss_string = form.cvss_string.data
+        template.cwe = form.cwe.data
+        template.type = form.type.data
+        db.session.commit()
+        flash('Successfuly updated the template', 'success')
+        return redirect(url_for('admin_view.templates'))
+    else:
+        errors = list(form.errors.values())
+        if errors:
+            flash(", ".join(errors[0]), 'info')
+
+    form.name.data = template.name
+    form.description.data = template.description
+    form.impact.data = template.impact
+    form.severity.data = template.severity
+    form.steps.data = template.steps
+    form.fix.data = template.fix
+    form.cvss.data = template.cvss
+    form.cvss_string.data = template.cvss_string
+    form.cwe.data = template.cwe
+    form.type.data = template.type
+
+    return render_template('admin/template.html', title="Templates", template=template, form=form)
+
+
+
+@admin_view.route('/admin/templates/<string:template_name>/preview')
+@login_required
+def preview_template(template_name):
+    if not current_user.admin:
+        flash('Unfortunately, you do not have the privilege to access this', 'danger')
+        return redirect(url_for('audits.audit_list'))
+    template = VulnerabilityTemplates.query.filter_by(name=template_name).first()
+    if not template:
+        flash('No template with this name found', 'danger')
+        return redirect(url_for('admin_view.templates'))
+    return render_template('admin/vulnerability.html', title="Templates", template=template, audit='', vulnerability='')

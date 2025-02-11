@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="flex justify-center pt-5">
+    <div class="w-full m-2 bg-white shadow rounded-lg flex flex-col sm:flex-row gap-4 items-center">
+        <div class="w-full h-full p-6 pt-10 px-10">
+            <form method="POST" action="">
+                {{ form.hidden_tag() }}
+                <div class="px-0">
+                    <div class="relative mb-4">
+                        {{ form.name(class="peer py-3 pe-0 ps-9 block w-full bg-transparent border-t-transparent border-b-2 border-x-transparent border-b-gray-500 text-md focus:outline-none focus:border-t-transparent focus:border-r-transparent focus:border-l-transparent focus:border-b-indigo-500 disabled:opacity-50 disabled:pointer-events-none", autocomplete="off", placeholder="Vulnerability Name") }}
+                        <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-2 peer-disabled:opacity-50 peer-disabled:pointer-events-none">
+                            <svg class="w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M14 21.7101C13.3663 21.8987 12.695 22 12 22C8.13401 22 5 18.866 5 15V11.9375C5 9.76288 6.76288 8 8.9375 8H15.0625C17.2371 8 19 9.76288 19 11.9375V15C19 16.9073 18.2372 18.6364 17 19.899" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path> <path d="M8.25 7.5C8.25 7.08579 7.91421 6.75 7.5 6.75C7.08579 6.75 6.75 7.08579 6.75 7.5H8.25ZM7.63452 4.58281C7.40411 4.92702 7.49636 5.39285 7.84058 5.62326C8.18479 5.85367 8.65062 5.76141 8.88103 5.41719L7.63452 4.58281ZM17.25 8.5V7.5H15.75V8.5H17.25ZM6.75 7.5V8.5H8.25V7.5H6.75ZM17.25 7.5C17.25 4.60051 14.8995 2.25 12 2.25V3.75C14.0711 3.75 15.75 5.42893 15.75 7.5H17.25ZM12 2.25C10.179 2.25 8.57506 3.17771 7.63452 4.58281L8.88103 5.41719C9.55501 4.41032 10.7005 3.75 12 3.75V2.25Z" fill="#1C274C"></path> <path d="M19 14H22" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path> <path d="M5 14H2" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path> <path d="M14.5 3.5L17 2" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path> <path d="M9.5 3.5L7 2" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path> <path d="M20.5 20.0002L18.5 19.2002" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path> <path d="M20.5 7.9998L18.5 8.7998" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path> <path d="M3.5 20.0002L5.5 19.2002" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path> <path d="M3.5 7.9998L5.5 8.7998" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path> <path d="M12 21.5V15" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path> </g></svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="py-5 px-20">
+                    <div class="flex gap-12 pb-5">
+                        {{ form.severity(class="text-center font-semibold bg-transparent border-t-transparent border-b-2 border-x-transparent border-b-gray-500 text-md focus:outline-none focus:border-t-transparent focus:border-r-transparent focus:border-l-transparent focus:border-b-indigo-500 disabled:opacity-50 disabled:pointer-events-none") }}
+                        {{ form.cvss_string(class="peer pe-0 ps-1 block w-full bg-transparent border-t-transparent border-b-2 border-x-transparent border-b-gray-500 text-md focus:outline-none focus:border-t-transparent focus:border-r-transparent focus:border-l-transparent focus:border-b-indigo-500 disabled:opacity-50 disabled:pointer-events-none", autocomplete="off", placeholder="CVSS String") }}
+                        {{ form.cvss(class="peer pe-0 ps-1 block w-32 bg-transparent border-t-transparent border-b-2 border-x-transparent border-b-gray-500 text-md focus:outline-none focus:border-t-transparent focus:border-r-transparent focus:border-l-transparent focus:border-b-indigo-500 disabled:opacity-50 disabled:pointer-events-none", autocomplete="off", placeholder="CVSS") }}
+                        
+                    </div>
+                    <div class="flex gap-12 py-3">
+                        {{ form.cwe(class="peer pe-0 ps-1 block w-full bg-transparent border-t-transparent border-b-2 border-x-transparent border-b-gray-500 text-md focus:outline-none focus:border-t-transparent focus:border-r-transparent focus:border-l-transparent focus:border-b-indigo-500 disabled:opacity-50 disabled:pointer-events-none", autocomplete="off", placeholder="CWE") }}
+                        {{ form.type(class="peer pe-0 ps-1 block w-72 bg-transparent border-t-transparent border-b-2 border-x-transparent border-b-gray-500 text-md focus:outline-none focus:border-t-transparent focus:border-r-transparent focus:border-l-transparent focus:border-b-indigo-500 disabled:opacity-50 disabled:pointer-events-none", autocomplete="off", placeholder="Template Type") }}
+                    </div>
+                </div>
+                <div class="py-3">
+                    <span class="text-gray-500 font-semibold text-lg">Description</span>
+                    <div class="my-3 px-10">
+                        {{form.description(placeholder="Describe the Vulnerability in detail")}}
+                    </div>
+                </div>
+                <div class="py-3">
+                    <span class="text-gray-500 font-semibold text-lg">Impact</span>
+                    <div class="my-3 px-10">
+                        {{form.impact(placeholder="Describe the Impact of this Vulnerability")}}
+                    </div>
+                </div>
+                <div class="py-3">
+                    <span class="text-gray-500 font-semibold text-lg">Steps</span>
+                    <div class="my-3 px-10">
+                        {{form.steps(placeholder="Describe the steps to reproduce")}}
+                    </div>
+                </div>
+                <div class="py-3">
+                    <span class="text-gray-500 font-semibold text-lg">Fixes</span>
+                    <div class="my-3 px-10">
+                        {{form.fix(placeholder="General fix for the Vulnerability")}}
+                    </div>
+                </div>
+                <div class="flex justify-end pt-5">
+                    {{ form.submit(class="bg-green-600 hover:bg-green-700 p-2 px-4 rounded-lg text-white") }}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

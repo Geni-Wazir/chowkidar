@@ -6,6 +6,9 @@ from chowkidar.audits.forms import WebAuditForm, WebUpdateAuditForm, CloudAuditF
 from chowkidar.utils.scheduler import run_scan, delete_container, remove_task
 import os
 from flask_mail import Message
+from datetime import datetime, timezone
+from jinja2 import Environment, FileSystemLoader
+
 
 
 
@@ -13,7 +16,14 @@ from flask_mail import Message
 audits = Blueprint('audits', __name__)
 
 
+def highlight_raw_secrets(source_code, raw_secrets):
+    secrets = raw_secrets.split(", ")
+    for secret in secrets:
+        source_code = source_code.replace(secret, f'<span class="highlight">{secret}</span>')
+    return source_code
 
+env = Environment(loader=FileSystemLoader('templates'))  # Update 'templates' with your templates directory
+env.filters['highlight_raw_secrets'] = highlight_raw_secrets
 
 @audits.route('/audits')
 @login_required
@@ -38,7 +48,8 @@ def add_web_audit(webform):
             'sublister': webform.sublister.data,
             'wpscan': webform.wpscan.data,
         }),
-        Auditor=current_user
+        Auditor=current_user,
+        date = datetime.now(timezone.utc)
     )
     db.session.add(audit)
     db.session.commit()
@@ -55,7 +66,8 @@ def add_cloud_audit(cloudform):
         secret_key=cloudform.secret_key.data,
         regions=str(cloudform.regions.data),
         services=str(cloudform.services.data),
-        Auditor=current_user
+        Auditor=current_user,
+        date = datetime.now(timezone.utc)
     )
     db.session.add(audit)
     db.session.commit()
@@ -232,6 +244,7 @@ def initiate_scan(current_user, audit, status, db):
     scan_task = task_queue.enqueue(run_scan, args=(secret_key, scan_result_api, add_vulnerability_api, scan_status_api, audit), job_timeout=-1)
     audit.task_id = scan_task.id
     audit.status = status
+    audit.scan_date = datetime.now(timezone.utc)
 
     if not current_user.admin:
         current_user.scan_available -= 1
@@ -256,10 +269,15 @@ def scan_audit(audit_name):
         flash(f'Initiating the scan for {audit.name} is not possible', 'info')
         return redirect(url_for('audits.audit_list'))
 
+    if audit.asset_type not in ['web', 'cloud_aws']:
+        flash(f'Unable to start your scan. Currently, we only support WEB and AWS scans.', 'info')
+        return redirect(url_for('audits.audit_list'))
+
     try:
         initiate_scan(current_user, audit, 'scanning', db)
     except:
         flash(f'Error Initiating Scan for {audit.name}', 'danger')
+        return redirect(url_for('audits.audit_list'))
     flash(f'Congratulations! Your {audit.name} scan has been successfully started.', 'success')
     return redirect(url_for('audits.audit_list'))
 

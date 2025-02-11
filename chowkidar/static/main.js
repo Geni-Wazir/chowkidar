@@ -1,3 +1,39 @@
+tailwind.config = {
+    corePlugins: {
+      preflight: true,
+    },
+    plugins: [
+      function ({ addBase }) {
+        addBase({
+          // Target the 'ul' and 'ol' only inside elements with the 'editor' class
+          '.editor ul': { 'list-style-type': 'disc', 'margin-left': '1.5rem' },
+          '.editor ol': { 'list-style-type': 'decimal', 'margin-left': '1.5rem' },
+        });
+      }
+    ]
+  }
+
+
+tinymce.init({
+    selector: 'textarea',
+    plugins: [
+      // Core editing features
+      'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount', 'advlist',
+      // Your account includes a free trial of TinyMCE premium features
+      // Try the most popular premium features until Oct 19, 2024:
+    //   'checklist', 'mediaembed', 'casechange', 'export', 'formatpainter', 'pageembed', 'a11ychecker', 'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'editimage', 'advtemplate', 'mentions', 'tinycomments', 'tableofcontents', 'footnotes', 'mergetags', 'autocorrect', 'typography', 'inlinecss', 'markdown',
+    ],
+    toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+    images_upload_url: 'http://localhost/dashboard/images/upload',
+    images_reuse_filename: false,
+    automatic_uploads: true,
+    image_caption: true,
+    mediaembed_inline_styles: true,
+
+});
+
+
+
 document.addEventListener('DOMContentLoaded', function () {
     var closeButton = document.getElementById('closeToast');
     var toast = document.getElementById('toast');
